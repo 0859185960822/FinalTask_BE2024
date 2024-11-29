@@ -1,0 +1,36 @@
+stages :
+    - build
+    - deploy
+
+cache:
+  key: $CI_COMMIT_REF_SLUG
+  paths:
+    - node_modules/
+
+build_dev:
+  stage: build
+  only:
+   - development
+  tags:
+   - dev-runner
+  script:
+    - yarn install
+    - yarn build
+  artifacts:
+    paths:
+      - "dist/"
+    expire_in: 1 hours
+    
+deploy_dev:
+  stage: deploy
+  only:
+    - development
+  tags:
+    - dev-runner
+  script:
+    - echo "Bismillah"
+    - rsync -rav --update dist/* $working_directory_dev
+    - ls -al $working_directory_dev
+    - rm -rf node_modules/
+    - rm -rf dist/
+    - echo "Alhamdulillah Sukses"

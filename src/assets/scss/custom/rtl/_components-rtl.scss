@@ -1,0 +1,137 @@
+//
+// components-rtl.scss
+//
+
+// dropdown
+
+.dropdown-megamenu {
+  &.show {
+    left: 20px !important;
+  }
+}
+
+// icons
+
+.icon-list-demo {
+  i {
+    margin-left: 12px;
+    margin-right: 0;
+  }
+}
+
+// Breadcrumb
+
+.breadcrumb-item+.breadcrumb-item::before {
+  float: right;
+  padding-left: 0.5rem;
+  padding-right: 0;
+}
+
+// Invoice
+
+@media print {
+
+  .content-page,
+  .content,
+  body {
+    margin-right: 0;
+  }
+}
+
+// Demos button 
+.demos-show-btn {
+  left: 0;
+  right: auto;
+  border-radius: 0 6px 6px 0;
+}
+
+.form-check-right {
+  .form-check {
+    padding-left: 1.5em !important;
+    padding-right: 0 !important;
+
+    .form-check-input {
+      float: left;
+      margin-left: -1.5em;
+    }
+  }
+}
+
+.form-switch-md {
+  padding-left: 0.5rem;
+}
+
+.form-switch {
+  .form-switch-lg {
+    padding-right: 0.75rem !important;
+  }
+}
+
+
+//button with icon
+.btn-label {
+  position: relative;
+  padding-right: 44px;
+  padding-left: 10px;
+
+  .label-icon {
+    right: -$btn-border-width;
+  }
+
+  &.right {
+    padding-right: $btn-padding-x;
+    padding-left: 44px;
+
+    .label-icon {
+      left: -$btn-border-width;
+      right: auto;
+    }
+  }
+}
+
+.btn-group> :not(.btn-check:first-child)+.btn,
+.btn-group>.btn-group:not(:first-child) {
+  margin-right: -1px;
+  margin-left: auto;
+}
+
+.btn-group>.btn:nth-child(n + 3),
+.btn-group> :not(.btn-check)+.btn {
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+  border-top-left-radius: 0.25rem;
+  border-bottom-left-radius: 0.25rem;
+}
+
+.btn-group>.btn:not(:last-child):not(.dropdown-toggle) {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-top-right-radius: 0.25rem;
+  border-bottom-right-radius: 0.25rem;
+}
+
+.btn-group>.btn:nth-child(n+3),
+.btn-group> :not(.btn-check)+.btn {
+  border-top-right-radius: 0.25rem !important;
+  border-bottom-right-radius: 0.25rem !important;
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+}
+
+.btn-group>.btn:not(:last-child):not(.dropdown-toggle) {
+  border-top-left-radius: 0.25rem !important;
+  border-bottom-left-radius: 0.25rem !important;
+  border-top-right-radius: 0 !important; 
+  border-bottom-right-radius: 0 !important;
+}
+
+
+.job-details{
+  padding-right: 2rem !important;
+  padding-left: 0;
+}
+
+
+.tamp{
+  left: 18px;
+}

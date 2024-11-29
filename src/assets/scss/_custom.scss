@@ -1,0 +1,402 @@
+@use 'sass:math';
+
+@import "custom/components/animation";
+
+.modal-backdrop {
+    opacity: .5;
+}
+
+.modal-header,
+.alert {
+    .close {
+        padding: 0.3rem 1.75rem;
+        background: transparent;
+        border: 0;
+        font-size: 25px;
+        position: absolute;
+        top: 0;
+        right: 0;
+        opacity: .4;
+        width: 1em;
+        height: 1em;
+        z-index: 2;
+
+        button {
+            display: none;
+        }
+    }
+}
+
+.form-row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.vhd__datepicker__input {
+    height: $input-height !important;
+    line-height: $input-height !important;
+}
+
+.form-check {
+    .custom-control-input {
+        border-radius: .25em;
+        float: left;
+        margin: 3px 3px 3px -19px !important;
+    }
+}
+
+.check-group {
+    input {
+        position: absolute;
+        clip: rect(0, 0, 0, 0);
+        pointer-events: none;
+    }
+}
+
+.vue-simple-drawer {
+    background: $gray-100 !important;
+    color: $gray-800 !important;
+
+    .close-btn {
+
+        .leftright,
+        .rightleft {
+            width: 20px !important;
+            background-color: $gray-600 !important
+        }
+    }
+}
+
+body {
+    * {
+        outline: none;
+    }
+}
+
+.b-form-btn-label-control {
+    padding: 0;
+    border: none;
+
+    >.btn {
+        position: absolute;
+        right: 0;
+        top: 0;
+
+        &:focus {
+            box-shadow: none;
+        }
+    }
+}
+
+.vue-simple-drawer {
+    // default style
+    padding: 20px;
+    color: $--simple-drawer-fg-color;
+    background: $--simple-drawer-bg-color;
+    // common
+    position: fixed;
+    overflow: auto;
+
+    &.closeable {
+        padding-top: 40px;
+    }
+
+    &.left {
+        left: 0;
+        top: 0;
+        bottom: 0;
+    }
+
+    &.right {
+        right: 0;
+        top: 0;
+        bottom: 0;
+    }
+
+    &.up {
+        top: 0;
+        left: 0;
+        right: 0;
+    }
+
+    &.down {
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
+
+    .close-btn {
+        width: $--simple-drawer-close-width;
+        height: $--simple-drawer-close-width;
+        position: absolute;
+        right: 0;
+        top: 20px;
+        transform: translate(-50%, -50%);
+        color: currentColor;
+        font-size: 20px;
+        cursor: pointer;
+        user-select: none;
+
+        .leftright {
+            height: 4px;
+            width: $--simple-drawer-close-width;
+            position: absolute;
+            margin-top: math.div($--simple-drawer-close-width, 2);
+            background-color: $--simple-drawer-softorange;
+            border-radius: 2px;
+            transform: rotate(45deg);
+            transition: all 0.3s ease-in;
+        }
+
+        .rightleft {
+            height: 4px;
+            width: $--simple-drawer-close-width;
+            position: absolute;
+            margin-top: math.div($--simple-drawer-close-width, 2);
+            background-color: $--simple-drawer-softorange;
+            border-radius: 2px;
+            transform: rotate(-45deg);
+            transition: all 0.3s ease-in;
+        }
+
+        .close {
+            margin: 60px 0 0 5px;
+            position: absolute;
+        }
+
+        &:hover .leftright {
+            transform: rotate(-45deg);
+            background-color: $--simple-drawer-tomatored;
+        }
+
+        &:hover .rightleft {
+            transform: rotate(45deg);
+            background-color: $--simple-drawer-tomatored;
+        }
+    }
+}
+
+.mask {
+    position: fixed;
+    background: grey;
+    opacity: 0.5;
+    width: 100%;
+    left: 0;
+    top: 0;
+    height: 100%;
+}
+
+.slider-tooltip,
+.slider-connect {
+    background: $primary !important;
+}
+
+.slider-horizontal .slider-tooltip-top:before {
+    border: $primary !important;
+}
+
+.slider-touch-area {
+    box-shadow: none !important;
+}
+
+.slider-tooltip {
+    border-color: $primary !important;
+}
+
+// modal
+.v-modal-custom {
+    .modal-dialog {
+        .modal-content {
+            z-index: 1056;
+        }
+    }
+
+    .v-modal-footer {
+        padding: var(--vz-modal-padding) 0 0;
+    }
+}
+
+.dropdown-toggle::after {
+    display: none;
+}
+
+
+// ===========================
+.advance-form-switches {
+    .vue-switcher-theme--custom {
+        &.vue-switcher-color--secondary {
+            &.vue-switcher--unchecked {
+                div {
+                    background-color: lighten($secondary, 40%);
+
+                    &:after {
+                        background-color: lighten($secondary, 2%);
+                    }
+                }
+            }
+        }
+
+        &.vue-switcher-color--warning {
+            &.vue-switcher--unchecked {
+                div {
+                    background-color: lighten($warning, 30%);
+
+                    &:after {
+                        background-color: lighten($warning, 2%);
+                    }
+                }
+            }
+        }
+
+        &.vue-switcher-color--danger {
+            &.vue-switcher--unchecked {
+                div {
+                    background-color: lighten($danger, 20%);
+
+                    &:after {
+                        background-color: lighten($danger, 2%);
+                    }
+                }
+            }
+        }
+
+        &.vue-switcher-color--primary {
+            &.vue-switcher--unchecked {
+                div {
+                    background-color: lighten($primary, 30%);
+
+                    &:after {
+                        background-color: lighten($primary, 2%);
+                    }
+                }
+            }
+        }
+
+        &.vue-switcher-color--success {
+            &.vue-switcher--unchecked {
+                div {
+                    background-color: lighten($success, 30%);
+
+                    &:after {
+                        background-color: lighten($success, 2%);
+                    }
+                }
+            }
+        }
+
+        &.vue-switcher-color--info {
+            &.vue-switcher--unchecked {
+                div {
+                    background-color: lighten($info, 30%);
+
+                    &:after {
+                        background-color: lighten($info, 2%);
+                    }
+                }
+            }
+        }
+    }
+}
+
+.crypto-buy-tabs {
+    .nav-item {
+        .nav-link {
+            color: var(--#{$prefix}body-color);
+
+            &.active {
+                color: white;
+            }
+        }
+    }
+}
+
+
+// 
+.right {
+    .conversation-list {
+        .chat-dropdown {
+            float: left;
+        }
+    }
+}
+
+.conversation-list {
+    .chat-dropdown {
+        float: right;
+    }
+}
+
+
+// EDITOR
+
+.ck .ck-editor__main {
+    background-color: var(--#{$prefix}secondary-bg);
+}
+
+.ck.ck-editor__main>.ck-editor__editable {
+    background-color: var(--#{$prefix}secondary-bg) !important;
+    border-color: var(--#{$prefix}border-color) !important;
+}
+
+.ck.ck-toolbar {
+    background-color: var(--#{$prefix}secondary-bg) !important;
+    border-color: var(--#{$prefix}border-color) !important;
+    color: var(--#{$prefix}body-color) !important;
+}
+
+.ck .ck-toolbar__items {
+    .ck-button {
+        color: var(--#{$prefix}body-color) !important;
+
+        &:hover,
+        &.active {
+            background-color: var(--#{$prefix}border-color) !important;
+        }
+    }
+}
+
+.ck-toolbar__separator {
+    background-color: var(--#{$prefix}border-color) !important;
+}
+
+.ck-button__label {
+
+    &:hover,
+    &.active {
+        background-color: var(--#{$prefix}secondary-bg) !important;
+    }
+}
+
+.ck .ck-list__item {
+    background-color: var(--#{$prefix}secondary-bg) !important;
+    border-color: var(--#{$prefix}border-color) !important;
+}
+
+.ck .ck-icon {
+    background-color: var(--#{$prefix}tertiary-bg) !important;
+}
+
+.ck.ck-button.ck-on,
+a.ck.ck-button.ck-on {
+    background-color: var(--#{$prefix}tertiary-bg) !important;
+}
+
+.ck-dropdown__panel,
+.ck-labeled-field-view {
+    border-color: var(--#{$prefix}border-color) !important;
+    background-color: var(--#{$prefix}secondary-bg) !important;
+}
+
+.ck .ck-input,
+.ck-labeled-field-view__status,
+.ck-media-form,
+.ck-link-form {
+    background-color: var(--#{$prefix}secondary-bg) !important;
+    color: var(--#{$prefix}body-color) !important;
+    border-color: var(--#{$prefix}border-color) !important;
+    box-shadow: none !important;
+}
+
+.ck-link-form{
+    border-color: var(--#{$prefix}border-color) !important;
+}
