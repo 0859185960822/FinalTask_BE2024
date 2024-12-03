@@ -10,6 +10,7 @@ import Earning from "@/components/widgets/earning";
 // import Activity from "@/components/widgets/activity";
 // import SellingProduct from "@/components/widgets/selling-product";
 import ProjectStats from "../../components/widgets/progress1.vue";
+import Sidebar from "../../components/side-bar.vue";
 
 /**
  * Dashboard Component
@@ -21,6 +22,7 @@ export default {
     // Profile,
     // Stat,
     // Transaction,
+    Sidebar,
     Earning,
     ProjectStats,
   //   Emailsent,
@@ -57,6 +59,7 @@ export default {
 </script>
 
 <template>
+      <Sidebar />
   <Layout>
     <PageHeader title="Dashboard" pageTitle="Dashboards" />
     <ProjectStats />
