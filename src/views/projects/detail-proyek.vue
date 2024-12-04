@@ -3,12 +3,18 @@ import Layout from "../../layouts/main";
 import PageHeader from "@/components/page-header";
 // import Sidebar from "../../components/side-bar.vue";
 import Page from "../../components/common/pagination.vue";
-
+import { ref } from "vue";
 
 /**
  * Task-list component
  */
 export default {
+  setup() {
+    const isOpen = ref(false);
+    return {
+      isOpen,
+    };
+  },
   components: { Layout, PageHeader,Page, },
 };
 </script>
@@ -24,7 +30,44 @@ export default {
           <div style="display: flex; margin-bottom: 1%;">
             <BCardTitle>Detail Proyek</BCardTitle>
             <div class="col-3" style="margin-left: auto; margin-right: 1%;" >
-                <button type="button" class="btn btn-success h-100 w-100" alt="Disable">TAMBAH KOLABORATOR <i class="fa fa-plus"></i></button>
+                <button type="button" class="btn btn-success h-100 w-100" alt="Disable" @click="isOpen = true" variant="primary">TAMBAH KOLABORATOR <i class="fa fa-plus"></i></button>
+                <!-- <BModal v-model="isOpen" id="modal-center" centered title="Center modal" title-class="font-18" hide-footer>
+                    <p>
+                      Cras mattis consectetur purus sit amet fermentum. Cras
+                      justo odio, dapibus ac facilisis in, egestas eget quam.
+                      Morbi leo risus, porta ac consectetur ac, vestibulum at
+                      eros.
+                    </p>
+                    <p>
+                      Praesent commodo cursus magna, vel scelerisque nisl
+                      consectetur et. Vivamus sagittis lacus vel augue laoreet
+                      rutrum faucibus dolor auctor.
+                    </p>
+                    <p class="mb-0">
+                      Aenean lacinia bibendum nulla sed consectetur. Praesent
+                      commodo cursus magna, vel scelerisque nisl consectetur et.
+                      Donec sed odio dui. Donec ullamcorper nulla non metus
+                      auctor fringilla.
+                    </p>
+                  </BModal>    -->
+                  <BModal v-model="isOpen" id="modal-center" centered title="Tambah Kolaborator" hide-footer>
+  <div class="p-3">
+    <form>
+      <div class="mb-3">
+        <label for="kolaborator" class="form-label fw-bold">Nama Kolaborator</label>
+        <select id="kolaborator" class="form-select">
+          <option selected>Pilih kolaborator</option>
+          <option value="1">Kolaborator 1</option>
+          <option value="2">Kolaborator 2</option>
+          <option value="3">Kolaborator 3</option>
+        </select>
+      </div>
+      <div class="text-end">
+        <button type="button" class="btn btn-secondary">Tambah</button>
+      </div>
+    </form>
+  </div>
+</BModal>
             </div>
             <div class="col-3">
                 <button type="button" class="btn btn-warning h-100 w-100" alt="Disable">SUNTING PROYEK <i class="fa fa-edit"></i> </button>
