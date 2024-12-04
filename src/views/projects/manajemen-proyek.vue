@@ -16,12 +16,12 @@ export default {
 <template>
   <!-- <Sidebar/> -->
   <Layout>
-    <PageHeader title="Manajemen Projek" pageTitle="Project" />
+    <PageHeader title="Manajemen Proyek" pageTitle="Project" />
     <BRow>
       <BCol lg="12">
         <BCard no-body>
           <BCardBody class="pb-0">
-            <BCardTitle>Manajemen Project</BCardTitle>
+            <BCardTitle>Manajemen Proyek</BCardTitle>
             <!-- <p class="card-title-desc">
               Create responsive tables by wrapping any <code>.table</code> in
               <code>.table-responsive</code>
@@ -44,7 +44,7 @@ export default {
                 <input type="text" class="form-control" id="autoSizingInput" placeholder="Cari">
               </div>
               <div class="col-3" style="margin-left: auto;" >
-                <button type="button" class="btn btn-success h-100 w-100" alt="Disable"><i class="fa fa-plus"></i> TAMBAH PROJECT</button>
+                <button type="button" class="btn btn-success h-100 w-100" alt="Disable"><i class="fa fa-plus"></i> TAMBAH PROYEK</button>
               </div>
             </form>
            
@@ -53,7 +53,7 @@ export default {
                 <BThead>
                   <BTr style="border-collapse: collapse; border: 1px solid black">
                     <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; vertical-align: middle;border-collapse: collapse; border: 1px solid black;">No</BTh>
-                    <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; border-collapse: collapse; border: 1px solid black;">Nama Project <button class="btn btn-sm btn-link p-0"><i class="fa fa-sort"></i></button></BTh>
+                    <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; border-collapse: collapse; border: 1px solid black;">Nama Proyek <button class="btn btn-sm btn-link p-0"><i class="fa fa-sort"></i></button></BTh>
                     <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; border-collapse: collapse; border: 1px solid black;">Deskripsi <button class="btn btn-sm btn-link p-0"><i class="fa fa-sort"></i></button></BTh>
                     <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; border-collapse: collapse; border: 1px solid black;">Tenggat <button class="btn btn-sm btn-link p-0"><i class="fa fa-sort"></i></button></BTh>
                     <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; border-collapse: collapse; border: 1px solid black;">Sisa Waktu <button class="btn btn-sm btn-link p-0"><i class="fa fa-sort"></i></button></BTh>
@@ -71,8 +71,8 @@ export default {
                 <BTbody>
                   <BTr style="border-collapse: collapse; border: 1px solid black">
                     <BTh scope="row">1</BTh>
-                    <BTd style="border-collapse: collapse; border: 1px solid black;">Project A</BTd>
-                    <BTd style="border-collapse: collapse; border: 1px solid black;">Project Cukup sulit</BTd>
+                    <BTd style="border-collapse: collapse; border: 1px solid black;">Proyek A</BTd>
+                    <BTd style="border-collapse: collapse; border: 1px solid black;">Proyek Cukup sulit</BTd>
                     <BTd style="border-collapse: collapse; border: 1px solid black;">20/11/2021</BTd>
                     <BTd style="border-collapse: collapse; border: 1px solid black;">Sudah 3 Tahun Yang Lalu</BTd>
                     <BTd style="border-collapse: collapse; border: 1px solid black;">20 <span style="color: red">%</span></BTd>

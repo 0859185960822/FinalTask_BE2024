@@ -16,7 +16,7 @@ export default {
 <template>
   <!-- <Sidebar/> -->
   <Layout>
-    <PageHeader title="Detail Projek" pageTitle="Project" />
+    <PageHeader title="Detail Proyek" pageTitle="Project" />
     <BRow>
       <BCol lg="12">
         <BCard no-body>
