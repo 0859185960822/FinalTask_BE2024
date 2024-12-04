@@ -4,18 +4,25 @@ import PageHeader from "@/components/page-header";
 // import Sidebar from "../../components/side-bar.vue";
 import Page from "../../components/common/pagination.vue";
 import { ref } from "vue";
+import flatPickr from "vue-flatpickr-component";
+import "flatpickr/dist/flatpickr.css";
 
 /**
  * Task-list component
  */
 export default {
   setup() {
-    const isOpen = ref(false);
+    const modalTK = ref(false);
+    const modalTT = ref(false);
+    const modalST = ref(false);
     return {
-      isOpen,
+      modalTK,
+      modalTT,
+      modalST,
+      picked: ref(new Date()),
     };
   },
-  components: { Layout, PageHeader,Page, },
+  components: { Layout, PageHeader,Page,flatPickr, },
 };
 </script>
 
@@ -30,76 +37,31 @@ export default {
           <div style="display: flex; margin-bottom: 1%;">
             <BCardTitle>Detail Proyek</BCardTitle>
             <div class="col-3" style="margin-left: auto; margin-right: 1%;" >
-                <button type="button" class="btn btn-success h-100 w-100" alt="Disable" @click="isOpen = true" variant="primary">TAMBAH KOLABORATOR <i class="fa fa-plus"></i></button>
-                <!-- <BModal v-model="isOpen" id="modal-center" centered title="Center modal" title-class="font-18" hide-footer>
-                    <p>
-                      Cras mattis consectetur purus sit amet fermentum. Cras
-                      justo odio, dapibus ac facilisis in, egestas eget quam.
-                      Morbi leo risus, porta ac consectetur ac, vestibulum at
-                      eros.
-                    </p>
-                    <p>
-                      Praesent commodo cursus magna, vel scelerisque nisl
-                      consectetur et. Vivamus sagittis lacus vel augue laoreet
-                      rutrum faucibus dolor auctor.
-                    </p>
-                    <p class="mb-0">
-                      Aenean lacinia bibendum nulla sed consectetur. Praesent
-                      commodo cursus magna, vel scelerisque nisl consectetur et.
-                      Donec sed odio dui. Donec ullamcorper nulla non metus
-                      auctor fringilla.
-                    </p>
-                  </BModal>    -->
-                  <BModal v-model="isOpen" id="modal-center" centered title="Tambah Kolaborator" hide-footer>
-  <div class="p-3">
-    <form>
-      <div class="mb-3">
-        <label for="kolaborator" class="form-label fw-bold">Nama Kolaborator</label>
-        <select id="kolaborator" class="form-select">
-          <option selected>Pilih kolaborator</option>
-          <option value="1">Kolaborator 1</option>
-          <option value="2">Kolaborator 2</option>
-          <option value="3">Kolaborator 3</option>
-        </select>
-      </div>
-      <div class="text-end">
-        <button type="button" class="btn btn-secondary">Tambah</button>
-      </div>
-    </form>
-  </div>
-</BModal>
-            </div>
+                <button type="button" class="btn btn-success h-100 w-100" alt="Disable" @click="modalTK = true" variant="primary">TAMBAH KOLABORATOR <i class="fa fa-plus"></i></button>
+                  <BModal v-model="modalTK" id="modal-center" centered title="Tambah Kolaborator" hide-footer>
+                    <div class="p-3">
+                      <form>
+                        <div class="mb-3">
+                          <label for="kolaborator" class="form-label fw-bold">Nama Kolaborator</label>
+                          <select id="kolaborator" class="form-select">
+                            <option selected>Pilih kolaborator</option>
+                            <option value="1">Kolaborator 1</option>
+                            <option value="2">Kolaborator 2</option>
+                            <option value="3">Kolaborator 3</option>
+                          </select>
+                        </div>
+                        <div class="text-end">
+                          <button type="button" class="btn btn-secondary">Tambah</button>
+                        </div>
+                      </form>
+                    </div>
+                  </BModal>
+                </div>
             <div class="col-3">
                 <button type="button" class="btn btn-warning h-100 w-100" alt="Disable">SUNTING PROYEK <i class="fa fa-edit"></i> </button>
             </div>
           </div>
-          <!-- <div class="col-12" style="display: flex; padding: 1%; text-align: center;gap: 0.5em;" id="tolong tengahin">
-            <div class="col-2 h-100" style="background-color: gray;padding: 1%;">
-              <p>TOTAL TASK</p> <br>
-              <div style="background-color: white;height: 3rem;">
-              <p style="padding-top: 5%;font-size: 2em">10</p>
-              </div>
-            </div>
-            <div class="col-2 h-100" style="background-color: gray;padding: 1%;">
-              <p>TASK PENDING</p> <br>
-              <div style="background-color: white;height: 3rem;">
-              <p style="padding-top: 5%;font-size: 2em">10</p>
-              </div>
-            </div>
-            <div class="col-2 h-100" style="background-color: gray;padding: 1%;">
-              <p>TASK ONGOING</p> <br>
-              <div style="background-color: white;height: 3rem;">
-              <p style="padding-top: 5%;font-size: 2em">10</p>
-              </div>
-            </div>
-            <div class="col-2 h-100" style="background-color: gray;padding: 1%;">
-              <p>TASK DONE</p> <br>
-              <div style="background-color: white;height: 3rem;">
-              <p style="padding-top: 5%;font-size: 2em">10</p>
-              </div>
-            </div>
-          </div> -->
-
+          
           <div class="d-flex justify-content-between align-items-center gap-5" id="tolong tengahin" style="padding: 1%; text-align: center;">
             <div class="col-2 h-100" style="background-color:#DCDCDC; padding: 1%; border-radius: 5%;">
               <p>TOTAL TASK</p>
@@ -144,7 +106,52 @@ export default {
               
             </form>
             <div class="col-auto" style="margin-left: auto;" >
-                <button type="button" class="btn btn-success h-80 w-100" alt="Disable">TAMBAH TASK <i class="fa fa-plus"></i></button>
+                <button type="button" class="btn btn-success h-80 w-100" alt="Disable" @click="modalTT = true" variant="primary">TAMBAH TASK <i class="fa fa-plus"></i></button>
+                <BModal v-model="modalTT" id="modal-center" centered title="Tambah Task" hide-footer>
+                    <div class="p-3">
+                      <form>
+                        <div class="mb-3">
+                          <label for="judul-task" class="form-label fw-bold">Judul Task</label>
+                          <input type="text" class="form-control" id="autoSizingInput">
+                        </div>
+                        <div class="mb-3">
+                          <label for="kolaborator" class="form-label fw-bold">Tingkat Urgensi</label>
+                          <select id="kolaborator" class="form-select">
+                            <option selected>Pilih Tingkat Urgensi</option>
+                            <option value="1">Urgent</option>
+                            <option value="2">Tinggi</option>
+                            <option value="3">Sedang</option>
+                            <option value="3">Rendah</option>
+                          </select>
+                        </div>
+                        <div class="mb-3">
+                          <label for="kolaborator" class="form-label fw-bold">Tipe task</label>
+                          <select id="kolaborator" class="form-select">
+                            <option selected>Pilih Tipe Task</option>
+                            <option value="1">Major</option>
+                            <option value="2">Minor</option>
+                          </select>
+                        </div>
+                        <div class="mb-3">
+                          <label for="kolaborator" class="form-label fw-bold">Nama Kolaborator</label>
+                          <select id="kolaborator" class="form-select">
+                            <option selected>Pilih kolaborator</option>
+                            <option value="1">Kolaborator 1</option>
+                            <option value="2">Kolaborator 2</option>
+                            <option value="3">Kolaborator 3</option>
+                          </select>
+                        </div>
+                        <div class="mb-3">
+                          <label for="deadline" class="form-label fw-bold">Tenggat Waktu</label>
+                          <!-- <input type="text" class="form-control" id="autoSizingInput" placeholder="dd/mm/yy"> -->
+                          <flat-pickr v-model="picked" :first-day-of-week="1" lang="en" confirm class="form-control"></flat-pickr>
+                        </div>
+                        <div class="text-end">
+                          <button type="button" class="btn btn-secondary">Tambah</button>
+                        </div>
+                      </form>
+                    </div>
+                  </BModal>
             </div>
           </div>
             
@@ -160,13 +167,6 @@ export default {
                     <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; border-collapse: collapse; border: 1px solid black;">Sisa Waktu <button class="btn btn-sm btn-link p-0"><i class="fa fa-sort"></i></button></BTh>
                     <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; border-collapse: collapse; border: 1px solid black;vertical-align: middle;" rowspan="2">Aksi</BTh>
                   </BTr>
-                  <!-- <BTr style="border-collapse: collapse; border: 1px solid black;">
-                    <BTh style="background-color: #272b4e; color: whitesmoke; border-collapse: collapse; border: 1px solid black;"><input type="text" placeholder="Search User" class="form-control"></BTh>
-                    <BTh style="background-color: #272b4e; color: whitesmoke; border-collapse: collapse; border: 1px solid black;"><input type="text" placeholder="Search User" class="form-control"></BTh>
-                    <BTh style="background-color: #272b4e; color: whitesmoke; border-collapse: collapse; border: 1px solid black;"><input type="text" placeholder="Search User" class="form-control"></BTh>
-                    <BTh style="background-color: #272b4e; color: whitesmoke; border-collapse: collapse; border: 1px solid black;"><input type="text" placeholder="Search User" class="form-control"></BTh>
-                    <BTh style="background-color: #272b4e; color: whitesmoke; border-collapse: collapse; border: 1px solid black;"><input type="text" placeholder="Search User" class="form-control"></BTh>
-                  </BTr> -->
                 </BThead>
                 <BTbody>
                   <BTr style="border-collapse: collapse; border: 1px solid black">
@@ -184,7 +184,51 @@ export default {
                     </BTd>
                     <BTd style="border-collapse: collapse; border: 1px solid black; text-align: center;"><span class="badge bg-danger">3 Years Ago</span></BTd>
                     <BTd style="border-collapse: collapse; border: 1px solid black;">
-                      <button type="button" class="btn btn-warning btn-sm mb-1 w-100" alt="Disable"><i class="bx bx-edit"></i> SUNTING</button>
+                      <button type="button" class="btn btn-warning btn-sm mb-1 w-100" alt="Disable" @click="modalST = true" variant="primary"><i class="bx bx-edit"></i> SUNTING</button>
+                              <BModal v-model="modalST" id="modal-center" centered title="Sunting Task" hide-footer>
+                            <div class="p-3">
+                              <form>
+                                <div class="mb-3">
+                                  <label for="judul-task" class="form-label fw-bold">Judul Task</label>
+                                  <input type="text" class="form-control" id="autoSizingInput">
+                                </div>
+                                <div class="mb-3">
+                                  <label for="kolaborator" class="form-label fw-bold">Tingkat Urgensi</label>
+                                  <select id="kolaborator" class="form-select">
+                                    <option selected>Pilih Tingkat Urgensi</option>
+                                    <option value="1">Urgent</option>
+                                    <option value="2">Tinggi</option>
+                                    <option value="3">Sedang</option>
+                                    <option value="3">Rendah</option>
+                                  </select>
+                                </div>
+                                <div class="mb-3">
+                                  <label for="kolaborator" class="form-label fw-bold">Tipe task</label>
+                                  <select id="kolaborator" class="form-select">
+                                    <option selected>Pilih Tipe Task</option>
+                                    <option value="1">Major</option>
+                                    <option value="2">Minor</option>
+                                  </select>
+                                </div>
+                                <div class="mb-3">
+                                  <label for="kolaborator" class="form-label fw-bold">Nama Kolaborator</label>
+                                  <select id="kolaborator" class="form-select">
+                                    <option selected>Pilih kolaborator</option>
+                                    <option value="1">Kolaborator 1</option>
+                                    <option value="2">Kolaborator 2</option>
+                                    <option value="3">Kolaborator 3</option>
+                                  </select>
+                                </div>
+                                <div class="mb-3">
+                                  <label for="deadline" class="form-label fw-bold">Tenggat Waktu</label>
+                                  <flat-pickr v-model="picked" :first-day-of-week="1" lang="en" confirm class="form-control"></flat-pickr>
+                                </div>
+                                <div class="text-end">
+                                  <button type="button" class="btn btn-secondary">Simpan</button>
+                                </div>
+                              </form>
+                            </div>
+                          </BModal>
                       <button type="button" class="btn btn-danger btn-sm mb-1 w-100" alt="Disable"><i class="bx bxs-trash-alt"></i> HAPUS</button>
                     </BTd>
                   </BTr>
