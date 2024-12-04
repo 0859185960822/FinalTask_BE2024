@@ -1,112 +1,148 @@
 <script>
 import Layout from "../../layouts/main";
 import PageHeader from "@/components/page-header";
-import { avatar2, avatar3 } from "../../assets/images/users/data";
-import { img1 } from "@/assets/images/companies/data"
-import { barChart, memberData, filesData } from "./data-overview";
+// import Sidebar from "../../components/side-bar.vue";
+import Page from "../../components/common/pagination.vue";
+
 
 /**
- * Projects-overview component
+ * Task-list component
  */
 export default {
-
-  components: { Layout, PageHeader },
-  data() {
-    return {
-      barChart: barChart,
-      memberData, filesData, avatar2, avatar3, img1
-    };
-  }
+  components: { Layout, PageHeader,Page, },
 };
 </script>
 
 <template>
+  <!-- <Sidebar/> -->
   <Layout>
-    <PageHeader title="Project Overview" pageTitle="Project" />
-
+    <PageHeader title="Detail Projek" pageTitle="Project" />
     <BRow>
-      <BCol lg="8">
+      <BCol lg="12">
         <BCard no-body>
-          <BCardBody>
-            <div class="d-flex">
-              <img :src="img1" alt class="avatar-sm me-4" />
-
-              <div class="flex-grow-1 overflow-hidden">
-                <h5 class="text-truncate font-size-15">Skote Dashboard UI</h5>
-                <p class="text-muted">Separate existence is a myth. For science, music, sport, etc.</p>
+          <BCardBody class="pb-0">
+          <div style="display: flex; margin-bottom: 1%;">
+            <BCardTitle>Detail Proyek</BCardTitle>
+            <div class="col-3" style="margin-left: auto; margin-right: 1%;" >
+                <button type="button" class="btn btn-success h-100 w-100" alt="Disable">TAMBAH KOLABORATOR <i class="fa fa-plus"></i></button>
+            </div>
+            <div class="col-3">
+                <button type="button" class="btn btn-warning h-100 w-100" alt="Disable">SUNTING PROYEK <i class="fa fa-edit"></i> </button>
+            </div>
+          </div>
+          <!-- <div class="col-12" style="display: flex; padding: 1%; text-align: center;gap: 0.5em;" id="tolong tengahin">
+            <div class="col-2 h-100" style="background-color: gray;padding: 1%;">
+              <p>TOTAL TASK</p> <br>
+              <div style="background-color: white;height: 3rem;">
+              <p style="padding-top: 5%;font-size: 2em">10</p>
               </div>
             </div>
-
-            <h5 class="font-size-15 mt-4">Project Details :</h5>
-
-            <p class="text-muted">To an English person, it will seem like simplified English, as a skeptical Cambridge
-              friend of mine told me what Occidental is. The European languages are members of the same family. Their
-              separate existence is a myth. For science, music, sport, etc,</p>
-
-            <div class="text-muted mt-4">
-              <p>
-                <i class="mdi mdi-chevron-right text-primary me-1"></i> To achieve this, it would be necessary
-              </p>
-              <p>
-                <i class="mdi mdi-chevron-right text-primary me-1"></i> Separate existence is a myth.
-              </p>
-              <p>
-                <i class="mdi mdi-chevron-right text-primary me-1"></i> If several languages coalesce
-              </p>
+            <div class="col-2 h-100" style="background-color: gray;padding: 1%;">
+              <p>TASK PENDING</p> <br>
+              <div style="background-color: white;height: 3rem;">
+              <p style="padding-top: 5%;font-size: 2em">10</p>
+              </div>
             </div>
+            <div class="col-2 h-100" style="background-color: gray;padding: 1%;">
+              <p>TASK ONGOING</p> <br>
+              <div style="background-color: white;height: 3rem;">
+              <p style="padding-top: 5%;font-size: 2em">10</p>
+              </div>
+            </div>
+            <div class="col-2 h-100" style="background-color: gray;padding: 1%;">
+              <p>TASK DONE</p> <br>
+              <div style="background-color: white;height: 3rem;">
+              <p style="padding-top: 5%;font-size: 2em">10</p>
+              </div>
+            </div>
+          </div> -->
 
-            <BRow class="task-dates">
-              <BCol sm="4" cols="6">
-                <div class="mt-4">
-                  <h5 class="font-size-14">
-                    <i class="bx bx-calendar me-1 text-primary"></i> Start Date
-                  </h5>
-                  <p class="text-muted mb-0">08 Sept, 2019</p>
-                </div>
-              </BCol>
+          <div class="d-flex justify-content-between align-items-center gap-5" id="tolong tengahin" style="padding: 1%; text-align: center;">
+            <div class="col-2 h-100" style="background-color:#DCDCDC; padding: 1%; border-radius: 5%;">
+              <p>TOTAL TASK</p>
+              <div style="background-color: white; height: 3rem; border-radius: 5%;">
+                <p style="padding-top: 5%; font-size: 2em">10</p>
+              </div>
+            </div>
+            <div class="col-2 h-100" style="background-color:#DCDCDC; padding: 1%;border-radius: 5%;">
+              <p>TASK PENDING</p>
+              <div style="background-color: white; height: 3rem;border-radius: 5%;">
+                <p style="padding-top: 5%; font-size: 2em">10</p>
+              </div>
+            </div>
+            <div class="col-2 h-100" style="background-color:#DCDCDC; padding: 1%;border-radius: 5%;">
+              <p>TASK ONGOING</p>
+              <div style="background-color: white; height: 3rem;border-radius: 5%;">
+                <p style="padding-top: 5%; font-size: 2em">10</p>
+              </div>
+            </div>
+            <div class="col-2 h-100" style="background-color:#DCDCDC; padding: 1%;border-radius: 5%;">
+              <p>TASK DONE</p>
+              <div style="background-color: white; height: 3rem;border-radius: 5%;">
+                <p style="padding-top: 5%; font-size: 2em">10</p>
+              </div>
+            </div>
+          </div>
 
-              <BCol sm="4" cols="6">
-                <div class="mt-4">
-                  <h5 class="font-size-14">
-                    <i class="bx bx-calendar-check me-1 text-primary"></i> Due Date
-                  </h5>
-                  <p class="text-muted mb-0">12 Oct, 2019</p>
-                </div>
-              </BCol>
-            </BRow>
-          </BCardBody>
-        </BCard>
-      </BCol>
-
-      <BCol lg="4">
-        <BCard no-body>
-          <BCardBody>
-            <BCardTitle class="mb-4">Team Members</BCardTitle>
+            <div style="display: flex;" class="row col-12">
+              <form class="row col-9 " style="margin-bottom: 2%;">
+              <div class="col-2">
+                <label class="visually-hidden" for="autoSizingSelect">Preference</label>
+                <select class="form-select" id="autoSizingSelect">
+                  <option selected>Pilih</option>
+                  <option value="1">10</option>
+                  <option value="2">50</option>
+                  <option value="3">100</option>
+                </select>
+              </div>
+              <div class="col-7">
+                <input type="text" class="form-control" id="autoSizingInput" placeholder="Cari">
+              </div>
+              
+            </form>
+            <div class="col-auto" style="margin-left: auto;" >
+                <button type="button" class="btn btn-success h-80 w-100" alt="Disable">TAMBAH TASK <i class="fa fa-plus"></i></button>
+            </div>
+          </div>
+            
 
             <div class="table-responsive">
-              <BTableSimple class="table-nowrap align-middle">
+              <BTableSimple class="mb-0">
+                <BThead>
+                  <BTr style="border-collapse: collapse; border: 1px solid black">
+                    <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; vertical-align: middle;border-collapse: collapse; border: 1px solid black;">No</BTh>
+                    <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; border-collapse: collapse; border: 1px solid black;">Nama Kolaborator <button class="btn btn-sm btn-link p-0"><i class="fa fa-sort"></i></button></BTh>
+                    <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; border-collapse: collapse; border: 1px solid black;">Task <button class="btn btn-sm btn-link p-0"><i class="fa fa-sort"></i></button></BTh>
+                    <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; border-collapse: collapse; border: 1px solid black;">Status <button class="btn btn-sm btn-link p-0"><i class="fa fa-sort"></i></button></BTh>
+                    <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; border-collapse: collapse; border: 1px solid black;">Sisa Waktu <button class="btn btn-sm btn-link p-0"><i class="fa fa-sort"></i></button></BTh>
+                    <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; border-collapse: collapse; border: 1px solid black;vertical-align: middle;" rowspan="2">Aksi</BTh>
+                  </BTr>
+                  <!-- <BTr style="border-collapse: collapse; border: 1px solid black;">
+                    <BTh style="background-color: #272b4e; color: whitesmoke; border-collapse: collapse; border: 1px solid black;"><input type="text" placeholder="Search User" class="form-control"></BTh>
+                    <BTh style="background-color: #272b4e; color: whitesmoke; border-collapse: collapse; border: 1px solid black;"><input type="text" placeholder="Search User" class="form-control"></BTh>
+                    <BTh style="background-color: #272b4e; color: whitesmoke; border-collapse: collapse; border: 1px solid black;"><input type="text" placeholder="Search User" class="form-control"></BTh>
+                    <BTh style="background-color: #272b4e; color: whitesmoke; border-collapse: collapse; border: 1px solid black;"><input type="text" placeholder="Search User" class="form-control"></BTh>
+                    <BTh style="background-color: #272b4e; color: whitesmoke; border-collapse: collapse; border: 1px solid black;"><input type="text" placeholder="Search User" class="form-control"></BTh>
+                  </BTr> -->
+                </BThead>
                 <BTbody>
-                  <BTr class="col-3" v-for="(item, index) in memberData" :key="index">
-                    <BTd v-if="item.imageSrc" style="width: 50px;">
-                      <img :src="item.imageSrc" class="rounded-circle avatar-xs" alt />
+                  <BTr style="border-collapse: collapse; border: 1px solid black">
+                    <BTh scope="row">1</BTh>
+                    <BTd style="border-collapse: collapse; border: 1px solid black;">User 1</BTd>
+                    <BTd style="border-collapse: collapse; border: 1px solid black;">Membuat Fitur Tambah User <br><span class="badge bg-info">Major</span> <span class="badge bg-warning">Sedang</span> </BTd>
+                    <BTd style="border-collapse: collapse; border: 1px solid black;"> 
+                      <label class="visually-hidden" for="autoSizingSelect">Preference</label>
+                      <select class="form-select" id="autoSizingSelect">
+                        <option selected>Pilih</option>
+                        <option value="1">Pending</option>
+                        <option value="2">Ongoing</option>
+                        <option value="3">Done</option>
+                      </select>
                     </BTd>
-                    <BTd v-else-if="item.avatarTitle" class="avatar-xs">
-                      <span class="avatar-title rounded-circle bg-soft-primary text-white font-size-16 p-1">{{
-                        item.avatarTitle }}</span>
-                    </BTd>
-                    <BTd>
-                      <h5 class="font-size-14 m-0">
-                        <BLink class="text-dark">{{ item.name }}</BLink>
-                      </h5>
-                    </BTd>
-                    <BTd>
-                      <div>
-                        <BLink href="javascript: void(0);" class="badge bg-primary-subtle text-primary font-size-11">{{
-                          item.jobTitle1 }}</BLink>
-                        <BLink href="javascript: void(0);"
-                          class="badge bg-primary-subtle text-primary font-size-11 ms-1">{{
-                            item.jobTitle2 }}</BLink>
-                      </div>
+                    <BTd style="border-collapse: collapse; border: 1px solid black; text-align: center;"><span class="badge bg-danger">3 Years Ago</span></BTd>
+                    <BTd style="border-collapse: collapse; border: 1px solid black;">
+                      <button type="button" class="btn btn-warning btn-sm mb-1 w-100" alt="Disable"><i class="bx bx-edit"></i> SUNTING</button>
+                      <button type="button" class="btn btn-danger btn-sm mb-1 w-100" alt="Disable"><i class="bx bxs-trash-alt"></i> HAPUS</button>
                     </BTd>
                   </BTr>
                 </BTbody>
@@ -116,121 +152,6 @@ export default {
         </BCard>
       </BCol>
     </BRow>
-
-    <BRow>
-      <BCol lg="4">
-        <BCard no-body>
-          <BCardBody>
-            <BCardTitle class="mb-4">Overview</BCardTitle>
-
-            <div id="overview-chart" class="apex-charts" dir="ltr"></div>
-            <apexchart class="apex-charts" type="bar" height="280" :series="barChart.series"
-              :options="barChart.chartOptions"></apexchart>
-          </BCardBody>
-        </BCard>
-      </BCol>
-
-      <BCol lg="4">
-        <BCard no-body>
-          <BCardBody class="pb-1">
-            <BCardTitle class="mb-4">Attached Files</BCardTitle>
-            <div class="table-responsive">
-              <BTableSimple class="table table-nowrap table-centered table-hover mb-0 align-middle">
-                <BTbody>
-                  <BTr v-for="(file, index) in filesData" :key="index">
-                    <BTd style="width: 45px;">
-                      <div class="avatar-sm">
-                        <span class="avatar-title rounded-circle bg-primary-subtle text-primary font-size-24">
-                          <i class="bx bxs-file-doc"></i>
-                        </span>
-                      </div>
-                    </BTd>
-                    <BTd>
-                      <h5 class="font-size-14 mb-1 p-0">
-                        <BLink href="javascript:void(0);" class="text-dark">{{ file.name }}</BLink>
-                      </h5>
-                      <small v-text="'Size : ' + file.size" />
-                    </BTd>
-                    <BTd>
-                      <div class="text-center">
-                        <BLink :href="file.downloadLink" class="text-dark">
-                          <i class="bx bx-download h3 m-0"></i>
-                        </BLink>
-                      </div>
-                    </BTd>
-                  </BTr>
-                </BTbody>
-              </BTableSimple>
-            </div>
-          </BCardBody>
-        </BCard>
-      </BCol>
-
-      <BCol lg="4">
-        <BCard no-body>
-          <BCardBody>
-            <BCardTitle class="mb-4">Comments</BCardTitle>
-
-            <div class="d-flex mb-4">
-              <div class="me-3">
-                <img class="media-object rounded-circle avatar-xs" alt :src=avatar2 />
-              </div>
-              <div class="flex-grow-1">
-                <h5 class="font-size-13 mb-1">David Lambert</h5>
-                <p class="text-muted mb-1">Separate existence is a myth.</p>
-              </div>
-              <div class="ms-3">
-                <BLink class="text-primary">Reply</BLink>
-              </div>
-            </div>
-
-            <div class="d-flex mb-4">
-              <div class="me-3">
-                <img class="media-object rounded-circle avatar-xs" alt :src=avatar3 />
-              </div>
-              <div class="flex-grow-1">
-                <h5 class="font-size-13 mb-1">Steve Foster</h5>
-                <p class="text-muted mb-1">
-                  <BLink class="text-success">@Henry</BLink>
-                  To an English person it will like simplified
-                </p>
-                <div class="d-flex mt-3">
-                  <div class="avatar-xs me-3">
-                    <span class="avatar-title rounded-circle bg-primary-subtle text-primary font-size-16">J</span>
-                  </div>
-                  <div class="flex-grow-1">
-                    <h5 class="font-size-13 mb-1">Jeffrey Walker</h5>
-                    <p class="text-muted mb-1">as a skeptical Cambridge friend</p>
-                  </div>
-                  <div class="ms-3">
-                    <BLink class="text-primary">Reply</BLink>
-                  </div>
-                </div>
-              </div>
-              <div class="ms-3">
-                <BLink class="text-primary">Reply</BLink>
-              </div>
-            </div>
-
-            <div class="d-flex mb-4">
-              <div class="avatar-xs me-3">
-                <span class="avatar-title rounded-circle bg-primary-subtle text-primary font-size-16">S</span>
-              </div>
-              <div class="flex-grow-1">
-                <h5 class="font-size-13 mb-1">Steven Carlson</h5>
-                <p class="text-muted mb-1">Separate existence is a myth.</p>
-              </div>
-              <div class="ms-3">
-                <BLink class="text-primary">Reply</BLink>
-              </div>
-            </div>
-
-            <div class="text-center mt-4 pt-2">
-              <BLink href="javascript: void(0);" class="btn btn-primary btn-sm">View more</BLink>
-            </div>
-          </BCardBody>
-        </BCard>
-      </BCol>
-    </BRow>
+  <Page/>
   </Layout>
 </template>
