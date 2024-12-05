@@ -116,11 +116,11 @@ export default {
                           <form>
                             <div class="mb-3">
                               <label for="judul-task" class="form-label fw-bold">Nama Proyek</label>
-                              <input type="text" class="form-control" id="autoSizingInput">
+                              <input type="text" class="form-control" id="autoSizingInput" value="Proyek A" >
                             </div>
                             <div class="mb-3">
                               <label for="judul-task" class="form-label fw-bold">Deskripsi Proyek</label>
-                              <input type="text" class="form-control" id="autoSizingInput">
+                              <input type="text" class="form-control" id="autoSizingInput" value="ini deskripsi proyek">
                             </div>
                             <div class="mb-3">
                               <label for="judul-task" class="form-label fw-bold">Nama Kolaborator</label>

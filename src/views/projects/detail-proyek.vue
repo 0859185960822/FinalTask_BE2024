@@ -15,10 +15,14 @@ export default {
     const modalTK = ref(false);
     const modalTT = ref(false);
     const modalST = ref(false);
+    const modalSP = ref(false);
+    const modalDT = ref(false);
     return {
       modalTK,
       modalTT,
       modalST,
+      modalSP,
+      modalDT,
       picked: ref(new Date()),
     };
   },
@@ -58,7 +62,36 @@ export default {
                   </BModal>
                 </div>
             <div class="col-3">
-                <button type="button" class="btn btn-warning h-100 w-100" alt="Disable">SUNTING PROYEK <i class="fa fa-edit"></i> </button>
+                <button type="button" class="btn btn-warning h-100 w-100" alt="Disable" @click="modalSP = true" variant="primary">SUNTING PROYEK <i class="fa fa-edit"></i> </button>
+                <BModal v-model="modalSP" id="modal-center" centered title="Sunting Proyek" hide-footer>
+                    <div class="p-3">
+                      <form>
+                        <div class="mb-3">
+                          <label for="judul-task" class="form-label fw-bold">Nama Proyek</label>
+                          <input type="text" class="form-control" id="autoSizingInput" value="Proyek A">
+                        </div>
+                        <div class="mb-3">
+                          <label for="judul-task" class="form-label fw-bold">Deskripsi Proyek</label>
+                          <input type="text" class="form-control" id="autoSizingInput" value="ini deskripsi">
+                        </div>
+                        <div class="mb-3">
+                          <label for="judul-task" class="form-label fw-bold">Nama Kolaborator</label>
+                          <input type="text" class="form-control" id="autoSizingInput" value="kolaborator 1">
+                          <!-- <div class="input-group">
+                            <input type="text" class="form-control" id="kolaborator" placeholder="Masukkan nama kolaborator">
+                            <span class="badge bg-warning">Sedang</span>
+                          </div> -->
+                        </div>
+                        <div class="mb-3">
+                          <label for="deadline" class="form-label fw-bold">Tenggat Waktu</label>
+                          <flat-pickr v-model="picked" :first-day-of-week="1" lang="en" confirm class="form-control"></flat-pickr>
+                        </div>
+                        <div class="text-end">
+                          <button type="button" class="btn btn-secondary">Simpan</button>
+                        </div>
+                      </form>
+                    </div>
+                  </BModal>
             </div>
           </div>
           
@@ -143,7 +176,6 @@ export default {
                         </div>
                         <div class="mb-3">
                           <label for="deadline" class="form-label fw-bold">Tenggat Waktu</label>
-                          <!-- <input type="text" class="form-control" id="autoSizingInput" placeholder="dd/mm/yy"> -->
                           <flat-pickr v-model="picked" :first-day-of-week="1" lang="en" confirm class="form-control"></flat-pickr>
                         </div>
                         <div class="text-end">
@@ -172,7 +204,72 @@ export default {
                   <BTr style="border-collapse: collapse; border: 1px solid black">
                     <BTh scope="row">1</BTh>
                     <BTd style="border-collapse: collapse; border: 1px solid black;">User 1</BTd>
-                    <BTd style="border-collapse: collapse; border: 1px solid black;">Membuat Fitur Tambah User <br><span class="badge bg-info">Major</span> <span class="badge bg-warning">Sedang</span> </BTd>
+                    <BTd style="border-collapse: collapse; border: 1px solid black;"><a @click="modalDT = true" variant="primary">Membuat Fitur Tambah User</a> <br><span class="badge bg-info">Major</span> <span class="badge bg-warning">Sedang</span> </BTd>
+                    <BModal v-model="modalDT" id="modal-task-detail" centered title="Detail Task" hide-footer>
+                      <div class="p-4 space-y-4">
+                        <!-- Header -->
+                        <div class="flex justify-between items-center">
+                          <h5 class="font-bold text-lg">Detail Task</h5>
+                          <div class="flex space-x-4">
+                            <div>
+                              <p class="text-sm text-gray-500">Sisa Waktu</p>
+                              <p class="font-bold text-center text-lg">2 Hari</p>
+                            </div>
+                            <div>
+                              <p class="text-sm text-gray-500">Status Deadline</p>
+                              <span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-semibold">Tepat Waktu</span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- Form Fields -->
+                        <form class="space-y-3">
+                          <div>
+                            <label class="form-label fw-bold">Judul Task</label>
+                            <input type="text" class="form-control" v-model="taskTitle" disabled />
+                          </div>
+
+                          <div>
+                            <label class="form-label fw-bold">Tipe Task</label>
+                            <input type="text" class="form-control" v-model="taskType" disabled />
+                          </div>
+
+                          <div>
+                            <label class="form-label fw-bold">Tingkat Urgensi</label>
+                            <input type="text" class="form-control" v-model="urgency" disabled />
+                          </div>
+
+                          <div>
+                            <label class="form-label fw-bold">Nama Kolaborator</label>
+                            <input type="text" class="form-control" v-model="collaborator" disabled />
+                          </div>
+
+                          <div>
+                            <label class="form-label fw-bold">Status Task</label>
+                            <input type="text" class="form-control" v-model="taskStatus" disabled />
+                          </div>
+
+                          <div>
+                            <label class="form-label fw-bold">Tenggat Waktu</label>
+                            <input type="text" class="form-control" v-model="deadline" disabled />
+                          </div>
+                        </form>
+
+                        <!-- Comment Section -->
+                        <div class="pt-3">
+                          <textarea class="form-control" placeholder="write a comment"></textarea>
+                          <div class="text-end mt-2">
+                            <button type="button" class="btn btn-secondary">Kirim</button>
+                          </div>
+                        </div>
+
+                        <!-- Previous Comments -->
+                        <div class="pt-4">
+                          <p class="border-t pt-2 text-gray-600">Apa yang saya buat kamu...</p>
+                          <p class="text-gray-700 font-semibold">Pembimbing - Kau Pembimbing</p>
+                        </div>
+                      </div>
+                    </BModal>
                     <BTd style="border-collapse: collapse; border: 1px solid black;"> 
                       <label class="visually-hidden" for="autoSizingSelect">Preference</label>
                       <select class="form-select" id="autoSizingSelect">
@@ -190,7 +287,7 @@ export default {
                               <form>
                                 <div class="mb-3">
                                   <label for="judul-task" class="form-label fw-bold">Judul Task</label>
-                                  <input type="text" class="form-control" id="autoSizingInput">
+                                  <input type="text" class="form-control" id="autoSizingInput" value="ini judul task">
                                 </div>
                                 <div class="mb-3">
                                   <label for="kolaborator" class="form-label fw-bold">Tingkat Urgensi</label>
