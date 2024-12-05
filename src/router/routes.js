@@ -425,22 +425,22 @@ export default [
     component: () => import("../views/ui/utilities.vue")
   },
   {
-    path: "/projects/grid",
-    name: "Projects Grid",
-    meta: { title: "Project Grid", authRequired: true },
-    component: () => import("../views/projects/projects-grid.vue")
+    path: "/projects/laporan-proyek",
+    name: "Laporan Proyek",
+    meta: { title: "Laporan Proyek", authRequired: true },
+    component: () => import("../views/projects/laporan-proyek.vue")
   },
   {
-    path: "/projects/list",
-    name: "Projects List",
-    meta: { title: "Project List", authRequired: true },
-    component: () => import("../views/projects/projects-list.vue")
+    path: "/projects/manajemen-proyek",
+    name: "Manajemen Proyek",
+    meta: { title: "Manajemen Proyek", authRequired: true },
+    component: () => import("../views/projects/manajemen-proyek.vue")
   },
   {
-    path: "/projects/overview",
-    name: "Project Overview",
-    meta: { title: "Project Overview", authRequired: true },
-    component: () => import("../views/projects/overview.vue")
+    path: "/projects/detail-proyek",
+    name: "Detail Proyek",
+    meta: { title: "Detail Proyek", authRequired: true },
+    component: () => import("../views/projects/detail-proyek.vue")
   },
   {
     path: "/projects/create",

@@ -24,5 +24,9 @@
   </script>
   
   <style scoped>
+  .card{
+    padding: 2rem;
+    text-align: center;
+  }
   </style>
   

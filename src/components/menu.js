@@ -244,20 +244,20 @@ export const menuItems = [
         subItems: [
             {
                 id: 38,
-                label: "menuitems.projects.list.grid",
-                link: "/projects/grid",
+                label: "Laporan Project",
+                link: "/projects/laporan-proyek",
                 parentId: 37
             },
             {
                 id: 39,
-                label: "menuitems.projects.list.projectlist",
-                link: "/projects/list",
+                label: "Manajemen Project",
+                link: "/projects/manajemen-proyek",
                 parentId: 37
             },
             {
                 id: 40,
-                label: "menuitems.projects.list.overview",
-                link: "/projects/overview",
+                label: "Detail Project",
+                link: "/projects/detail-proyek",
                 parentId: 37
             },
             {
