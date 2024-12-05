@@ -427,19 +427,19 @@ export default [
   {
     path: "/projects/laporan-proyek",
     name: "Laporan Proyek",
-    meta: { title: "Project Grid", authRequired: true },
+    meta: { title: "Laporan Proyek", authRequired: true },
     component: () => import("../views/projects/laporan-proyek.vue")
   },
   {
     path: "/projects/manajemen-proyek",
     name: "Manajemen Proyek",
-    meta: { title: "Project List", authRequired: true },
+    meta: { title: "Manajemen Proyek", authRequired: true },
     component: () => import("../views/projects/manajemen-proyek.vue")
   },
   {
     path: "/projects/detail-proyek",
     name: "Detail Proyek",
-    meta: { title: "Project Overview", authRequired: true },
+    meta: { title: "Detail Proyek", authRequired: true },
     component: () => import("../views/projects/detail-proyek.vue")
   },
   {
