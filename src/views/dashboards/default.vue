@@ -3,7 +3,7 @@ import Layout from "../../layouts/main";
 import PageHeader from "@/components/page-header";
 import ProjectStats from "../../components/widgets/progress1.vue";
 import SideBar from "../../components/side-bar.vue";
-import SideBar from "../../components/side-bar.vue";
+
 
 /**
  * Dashboard Component
@@ -15,7 +15,7 @@ export default {
     ProjectStats,
     SideBar,
 
-    SideBar,
+    
 
   },
   data() {
@@ -45,12 +45,7 @@ export default {
       this.project.progress = newProgress;
     },
   },
-  methods: {
-    // Fungsi untuk memperbarui progress secara dinamis
-    updateProgress(newProgress) {
-      this.project.progress = newProgress;
-    },
-  },
+ 
 };
 </script>
 
@@ -147,7 +142,7 @@ export default {
         </BCard>
       </BCol>
     </BRow> -->
-    </BRow> -->
+    <!-- </BRow>  -->
 
   </Layout>
 </template>
