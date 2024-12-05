@@ -204,69 +204,71 @@ export default {
                   <BTr style="border-collapse: collapse; border: 1px solid black">
                     <BTh scope="row">1</BTh>
                     <BTd style="border-collapse: collapse; border: 1px solid black;">User 1</BTd>
-                    <BTd style="border-collapse: collapse; border: 1px solid black;"><a @click="modalDT = true" variant="primary">Membuat Fitur Tambah User</a> <br><span class="badge bg-info">Major</span> <span class="badge bg-warning">Sedang</span> </BTd>
+                    <BTd style="border-collapse: collapse; border: 1px solid black;"><a @click="modalDT = true" variant="primary" style="cursor: pointer;">Membuat Fitur Tambah User</a> <br><span class="badge bg-info">Major</span> <span class="badge bg-warning">Sedang</span> </BTd>
                     <BModal v-model="modalDT" id="modal-task-detail" centered title="Detail Task" hide-footer>
                       <div class="p-4 space-y-4">
                         <!-- Header -->
-                        <div class="flex justify-between items-center">
-                          <h5 class="font-bold text-lg">Detail Task</h5>
-                          <div class="flex space-x-4">
-                            <div>
-                              <p class="text-sm text-gray-500">Sisa Waktu</p>
-                              <p class="font-bold text-center text-lg">2 Hari</p>
+                        <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
+                          <h5 class="fw-bold mb-0">Detail Task</h5>
+                          <div class="d-flex">
+                            <!-- Sisa Waktu -->
+                            <div class="text-center me-4">
+                              <p class="text-muted mb-1">Sisa Waktu</p>
+                              <p class="fw-bold mb-0">-382 Hari</p>
                             </div>
-                            <div>
-                              <p class="text-sm text-gray-500">Status Deadline</p>
-                              <span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-semibold">Tepat Waktu</span>
+                            <!-- Status Deadline -->
+                            <div class="text-center">
+                              <p class="text-muted mb-1">Status Deadline</p>
+                              <span class="badge bg-danger text-white rounded-pill">Terlambat 3 Tahun</span>
                             </div>
                           </div>
                         </div>
-
                         <!-- Form Fields -->
                         <form class="space-y-3">
                           <div>
                             <label class="form-label fw-bold">Judul Task</label>
-                            <input type="text" class="form-control" v-model="taskTitle" disabled />
+                            <input type="text" class="form-control" id="autoSizingInput" value="Task A" disabled >
                           </div>
 
                           <div>
                             <label class="form-label fw-bold">Tipe Task</label>
-                            <input type="text" class="form-control" v-model="taskType" disabled />
+                            <input type="text" class="form-control" id="autoSizingInput" value="Minor" disabled >
                           </div>
 
                           <div>
                             <label class="form-label fw-bold">Tingkat Urgensi</label>
-                            <input type="text" class="form-control" v-model="urgency" disabled />
+                            <input type="text" class="form-control" id="autoSizingInput" value="Rendah" disabled >
                           </div>
 
                           <div>
                             <label class="form-label fw-bold">Nama Kolaborator</label>
-                            <input type="text" class="form-control" v-model="collaborator" disabled />
+                            <input type="text" class="form-control" id="autoSizingInput" value="User 1" disabled >
                           </div>
 
                           <div>
                             <label class="form-label fw-bold">Status Task</label>
-                            <input type="text" class="form-control" v-model="taskStatus" disabled />
+                            <input type="text" class="form-control" id="autoSizingInput" value="Pending" disabled >
                           </div>
 
                           <div>
                             <label class="form-label fw-bold">Tenggat Waktu</label>
-                            <input type="text" class="form-control" v-model="deadline" disabled />
+                            <input type="text" class="form-control" id="autoSizingInput" value="12/12/21" disabled >
                           </div>
                         </form>
 
                         <!-- Comment Section -->
                         <div class="pt-3">
-                          <textarea class="form-control" placeholder="write a comment"></textarea>
+                          <div style="display: flex; align-items: center; gap: 10px;">
+                            <!-- Div dengan border bulat -->
+                            <div style="background-color: whitesmoke; border: 1px solid black; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center;">
+                              <p style="font-weight: bold; font-size: 2em; margin: 0;">A</p>
+                            </div>
+                            <!-- Textarea -->
+                            <textarea class="form-control" placeholder="write a comment" style="flex: 1;"></textarea>
+                          </div>
                           <div class="text-end mt-2">
                             <button type="button" class="btn btn-secondary">Kirim</button>
                           </div>
-                        </div>
-
-                        <!-- Previous Comments -->
-                        <div class="pt-4">
-                          <p class="border-t pt-2 text-gray-600">Apa yang saya buat kamu...</p>
-                          <p class="text-gray-700 font-semibold">Pembimbing - Kau Pembimbing</p>
                         </div>
                       </div>
                     </BModal>
