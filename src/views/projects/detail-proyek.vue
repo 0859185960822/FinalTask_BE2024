@@ -186,8 +186,7 @@ export default {
                   </BModal>
             </div>
           </div>
-            
-
+          
             <div class="table-responsive">
               <BTableSimple class="mb-0">
                 <BThead>
@@ -205,11 +204,11 @@ export default {
                     <BTh scope="row">1</BTh>
                     <BTd style="border-collapse: collapse; border: 1px solid black;">User 1</BTd>
                     <BTd style="border-collapse: collapse; border: 1px solid black;"><a @click="modalDT = true" variant="primary" style="cursor: pointer;">Membuat Fitur Tambah User</a> <br><span class="badge bg-info">Major</span> <span class="badge bg-warning">Sedang</span> </BTd>
-                    <BModal v-model="modalDT" id="modal-task-detail" centered title="Detail Task" hide-footer>
-                      <div class="p-4 space-y-4">
+                    <BModal v-model="modalDT" id="modal-task-detail" hide-footer>
+                      <div class="space-y-4">
                         <!-- Header -->
                         <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
-                          <h5 class="fw-bold mb-0">Detail Task</h5>
+                          <h5 class=" mb-0">Detail Task</h5>
                           <div class="d-flex">
                             <!-- Sisa Waktu -->
                             <div class="text-center me-4">

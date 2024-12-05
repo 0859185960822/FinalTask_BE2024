@@ -63,3 +63,72 @@
     </div>
   </div>
 </BModal>
+
+
+<BModal v-model="modalDT" id="modal-task-detail" centered title="Detail Task" hide-footer>
+                      <div class="p-4 space-y-4">
+                        <!-- Header -->
+                        <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
+                          <h5 class="fw-bold mb-0">Detail Task</h5>
+                          <div class="d-flex">
+                            <!-- Sisa Waktu -->
+                            <div class="text-center me-4">
+                              <p class="text-muted mb-1">Sisa Waktu</p>
+                              <p class="fw-bold mb-0">-382 Hari</p>
+                            </div>
+                            <!-- Status Deadline -->
+                            <div class="text-center">
+                              <p class="text-muted mb-1">Status Deadline</p>
+                              <span class="badge bg-danger text-white rounded-pill">Terlambat 3 Tahun</span>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- Form Fields -->
+                        <form class="space-y-3">
+                          <div>
+                            <label class="form-label fw-bold">Judul Task</label>
+                            <input type="text" class="form-control" id="autoSizingInput" value="Task A" disabled >
+                          </div>
+
+                          <div>
+                            <label class="form-label fw-bold">Tipe Task</label>
+                            <input type="text" class="form-control" id="autoSizingInput" value="Minor" disabled >
+                          </div>
+
+                          <div>
+                            <label class="form-label fw-bold">Tingkat Urgensi</label>
+                            <input type="text" class="form-control" id="autoSizingInput" value="Rendah" disabled >
+                          </div>
+
+                          <div>
+                            <label class="form-label fw-bold">Nama Kolaborator</label>
+                            <input type="text" class="form-control" id="autoSizingInput" value="User 1" disabled >
+                          </div>
+
+                          <div>
+                            <label class="form-label fw-bold">Status Task</label>
+                            <input type="text" class="form-control" id="autoSizingInput" value="Pending" disabled >
+                          </div>
+
+                          <div>
+                            <label class="form-label fw-bold">Tenggat Waktu</label>
+                            <input type="text" class="form-control" id="autoSizingInput" value="12/12/21" disabled >
+                          </div>
+                        </form>
+
+                        <!-- Comment Section -->
+                        <div class="pt-3">
+                          <div style="display: flex; align-items: center; gap: 10px;">
+                            <!-- Div dengan border bulat -->
+                            <div style="background-color: whitesmoke; border: 1px solid black; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center;">
+                              <p style="font-weight: bold; font-size: 2em; margin: 0;">A</p>
+                            </div>
+                            <!-- Textarea -->
+                            <textarea class="form-control" placeholder="write a comment" style="flex: 1;"></textarea>
+                          </div>
+                          <div class="text-end mt-2">
+                            <button type="button" class="btn btn-secondary">Kirim</button>
+                          </div>
+                        </div>
+                      </div>
+                    </BModal>
