@@ -765,5 +765,11 @@ export default [
     name: "two-step-verification-2",
     meta: { title: "Two Step Verification 2", authRequired: true },
     component: () => import("../views/sample-pages/two-step-verification-2.vue")
-  }
+  },
+  // {
+  //   path: "admin/manajemen-project",
+  //   name: "manajemen-project",
+  //   meta: { title: "Admin Manajemen Project", authRequired: true },
+  //   component: () => import("../views/admin/manajemen-project.vue")
+  // },
 ];

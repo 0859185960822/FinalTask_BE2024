@@ -1,15 +1,8 @@
 <script>
 import Layout from "../../layouts/main";
 import PageHeader from "@/components/page-header";
-// import Profile from "@/components/widgets/profile";
-import Earning from "@/components/widgets/earning";
-// import Stat from "@/components/widgets/stat";
-// import Transaction from "@/components/widgets/transaction";
-// import Emailsent from "@/components/widgets/emailsent";
-// import SocialSource from "@/components/widgets/social-source";
-// import Activity from "@/components/widgets/activity";
-// import SellingProduct from "@/components/widgets/selling-product";
 import ProjectStats from "../../components/widgets/progress1.vue";
+import SideBar from "../../components/side-bar.vue";
 
 /**
  * Dashboard Component
@@ -18,34 +11,24 @@ export default {
   components: {
     Layout,
     PageHeader,
-    // Profile,
-    // Stat,
-    // Transaction,
-    Earning,
     ProjectStats,
-  //   Emailsent,
-  //   SocialSource,
-  //   Activity,
-  //   SellingProduct,
+    SideBar,
+
   },
   data() {
     return {
-      statData: [
+      // statData: [
       
-      ],
-      // showModal: false,
-      // isLoading: false,
-      // fullPage: true,
-      // canCancel: false,
-      // useSlot: false,
-      // loader: "spinner",
-      // color: "#007bff",
-      // bgColor: "#ffffff",
-      // height: 128,
-      // width: 128,
-      // timeout: 3000, //ms
-      // fetchingStats: true,
-      // earningStatus: true,
+      // ],
+
+      project: {
+        name: "Project A",
+        progress: 60, // Persentase progress
+        deadline: "20 Desember 2024",
+        daysLeft: 30, // Hari tersisa
+        
+      },
+ 
     };
   },
   mounted() {
@@ -53,40 +36,132 @@ export default {
       this.showModal = false;
     }, 1500);
   },
+  methods: {
+    // Fungsi untuk memperbarui progress secara dinamis
+    updateProgress(newProgress) {
+      this.project.progress = newProgress;
+    },
+  },
 };
 </script>
 
 <template>
+  <SideBar/>
   <Layout>
+  
     <PageHeader title="Dashboard" pageTitle="Dashboards" />
     <ProjectStats />
-    <BRow>
-      <BCol xl="4">
-        <Profile :updating="fetchingStats" />
-        <Earning :updating="earningStatus" />
-      </BCol>
-      <BCol xl="8">
-        <BRow>
-          <BCol md="4" v-for="stat of statData" :key="stat.icon">
-            <Stat :icon="stat.icon" :title="stat.title" :value="stat.value" />
-          </BCol>
-        </BRow>
-        <Emailsent :updating="fetchingStats" />
-        </BCol>
-    </BRow>
-
     
 
+<!--     
     <BRow>
       <BCol lg="12">
         <BCard no-body>
           <BCardBody>
-            <BCardTitle class="mb-4">List Project</BCardTitle>
-            <Transaction :transactions="transactions" :updating="fetchingStats" />
-          </BCardBody>
+            <BCardTitle class="mb-4 ">PROJECT TASK</BCardTitle>
+            <div id="app" class="container mt-4"> -->
+        <div id="app" class="container mt-4">
+    <div class="card-container">
+      <!-- Baris atas -->
+      <div class="top-row">
+        <!-- Judul Proyek -->
+        <h4 class="judul-section">{{ project.name }}</h4>
+
+        <!-- Deadline -->
+        <div class="deadline-box">
+          <p class="fw-bold mb-1">Deadline</p>
+          <p class="fw-bold">{{ project.deadline }}</p>
+        </div>
+
+        <!-- Sisa Waktu -->
+        <div class="sisa-waktu-container">
+          <p class="fw-bold mb-1 mt-3">Sisa Waktu (hari)</p>
+          <p class="sisa-hari">{{ project.daysLeft }}</p>
+        </div>
+      </div>
+
+      <!-- Baris progress -->
+      <div class="progress-container">
+        <div class="progress-wrapper">
+          <div class="d-flex justify-content-between">
+            <span>Presentase</span>
+            <span class="fw-bold">{{ project.progress }}%</span>
+          </div>
+          <div class="progress mt-2">
+            <div class="progress-bar bg-dark" :style="{ width: project.progress + '%' }"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- </div> -->
+          <!-- </BCardBody>
         </BCard>
       </BCol>
-    </BRow>
+    </BRow> -->
 
   </Layout>
 </template>
+
+<style>
+ body {
+      background-color: #f8f9fa;
+    }
+    .card-container {
+      background-color: #d6d6d6;
+      padding: 20px;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+    }
+    .top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .judul-section {
+      flex: 2;
+    }
+    .deadline-box {
+      text-align: center;
+      flex: 2;
+      background-color: white;
+      padding: 10px;
+      border-radius: 8px;
+      margin: 0 10px;
+    }
+    .sisa-waktu-container {
+      background-color: white;
+      border-radius: 8px;
+      text-align: center;
+      /* padding: 10px; */
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      /* margin-bottom: 2px; */
+      /* height: 200px; */
+    }
+    .progress-container {
+      background-color: white;
+      padding: 10px;
+      border-radius: 8px;
+      margin-top: 10px;
+      width: 865px;
+    }
+    .progress-wrapper {
+      width: calc(100% - 250px); /* Batasi progress bar sejajar deadline */
+    }
+    .progress-bar {
+      height: 4px;
+    }
+    .sisa-hari {
+      font-size: 3rem;
+      font-weight: bold;
+      line-height: 1;
+    }
+    h4 {
+      font-weight: bold;
+      margin-bottom: 0;
+    }
+</style>
