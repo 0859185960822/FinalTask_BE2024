@@ -109,7 +109,10 @@ export default {
                     <BTd style="border-collapse: collapse; border: 1px solid black;">Sudah 3 Tahun Yang Lalu</BTd>
                     <BTd style="border-collapse: collapse; border: 1px solid black;">20 <span style="color: red">%</span></BTd>
                     <BTd style="border-collapse: collapse; border: 1px solid black;">
-                      <button type="button" class="btn btn-info btn-sm mb-1 w-100" alt="Disable"><i class="bx bx-info-circle"></i> DETAILS</button>
+                      <!-- <button type="button" class="btn btn-info btn-sm mb-1 w-100" alt="Disable"><i class="bx bx-info-circle"></i> DETAILS</button> -->
+                      <router-link :to="'detail-proyek'" class="btn btn-info btn-sm mb-1 w-100">
+                        <i class="bx bx-info-circle"></i> DETAILS
+                      </router-link>
                       <button type="button" class="btn btn-warning btn-sm mb-1 w-100" alt="Disable" @click="modalSP = true" variant="primary"><i class="bx bx-edit"></i> SUNTING</button>
                       <BModal v-model="modalSP" id="modal-center" centered title="Sunting Proyek" hide-footer>
                         <div class="p-3">

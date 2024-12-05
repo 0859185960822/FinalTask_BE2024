@@ -53,10 +53,9 @@ export default {
                 <div class="col-4">
                   <label class="visually-hidden" for="autoSizingSelect">Preference</label>
                   <select class="form-select" id="autoSizingSelect">
-                    <option selected>Pilih</option>
-                    <option value="1">10</option>
-                    <option value="2">50</option>
-                    <option value="3">100</option>
+                    <option selected>Status</option>
+                    <option value="1">Tepat Waktu</option>
+                    <option value="2">Terlambat</option>
                   </select>
                 </div>
                 <div class="col-4">
