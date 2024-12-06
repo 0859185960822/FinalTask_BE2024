@@ -185,11 +185,6 @@ export default {
                         </table>
                         </div>
                       </div>
-
-                          <!-- <div class="input-group">
-                            <input type="text" class="form-control" id="kolaborator" placeholder="Masukkan nama kolaborator">
-                            <span class="badge bg-warning">Sedang</span>
-                          </div> -->
                         </div>
                         <div class="mb-3">
                           <label for="deadline" class="form-label fw-bold">Tenggat Waktu</label>

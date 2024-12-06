@@ -55,8 +55,7 @@ export default {
   <Layout>
   
     <PageHeader title="Dashboard" pageTitle="Dashboards" />
-    <ProjectStats />
-    
+    <ProjectStats /> 
         <div id="app" class="container mt-4">
     <div class="card-container">
       <!-- Baris atas -->

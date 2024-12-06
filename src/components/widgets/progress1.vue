@@ -1,5 +1,6 @@
 <template>
-<div class="d-flex justify-content-center gap-4 pb-5 pt-3">
+<!-- <div class="d-flex justify-content-center gap-4 pb-5 pt-3"> -->
+  <div class="d-flex justify-content-between align-items-center gap-5">
   <div class="bg-white p-4 rounded text-center flex-grow-1" style="max-width: 200px;">
     <h2 class="fs-5 fw-bold">Total Project</h2>
     <p class="fs-2 fw-bold">30</p>
