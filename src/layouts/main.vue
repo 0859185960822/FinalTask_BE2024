@@ -1,5 +1,5 @@
 <script>
-import Vertical from "./vertical";
+// import Vertical from "./vertical";
 import Horizontal from "./horizontal";
 // import Sidebar from "../components/side-bar.vue";
 
@@ -8,7 +8,7 @@ const layoutStore = useLayoutStore();
 
 export default {
   components: {
-    Vertical,
+    // Vertical,
     Horizontal,
     // Sidebar
   },
@@ -29,9 +29,9 @@ export default {
 
 <template>
   <div>
-    <Vertical v-if="layoutType === 'vertical'" :layout="layoutType">
+    <!-- <Vertical v-if="layoutType === 'vertical'" :layout="layoutType">
       <slot />
-    </Vertical>
+    </Vertical> -->
     <!-- <Sidebar/> -->
     <Horizontal v-if="layoutType === 'horizontal'" :layout="layoutType">
       <slot />

@@ -2,7 +2,7 @@
 import Layout from "../../layouts/main";
 import PageHeader from "@/components/page-header";
 import ProjectStats from "../../components/widgets/progress1.vue";
-import SideBar from "../../components/side-bar.vue";
+// import SideBar from "../../components/side-bar.vue";
 
 
 /**
@@ -13,7 +13,7 @@ export default {
     Layout,
     PageHeader,
     ProjectStats,
-    SideBar,
+    // SideBar,
 
     
 
@@ -50,8 +50,8 @@ export default {
 </script>
 
 <template>
-  <SideBar/>
-  <SideBar/>
+
+  <!-- <SideBar/> -->
   <Layout>
   
     <PageHeader title="Dashboard" pageTitle="Dashboards" />
@@ -78,8 +78,8 @@ export default {
       </div>
 
       <!-- Baris progress -->
-      <div class="progress-container">
-        <div class="progress-wrapper">
+      <div class="progress-container w-100">
+        <div class="progress-wrapper w-100">
           <div class="d-flex justify-content-between">
             <span>Presentase</span>
             <span class="fw-bold">{{ project.progress }}%</span>
