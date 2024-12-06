@@ -21,6 +21,29 @@ export default {
     };
   },
   components: { Layout, PageHeader,Page,flatPickr, },
+
+  data() {
+    return {
+      instruktur_data: [], // Array untuk data instruktur
+      peserta_ref: [], // Opsi referensi untuk v-select
+    };
+  },
+
+  methods: {
+    // Tambahkan baris instruktur baru
+    addRowPeserta() {
+      this.instruktur_data.push({
+        instruktur_data: self.instruktur_data,
+      });
+    },
+    
+
+    // Hapus baris tertentu
+    deleteRow(index) {
+      this.instruktur_data.splice(index, 1);
+    },
+  },
+
 };
 </script>
 
@@ -61,11 +84,52 @@ export default {
                       </div>
                       <div class="mb-3">
                         <label for="judul-task" class="form-label fw-bold">Nama Kolaborator</label>
-                        <input type="text" class="form-control" id="autoSizingInput" value="kolaborator 1">
-                        <!-- <div class="input-group">
-                          <input type="text" class="form-control" id="kolaborator" placeholder="Masukkan nama kolaborator">
-                          <span class="badge bg-warning">Sedang</span>
-                        </div> -->
+                        <div class="row">
+                        <div class="col-12">
+                          <table class="table mb-0 mt-0 table-bordered table-condensed table-hover">
+                            <thead class="bg-dark text-center text-white">
+                              <tr>
+                                <th style="width: 50px">No</th>
+                                <th style="width: auto">Kolaborator</th>
+                                <th style="width: 50px" class="text-center">
+                                  <b-button
+                                    type="button"
+                                    class="btn btn-success btn-sm"
+                                    @click="addRowPeserta"
+                                  >
+                                    <i class="fa fa-plus"></i>
+                                  </b-button>
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr v-for="(row_data, key_data) in instruktur_data" :key="key_data">
+                                <td class="text-center">{{ key_data + 1 }}.</td>
+                                <td>
+                                  <v-select
+                                    label="nip_name"
+                                    v-model="row_data.instruktur_data"
+                                    :options="peserta_ref"
+                                    @search="onSearchInstruktur"
+                                    placeholder="Cari dan Pilih Kolaborator..."
+                                  ></v-select>
+                                </td>
+                              
+                                <td class="text-center">
+                                  <button
+                                    type="button"
+                                    class="btn btn-danger btn-sm"
+                                    @click="deleteRow(key_data, row_data)"
+                                  >
+                                    <i class="fa fa-minus"></i>
+                                  </button>
+                                </td>
+                              </tr>
+                            </tbody>
+                        </table>
+                        </div>
+                      </div>
+
                       </div>
                       <div class="mb-3">
                         <label for="deadline" class="form-label fw-bold">Tenggat Waktu</label>
@@ -127,7 +191,51 @@ export default {
                             </div>
                             <div class="mb-3">
                               <label for="judul-task" class="form-label fw-bold">Nama Kolaborator</label>
-                              <input type="text" class="form-control" id="autoSizingInput" value="kolaborator 1">
+                              <div class="row">
+                        <div class="col-12">
+                          <table class="table mb-0 mt-0 table-bordered table-condensed table-hover">
+                            <thead class="bg-dark text-center text-white">
+                              <tr>
+                                <th style="width: 50px">No</th>
+                                <th style="width: auto">Kolaborator</th>
+                                <th style="width: 50px" class="text-center">
+                                  <b-button
+                                    type="button"
+                                    class="btn btn-success btn-sm"
+                                    @click="addRowPeserta"
+                                  >
+                                    <i class="fa fa-plus"></i>
+                                  </b-button>
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr v-for="(row_data, key_data) in instruktur_data" :key="key_data">
+                                <td class="text-center">{{ key_data + 1 }}.</td>
+                                <td>
+                                  <v-select
+                                    label="nip_name"
+                                    v-model="row_data.instruktur_data"
+                                    :options="peserta_ref"
+                                    @search="onSearchInstruktur"
+                                    placeholder="Cari dan Pilih Kolaborator..."
+                                  ></v-select>
+                                </td>
+                              
+                                <td class="text-center">
+                                  <button
+                                    type="button"
+                                    class="btn btn-danger btn-sm"
+                                    @click="deleteRow(key_data, row_data)"
+                                  >
+                                    <i class="fa fa-minus"></i>
+                                  </button>
+                                </td>
+                              </tr>
+                            </tbody>
+                        </table>
+                        </div>
+                      </div>
                             </div>
                             <div class="mb-3">
                               <label for="deadline" class="form-label fw-bold">Tenggat Waktu</label>
