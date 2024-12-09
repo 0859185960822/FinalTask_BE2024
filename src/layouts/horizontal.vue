@@ -1,6 +1,7 @@
 <script>
 import HorizontalTopbar from "@/components/horizontal-topbar";
-import HorizontalNav from "@/components/horizontal-nav";
+// import HorizontalNav from "@/components/horizontal-nav";
+import Sidebar from "../components/side-bar.vue";
 import RightBar from "@/components/right-bar";
 import Footer from "@/components/footer";
 
@@ -14,7 +15,8 @@ export default {
   props: {},
   components: {
     HorizontalTopbar,
-    HorizontalNav,
+    // HorizontalNav,
+    Sidebar,
     Footer,
     RightBar
   },
@@ -82,11 +84,12 @@ export default {
     <!-- Begin page -->
     <div id="layout-wrapper">
       <HorizontalTopbar :type="topbar" :width="layoutWidth"  :mode="mode"/>
-      <HorizontalNav />
+      <!-- <HorizontalNav /> -->
       <!-- ============================================================== -->
       <!-- Start right Content here -->
       <!-- ============================================================== -->
       <div class="main-content">
+        <Sidebar/>
         <div class="page-content">
           <BContainer fluid>
             <slot />
@@ -102,3 +105,33 @@ export default {
     <RightBar />
   </div>
 </template>
+
+<style scoped>
+/* Main Layout Styles */
+.layout-content {
+  display: flex;
+}
+
+.page-content {
+  flex: 1;
+  margin-left: 250px; /* Match sidebar width */
+  transition: margin-left 0.3s ease;
+}
+
+.content-expanded {
+  margin-left: 0;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+  .page-content {
+    margin-left: 0;
+  }
+  .sidebar {
+    transform: translateX(-100%);
+  }
+  .sidebar-hidden {
+    transform: translateX(-100%);
+  }
+}
+</style>

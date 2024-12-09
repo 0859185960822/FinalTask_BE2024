@@ -1,5 +1,7 @@
 <script>
 import { MetisMenu } from 'metismenujs';
+import { useAuthStore } from '@/state/pinia'
+const auth = useAuthStore()
 import { menuItems } from "./menu";
 /**
  * Sidenav component
@@ -7,7 +9,8 @@ import { menuItems } from "./menu";
 export default {
   data() {
     return {
-      menuItems: menuItems,
+      menuItems: auth.userMenu,
+      menuSidebar: menuItems,
       menuData: null,
     };
   },
@@ -90,6 +93,47 @@ export default {
     <!-- Left Menu Start -->
     <ul id="side-menu" class="metismenu list-unstyled">
       <template v-for="item in menuItems">
+        <li class="menu-title" v-if="item.isTitle" :key="item.id">
+          {{ $t(item.label) }}
+        </li>
+        <li v-if="!item.isTitle && !item.isLayout" :key="item.id">
+          <BLink v-if="hasItems(item)" href="javascript:void(0);" class="is-parent"
+            :class="{ 'has-arrow': !item.badge, 'has-dropdown': item.badge }">
+            <i :class="`bx ${item.icon}`" v-if="item.icon"></i>
+            <span>{{ $t(item.label) }}</span>
+            <span :class="`badge rounded-pill bg-${item.badge.variant} float-end`" v-if="item.badge">{{
+              $t(item.badge.text) }}</span>
+          </BLink>
+
+          <router-link :to="item.link" v-if="!hasItems(item)" class="side-nav-link-ref">
+            <i :class="`bx ${item.icon}`" v-if="item.icon"></i>
+            <span>{{ $t(item.label) }}</span>
+            <span :class="`badge rounded-pill bg-${item.badge.variant} float-end`" v-if="item.badge">{{
+              $t(item.badge.text) }}</span>
+          </router-link>
+
+          <ul v-if="hasItems(item)" class="sub-menu" aria-expanded="false">
+            <li v-for="(subitem, index) of item.subItems" :key="index">
+              <router-link :to="subitem.link" v-if="!hasItems(subitem)" class="side-nav-link-ref">
+
+                <span>{{ $t(subitem.label) }}</span>
+                <span :class="`badge rounded-pill bg-${subitem.badge.variant} float-end`" v-if="subitem.badge">{{
+                  $t(subitem.badge.text) }}</span>
+
+              </router-link>
+              <BLink v-if="hasItems(subitem)" class="side-nav-link-a-ref has-arrow" href="javascript:void(0);">{{
+                $t(subitem.label) }}</BLink>
+              <ul v-if="hasItems(subitem)" class="sub-menu mm-collapse" aria-expanded="false">
+                <li v-for="(subSubitem, index) of subitem.subItems" :key="index">
+                  <router-link :to="subSubitem.link" class="side-nav-link-ref">{{ $t(subSubitem.label) }}</router-link>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </template>
+
+      <template v-for="item in menuSidebar">
         <li class="menu-title" v-if="item.isTitle" :key="item.id">
           {{ $t(item.label) }}
         </li>

@@ -1,14 +1,14 @@
 export const menuItems = [
-    {
-        id: 1,
-        label: "menuitems.menu.text",
-        isTitle: true
-    },
-    {
-        id: 2,
-        label: "menuitems.dashboards.text",
-        icon: "bx-home-circle",
-        link: "/",
+    // {
+    //     id: 1,
+    //     label: "menuitems.menu.text",
+    //     isTitle: true
+    // },
+    // {
+    //     id: 2,
+    //     label: "menuitems.dashboards.text",
+    //     icon: "bx-home-circle",
+    //     link: "/",
         // subItems: [
         //     {
         //         id: 3,
@@ -17,7 +17,7 @@ export const menuItems = [
         //         parentId: 2
         //     },
         // ]
-    },
+    // },
     {
         id: 3,
         isLayout: true
@@ -75,4 +75,5 @@ export const menuItems = [
             // },
         // ]
     },
+   
 ];
