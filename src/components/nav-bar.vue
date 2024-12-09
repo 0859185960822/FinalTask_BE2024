@@ -113,6 +113,11 @@ export default {
         <BButton variant="white" id="vertical-menu-btn" type="button" class="btn btn-sm px-3 font-size-16 header-item" @click="toggleMenu">
           <i class="fa fa-fw fa-bars"></i>
         </BButton>
+
+        <BButton variant="white" id="vertical-menu-btn" type="button" class="btn btn-sm px-3 font-size-16 header-item" @click="toggleMenu">
+          <i class="fa fa-fw fa-bars"></i>
+        </BButton>
+        
       </div>
 
       <div class="d-flex">
