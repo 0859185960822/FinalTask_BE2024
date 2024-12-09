@@ -6,6 +6,7 @@ import Page from "../../components/common/pagination.vue";
 import { ref } from "vue";
 import flatPickr from "vue-flatpickr-component";
 import "flatpickr/dist/flatpickr.css";
+import Swal from 'sweetalert2'
 
 /**
  * Task-list component
@@ -53,6 +54,40 @@ export default {
     updateProgress(newProgress) {
       this.project.progress = newProgress;
     },
+    updatemsg() {
+    Swal.fire({
+        title: "Data Terupdate!",
+        text: "Data Berhasil Terupdate!",
+        icon: "success",
+        confirmButtonColor: "#556ee6",
+
+    });
+},
+confirm() {
+    Swal.fire({
+        title: "Apakah kamu yakin ?",
+        text: "kamu tidak bisa mengembalikan data setelah dihapus",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#34c38f",
+        cancelButtonColor: "#f46a6a",
+        confirmButtonText: "Ya, Hapus !",
+       
+    }).then(result => {
+        if (result.value) {
+            Swal.fire("Deleted!", "Data Berhasil Dihapus.", "success");
+        }
+    });
+},
+successmsg() {
+    Swal.fire({
+        title: "Data Tersimpan!",
+        text: "Data Berhasil Tersimpan!",
+        icon: "success",
+        confirmButtonColor: "#556ee6",
+
+    });
+},
   },
  
 };
@@ -69,7 +104,7 @@ export default {
           <div style="display: flex; margin-bottom: 1%;">
             <BCardTitle>Detail Proyek</BCardTitle>
             <div class="col-3" style="margin-left: auto; margin-right: 1%;" >
-                <button type="button" class="btn btn-success h-100 w-100" alt="Disable" @click="modalTK = true" variant="primary">TAMBAH KOLABORATOR <i class="fa fa-plus"></i></button>
+                <!-- <button type="button" class="btn btn-success h-100 w-100" alt="Disable" @click="modalTK = true" variant="primary">TAMBAH KOLABORATOR <i class="fa fa-plus"></i></button>
                   <BModal v-model="modalTK" id="modal-center" centered title="Tambah Kolaborator" hide-footer>
                     <div class="p-3">
                       <form>
@@ -123,7 +158,7 @@ export default {
                         </div>
                       </form>
                     </div>
-                  </BModal>
+                  </BModal> -->
                 </div>
             <div class="col-3">
                 <button type="button" class="btn btn-warning h-100 w-100" alt="Disable" @click="modalSP = true" variant="primary">SUNTING PROYEK <i class="fa fa-edit"></i> </button>
@@ -191,7 +226,7 @@ export default {
                           <flat-pickr v-model="picked" :first-day-of-week="1" lang="en" confirm class="form-control"></flat-pickr>
                         </div>
                         <div class="text-end">
-                          <button type="button" class="btn btn-secondary">Simpan</button>
+                          <button type="button" class="btn btn-secondary btn-success" @click="updatemsg()">Simpan</button>
                         </div>
                       </form>
                     </div>
@@ -322,7 +357,7 @@ export default {
                           <flat-pickr v-model="picked" :first-day-of-week="1" lang="en" confirm class="form-control"></flat-pickr>
                         </div>
                         <div class="text-end">
-                          <button type="button" class="btn btn-secondary">Tambah</button>
+                          <button type="button" class="btn btn-secondary btn-success" @click="successmsg()">Tambah</button>
                         </div>
                       </form>
                     </div>
@@ -465,12 +500,12 @@ export default {
                                   <flat-pickr v-model="picked" :first-day-of-week="1" lang="en" confirm class="form-control"></flat-pickr>
                                 </div>
                                 <div class="text-end">
-                                  <button type="button" class="btn btn-secondary">Simpan</button>
+                                  <button type="button" class="btn btn-secondary btn-success" @click="successmsg()">Simpan</button>
                                 </div>
                               </form>
                             </div>
                           </BModal>
-                      <button type="button" class="btn btn-danger btn-sm mb-1 w-100" alt="Disable"><i class="bx bxs-trash-alt"></i> HAPUS</button>
+                      <button type="button" class="btn btn-danger btn-sm mb-1 w-100" alt="Disable" @click="confirm()"><i class="bx bxs-trash-alt"></i> HAPUS</button>
                     </BTd>
                   </BTr>
                 </BTbody>
