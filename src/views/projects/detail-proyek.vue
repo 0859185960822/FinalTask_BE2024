@@ -234,31 +234,31 @@ successmsg() {
             </div>
           </div>
           
-          <div id="app" class="container mt-4">
-            <div class="card-container">
+          <!-- <div id="app" class="container mt-4">
+            <div class="card-container"> -->
               <!-- Baris atas -->
-              <div class="top-row">
+              <!-- <div class="top-row"> -->
                 <!-- Judul Proyek -->
-                <div class="mt-2">
+                <!-- <div class="mt-2">
                   <h4 class="judul-section">{{ project.name }}</h4>
                   <h5>ini proyek pertama kita</h5>
                 </div>
-                <div class="w-50"></div>
+                <div class="w-50"></div> -->
                 <!-- Deadline -->
-                <div class="deadline-box">
+                <!-- <div class="deadline-box">
                   <p class="fw-bold mb-1">Deadline</p>
                   <p class="fw-bold">{{ project.deadline }}</p>
-                </div>
+                </div> -->
 
                 <!-- Sisa Waktu -->
-                <div class="sisa-waktu-container">
+                <!-- <div class="sisa-waktu-container">
                   <p class="fw-bold mb-1 mt-3">Sisa Waktu (hari)</p>
                   <p class="sisa-hari">{{ project.daysLeft }}</p>
                 </div>
-              </div>
+              </div> -->
 
               <!-- Baris progress -->
-              <div class="progress-container w-100">
+              <!-- <div class="progress-container w-100">
                 <div class="progress-wrapper w-100">
                   <div class="d-flex justify-content-between">
                     <span>Presentase</span>
@@ -270,7 +270,7 @@ successmsg() {
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
 
 
           <div class="d-flex justify-content-between align-items-center gap-5" id="tolong tengahin" style="padding: 1%; text-align: center;">
