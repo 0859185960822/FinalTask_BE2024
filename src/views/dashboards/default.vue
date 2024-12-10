@@ -20,8 +20,6 @@ export default {
     Emailsent,
     // SideBar,
 
-    
-
   },
   data() {
     return {

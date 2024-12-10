@@ -22,7 +22,7 @@ export default {
         <BCard no-body>
           <BCardBody class="pb-0">
             <BCardTitle>Laporan Proyek</BCardTitle>
-            <form class="row col-12 " style="margin-bottom: 1%;">
+            <!-- <form class="row col-12 " style="margin-bottom: 1%;">
               <div class="col-2">
                 <label class="visually-hidden" for="autoSizingSelect">Preference</label>
                 <select class="form-select" id="autoSizingSelect">
@@ -37,6 +37,41 @@ export default {
               </div>
               <div class="col-3" style="margin-left: auto;" >
                 <button type="button" class="btn btn-success h-100 w-100" alt="Disable"><i class="mdi-microsoft-excel"></i> EXPORT TO EXCEL</button>
+              </div>
+            </form> -->
+
+            <form class="row align-items-center" style="margin-bottom: 2%;">
+              <!-- Dropdown Show Entries -->
+              <div class="col-auto d-flex align-items-center">
+                <label class="me-2">Show</label>
+                <select class="form-select w-auto" id="autoSizingSelect" aria-label="Select number of entries">
+                  <option value="10" selected>10</option>
+                  <option value="50">50</option>
+                  <option value="100">100</option>
+                </select>
+                <label class="ms-2">Entries</label>
+              </div>
+
+              <!-- Input Pencarian -->
+              <div class="col-auto">
+                <input type="text" class="form-control" id="autoSizingInput" placeholder="Cari Nama Project">
+              </div>
+
+              <div class="col-auto align-items-center">
+                <select class="form-select w-auto" id="autoSizingSelect" aria-label="Select number of entries">
+                  <option value="status" selected>Status</option>
+                  <option value="tepat waktu">Tepat Waktu</option>
+                  <option value="terlambat">Terlambat</option>
+                </select>
+              </div>
+
+              <div class="col-auto">
+                <input type="text" class="form-control" id="autoSizingInput" placeholder="Cari Nama Project2">
+              </div>
+
+              <!-- Tombol Tambah Proyek -->
+              <div class="col-auto ms-auto">
+                <button type="button" class="btn btn-success d-flex align-items-center" alt="Disable"><i class="fa fa-plus me-2"></i> EXPORT TO EXCEL</button>
               </div>
             </form>
             
