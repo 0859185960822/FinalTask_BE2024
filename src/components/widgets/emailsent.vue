@@ -34,11 +34,12 @@ export default {
           zoom: {
             enabled: true,
           },
+           width: '100%'
         },
         plotOptions: {
           bar: {
             horizontal: false,
-            columnWidth: "15%",
+            columnWidth: "25%",
             endingShape: "rounded",
           },
         },
@@ -153,30 +154,44 @@ export default {
 </script>
 <template>
   <Loader :loading="updating">
-    <BCard no-body>
+    <!-- Gunakan BCard dengan class tambahan agar mengambil lebar penuh -->
+    <BCard class="w-100">
       <BCardBody>
-        <div class="d-sm-flex flex-wrap">
-          <BCardTitle class="mb-4">Email Sent</BCardTitle>
-          <div class="ms-auto">
+        <div class="d-sm-flex justify-content-between align-items-center">
+          <!-- Judul Email Sent -->
+          <BCardTitle>Email Sent</BCardTitle>
+          <div>
             <ul class="nav nav-pills">
               <li class="nav-item">
-                <BLink class="nav-link" href="javascript: void(0);" @click="changeVal('week')"
-                  :class="{ 'active': isActive == 'week' }">Week</BLink>
+                <BLink class="nav-link" href="javascript:void(0);" @click="changeVal('week')" :class="{ active: isActive === 'week' }">
+                  Week
+                </BLink>
               </li>
               <li class="nav-item">
-                <BLink class="nav-link" href="javascript: void(0);" @click="changeVal('month')"
-                  :class="{ 'active': isActive == 'month' }">Month</BLink>
+                <BLink class="nav-link" href="javascript:void(0);" @click="changeVal('month')" :class="{ active: isActive === 'month' }">
+                  Month
+                </BLink>
               </li>
               <li class="nav-item">
-                <BLink class="nav-link" href="javascript: void(0);" @click="changeVal('year')"
-                  :class="{ 'active': isActive == 'year' }">Year</BLink>
+                <BLink class="nav-link" href="javascript:void(0);" @click="changeVal('year')" :class="{ active: isActive === 'year' }">
+                  Year
+                </BLink>
               </li>
             </ul>
           </div>
         </div>
 
-        <apexchart class="apex-charts" type="bar" dir="ltr" height="360" :series="series" :options="chartOptions">
-        </apexchart>
+        <!-- Grafik Email Sent -->
+        <div style="width: 100%; height: 360px;">
+          <apexchart
+            class="apex-charts"
+            type="bar"
+            dir="ltr"
+            height="100%"
+            :series="series"
+            :options="chartOptions"
+          />
+        </div>
       </BCardBody>
     </BCard>
   </Loader>

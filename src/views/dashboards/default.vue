@@ -1,8 +1,11 @@
 <script>
 import Layout from "../../layouts/main";
 import PageHeader from "@/components/page-header";
-import ProjectStats from "../../components/widgets/progress1.vue";
+// import ProjectStats from "../../components/widgets/progress1.vue";
+import Stat from "../../components/widgets/stat.vue";
+import Emailsent from "../../components/widgets/emailsent.vue";
 // import SideBar from "../../components/side-bar.vue";
+
 
 
 /**
@@ -12,7 +15,9 @@ export default {
   components: {
     Layout,
     PageHeader,
-    ProjectStats,
+    // ProjectStats,
+    Stat,
+    Emailsent,
     // SideBar,
 
     
@@ -20,9 +25,23 @@ export default {
   },
   data() {
     return {
-      // statData: [
-      
-      // ],
+      statData: [
+        {
+          icon: "bx bx-copy-alt",
+          title: "Total Project",
+          value: "1,235",
+        },
+        {
+          icon: "bx bx-archive-in",
+          title: "On Going",
+          value: "23",
+        },
+        {
+          icon: "bx bx-purchase-tag-alt",
+          title: "Done",
+          value: "16",
+        },
+      ],
 
       project: {
         name: "Project A",
@@ -55,7 +74,25 @@ export default {
   <Layout>
   
     <PageHeader title="Dashboard" pageTitle="Dashboards" />
-    <ProjectStats /> 
+
+    <BRow>
+      <BCol xl="10">
+        <Profile :updating="fetchingStats" />
+        <Earning :updating="earningStatus" />
+      </BCol>
+      <BCol xl="8">
+        <BRow>
+          <BCol md="4" v-for="stat of statData" :key="stat.icon">
+            <Stat :icon="stat.icon" :title="stat.title" :value="stat.value" />
+          </BCol>
+        </BRow>
+        <Emailsent :updating="fetchingStats" />
+        </BCol>
+    </BRow>
+
+
+
+    <!-- <ProjectStats />  -->
         <div id="app" class="container mt-4">
     <div class="card-container">
       <!-- Baris atas -->
@@ -155,4 +192,5 @@ export default {
       font-weight: bold;
       margin-bottom: 0;
     }
+    
 </style>
