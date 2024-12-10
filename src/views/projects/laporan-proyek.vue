@@ -40,43 +40,53 @@ export default {
               </div>
             </form> -->
 
-            <form class="row align-items-center" style="margin-bottom: 2%;">
-              <!-- Dropdown Show Entries -->
-              <div class="col-auto d-flex align-items-center">
-                <label class="me-2">Show</label>
-                <select class="form-select w-auto" id="autoSizingSelect" aria-label="Select number of entries">
-                  <option value="10" selected>10</option>
-                  <option value="50">50</option>
-                  <option value="100">100</option>
-                </select>
-                <label class="ms-2">Entries</label>
-              </div>
+            <form class="row g-3 align-items-center" style="margin-bottom: 2%;">
+  <!-- Input Nama Proyek -->
+  <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+    <label for="projectName" class="form-label">Cari Proyek</label>
+    <input type="text" class="form-control" id="projectName" placeholder="Cari Proyek">
+  </div>
 
-              <!-- Input Pencarian -->
-              <div class="col-auto">
-                <input type="text" class="form-control" id="autoSizingInput" placeholder="Cari Nama Project">
-              </div>
+  <!-- Dropdown Status Proyek -->
+  <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+    <label for="projectStatus" class="form-label">Status Proyek</label>
+    <select class="form-select" id="projectStatus">
+      <option value="status" selected>Status</option>
+      <option value="tepat waktu">Tepat Waktu</option>
+      <option value="terlambat">Terlambat</option>
+    </select>
+  </div>
 
-              <div class="col-auto align-items-center">
-                <select class="form-select w-auto" id="autoSizingSelect" aria-label="Select number of entries">
-                  <option value="status" selected>Status</option>
-                  <option value="tepat waktu">Tepat Waktu</option>
-                  <option value="terlambat">Terlambat</option>
-                </select>
-              </div>
+  <!-- Input Progres -->
+  <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+    <label for="progress" class="form-label">Progres</label>
+    <input type="text" class="form-control" id="progress" placeholder="Cari progress">
+  </div>
 
-              <div class="col-auto">
-                <input type="text" class="form-control" id="autoSizingInput" placeholder="Cari Nama Project2">
-              </div>
+  <!-- Input Sisa Waktu -->
+  <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+    <label for="remainingTime" class="form-label">Sisa Waktu</label>
+    <input type="text" class="form-control" id="remainingTime" placeholder="Cari sisa waktu">
+  </div>
 
-              <!-- Tombol Tambah Proyek -->
-              <div class="col-auto ms-auto">
-                <button type="button" class="btn btn-success d-flex align-items-center" alt="Disable"><i class="fa fa-plus me-2"></i> EXPORT TO EXCEL</button>
-              </div>
-            </form>
+  <!-- Tombol Filter -->
+  <div class="col-12 col-sm-6 col-md-4 col-lg-2 d-flex pt-4 align-items-end">
+    <button type="button" class="btn btn-info w-100">
+      <i class="bx bx-filter"></i> FILTER
+    </button>
+  </div>
+
+  <!-- Tombol Export to Excel -->
+  <div class="col-12 col-sm-6 col-md-4 col-lg-2 pt-md-0 pt-lg-4 d-flex align-items-end">
+    <button type="button" class="btn btn-success w-100">
+      <i class="fas fa-file-excel me-2"></i> EXPORT
+    </button>
+  </div>
+</form>
+
             
             <form class="row col-auto" style="margin-bottom: 2%;">
-              <div class="row col-8" style="border: 1px solid #DCDCDC; margin-left: 1%; padding: 10px;">
+              <!-- <div class="row col-8" style="border: 1px solid #DCDCDC; margin-left: 1%; padding: 10px;">
                 <div class="col-4">
                   <label class="visually-hidden" for="autoSizingSelect">Preference</label>
                   <select class="form-select" id="autoSizingSelect">
@@ -91,10 +101,16 @@ export default {
                 <div class="col-4">
                   <input type="text" class="form-control" id="autoSizingInput" placeholder="Cari">
                 </div>
-              </div>
-              
-              <div class="col-2" style="margin-left: 7%; margin-top: 1%;">
-                <button type="button" class="btn btn-info h-80 w-100" alt="Disable"><i class="bx bx-filter"></i> FILTER</button>
+              </div> -->
+
+              <div class="col-auto d-flex align-items-center">
+                <label class="me-2">Show</label>
+                <select class="form-select w-auto" id="autoSizingSelect" aria-label="Select number of entries">
+                  <option value="10" selected>10</option>
+                  <option value="50">50</option>
+                  <option value="100">100</option>
+                </select>
+                <label class="ms-2">Entries</label>
               </div>
             </form>
            
