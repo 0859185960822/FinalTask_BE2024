@@ -2,7 +2,7 @@
 import { MetisMenu } from 'metismenujs';
 import { useAuthStore } from '@/state/pinia'
 const auth = useAuthStore()
-import { menuItems } from "./menu";
+// import { menuItems } from "./menu";
 /**
  * Sidenav component
  */
@@ -10,11 +10,13 @@ export default {
   data() {
     return {
       menuItems: auth.userMenu,
-      menuSidebar: menuItems,
+      // menuSidebar: menuItems,
       menuData: null,
     };
   },
   mounted: function () {
+    // console.log('----------------');
+    // console.log(this.menuItems);   
     if (document.getElementById("side-menu")) new MetisMenu("#side-menu");
     var links = document.getElementsByClassName("side-nav-link-ref");
     var matchingMenuItem = null;
@@ -133,7 +135,7 @@ export default {
         </li>
       </template>
 
-      <template v-for="item in menuSidebar">
+      <!-- <template v-for="item in menuSidebar">
         <li class="menu-title" v-if="item.isTitle" :key="item.id">
           {{ $t(item.label) }}
         </li>
@@ -172,7 +174,7 @@ export default {
             </li>
           </ul>
         </li>
-      </template>
+      </template> -->
     </ul>
   </div>
   <!-- Sidebar -->

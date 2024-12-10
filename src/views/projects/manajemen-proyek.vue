@@ -95,7 +95,7 @@ updatemsg() {
         <BCard no-body>
           <BCardBody class="pb-0">
             <BCardTitle>Manajemen Proyek</BCardTitle>
-            <form class="row col-12 " style="margin-bottom: 2%;">
+            <!-- <form class="row col-12" style="margin-bottom: 2%;">
               <div class="col-2">
                 <label class="visually-hidden" for="autoSizingSelect">Preference</label>
                 <select class="form-select" id="autoSizingSelect">
@@ -105,7 +105,16 @@ updatemsg() {
                   <option value="3">100</option>
                 </select>
               </div>
-              <div class="col-7">
+              <div class="d-flex align-items-center">
+                <label class="me-2">Show</label>
+                <select class="form-select w-auto" id="autoSizingSelect" aria-label="Select number of entries">
+                  <option value="10" selected>10</option>
+                  <option value="50">50</option>
+                  <option value="100">100</option>
+                </select>
+                <label class="ms-2">Entries</label>
+              </div>
+              <div class="col-3">
                 <input type="text" class="form-control" id="autoSizingInput" placeholder="Cari">
               </div>
               <div class="col-3" style="margin-left: auto;" >
@@ -181,7 +190,102 @@ updatemsg() {
                   </div>
                 </BModal>
               </div>
+            </form> -->
+
+            <form class="row align-items-center" style="margin-bottom: 2%;">
+              <!-- Dropdown Show Entries -->
+              <div class="col-auto d-flex align-items-center">
+                <label class="me-2">Show</label>
+                <select class="form-select w-auto" id="autoSizingSelect" aria-label="Select number of entries">
+                  <option value="10" selected>10</option>
+                  <option value="50">50</option>
+                  <option value="100">100</option>
+                </select>
+                <label class="ms-2">Entries</label>
+              </div>
+
+              <!-- Input Pencarian -->
+              <div class="col-auto">
+                <input type="text" class="form-control" id="autoSizingInput" placeholder="Cari Nama Project">
+              </div>
+
+              <!-- Tombol Tambah Proyek -->
+              <div class="col-auto ms-auto">
+                <button type="button" class="btn btn-success d-flex align-items-center" alt="Disable" @click="modalTP = true"><i class="fa fa-plus me-2"></i> TAMBAH PROYEK</button>
+                <BModal v-model="modalTP" id="modal-center" centered title="Tambah Proyek" hide-footer>
+                  <div class="p-3">
+                    <form>
+                      <div class="mb-3">
+                        <label for="judul-task" class="form-label fw-bold">Nama Proyek</label>
+                        <input type="text" class="form-control" id="autoSizingInput" placeholder="Inputkan Nama Proyek">
+                      </div>
+                      <div class="mb-3">
+                        <label for="judul-task" class="form-label fw-bold">Deskripsi Proyek</label>
+                        <!-- <input type="text-area" class="form-control" id="autoSizingInput"> -->
+                        <textarea class="form-control" placeholder="Tuliskan Deskripsi Proyek" rows="2"></textarea>
+                      </div>
+                      <div class="mb-3">
+                        <label for="judul-task" class="form-label fw-bold">Nama Kolaborator</label>
+                        <div class="row">
+                        <div class="col-12">
+                          <table class="table mb-0 mt-0 table-bordered table-condensed table-hover">
+                            <thead class="bg-dark text-center text-white">
+                              <tr>
+                                <th style="width: 50px">No</th>
+                                <th style="width: auto">Kolaborator</th>
+                                <th style="width: 50px" class="text-center">
+                                  <b-button
+                                    type="button"
+                                    class="btn btn-success btn-sm"
+                                    @click="addRowPeserta"
+                                  >
+                                    <i class="fa fa-plus"></i>
+                                  </b-button>
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr v-for="(row_data, key_data) in instruktur_data" :key="key_data">
+                                <td class="text-center">{{ key_data + 1 }}.</td>
+                                <td>
+                                  <v-select
+                                    label="nip_name"
+                                    v-model="row_data.instruktur_data"
+                                    :options="peserta_ref"
+                                    @search="onSearchInstruktur"
+                                    placeholder="Cari dan Pilih Kolaborator..."
+                                  ></v-select>
+                                </td>
+                              
+                                <td class="text-center">
+                                  <button
+                                    type="button"
+                                    class="btn btn-danger btn-sm"
+                                    @click="deleteRow(key_data, row_data)"
+                                  >
+                                    <i class="fa fa-minus"></i>
+                                  </button>
+                                </td>
+                              </tr>
+                            </tbody>
+                        </table>
+                        </div>
+                      </div>
+
+                      </div>
+                      <div class="mb-3">
+                        <label for="deadline" class="form-label fw-bold">Tenggat Waktu</label>
+                        <flat-pickr v-model="picked" :first-day-of-week="1" lang="en" confirm class="form-control"></flat-pickr>
+                      </div>
+                      <div class="text-end">
+                        <button type="button" class="btn btn-secondary btn-success" @click='successmsg()'>Simpan</button>
+                      </div>
+                    </form>
+                  </div>
+                </BModal>
+              </div>
             </form>
+
            
             <div class="table-responsive">
               <BTableSimple class="mb-0">
@@ -193,7 +297,7 @@ updatemsg() {
                     <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; border-collapse: collapse; border: 1px solid black;">Tenggat <button class="btn btn-sm btn-link p-0"><i class="fa fa-sort"></i></button></BTh>
                     <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; border-collapse: collapse; border: 1px solid black;">Sisa Waktu <button class="btn btn-sm btn-link p-0"><i class="fa fa-sort"></i></button></BTh>
                     <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; border-collapse: collapse; border: 1px solid black;">Progress % <button class="btn btn-sm btn-link p-0"><i class="fa fa-sort"></i></button></BTh>
-                    <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; border-collapse: collapse; border: 1px solid black;vertical-align: middle;" rowspan="2">Aksi</BTh>
+                    <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; border-collapse: collapse; border: 1px solid black;vertical-align: middle; width: 20%;">Aksi</BTh>
                   </BTr>
                   <!-- <BTr style="border-collapse: collapse; border: 1px solid black;">
                     <BTh style="background-color: #272b4e; color: whitesmoke; border-collapse: collapse; border: 1px solid black;"><input type="text" placeholder="Search User" class="form-control"></BTh>
@@ -209,10 +313,9 @@ updatemsg() {
                     <BTd style="border-collapse: collapse; border: 1px solid black;">Proyek A</BTd>
                     <BTd style="border-collapse: collapse; border: 1px solid black;">Proyek Cukup sulit</BTd>
                     <BTd style="border-collapse: collapse; border: 1px solid black;">20/11/2021</BTd>
-                    <BTd style="border-collapse: collapse; border: 1px solid black;">Sudah 3 Tahun Yang Lalu</BTd>
+                    <BTd style="border-collapse: collapse; border: 1px solid black;">10 Hari Yang lalu</BTd>
                     <BTd style="border-collapse: collapse; border: 1px solid black;">20 <span style="color: red">%</span></BTd>
                     <BTd style="border-collapse: collapse; border: 1px solid black;">
-                      <!-- <button type="button" class="btn btn-info btn-sm mb-1 w-100" alt="Disable"><i class="bx bx-info-circle"></i> DETAILS</button> -->
                       <router-link :to="'detail-proyek'" class="btn btn-info btn-sm mb-1 w-100">
                         <i class="bx bx-info-circle"></i> DETAILS
                       </router-link>
@@ -226,7 +329,8 @@ updatemsg() {
                             </div>
                             <div class="mb-3">
                               <label for="judul-task" class="form-label fw-bold">Deskripsi Proyek</label>
-                              <input type="text" class="form-control" id="autoSizingInput" value="ini deskripsi proyek">
+                              <!-- <input type="text" class="form-control" id="autoSizingInput" value="ini deskripsi proyek"> -->
+                              <textarea class="form-control" placeholder="Tuliskan Deskripsi Proyek" rows="2" value="ini deskripsi proyek"></textarea>
                             </div>
                             <div class="mb-3">
                               <label for="judul-task" class="form-label fw-bold">Nama Kolaborator</label>

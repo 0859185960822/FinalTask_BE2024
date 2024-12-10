@@ -426,13 +426,13 @@ export default [
   },
   {
     path: "/projects/laporan-proyek",
-    name: "Laporan Proyek",
+    name: "Laporan-Proyek",
     meta: { title: "Laporan Proyek", authRequired: true },
     component: () => import("../views/projects/laporan-proyek.vue")
   },
   {
     path: "/projects/manajemen-proyek",
-    name: "Manajemen Proyek",
+    name: "Manajemen-Proyek",
     meta: { title: "Manajemen Proyek", authRequired: true },
     component: () => import("../views/projects/manajemen-proyek.vue")
   },
