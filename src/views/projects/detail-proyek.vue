@@ -88,6 +88,16 @@ successmsg() {
 
     });
 },
+
+sendmsg() {
+    Swal.fire({
+        title: "Komentar Tersimpan!",
+        text: "Komentar Berhasil Tersimpan!",
+        icon: "success",
+        confirmButtonColor: "#556ee6",
+
+    });
+},
   },
  
 };
@@ -171,7 +181,8 @@ successmsg() {
                         </div>
                         <div class="mb-3">
                           <label for="judul-task" class="form-label fw-bold">Deskripsi Proyek</label>
-                          <input type="text" class="form-control" id="autoSizingInput" value="ini deskripsi">
+                          <!-- <input type="text" class="form-control" id="autoSizingInput" value="ini deskripsi"> -->
+                          <textarea class="form-control" placeholder="Tuliskan Deskripsi Proyek" rows="2" value="ini deskripsi proyek"></textarea>
                         </div>
                         <div class="mb-3">
                           <label for="judul-task" class="form-label fw-bold">Nama Kolaborator</label>
@@ -300,7 +311,7 @@ successmsg() {
             </div>
           </div>
 
-            <div style="display: flex;" class="row col-12">
+            <!-- <div style="display: flex;" class="row col-12">
               <form class="row col-9 " style="margin-bottom: 2%;">
               <div class="col-2">
                 <label class="visually-hidden" for="autoSizingSelect">Preference</label>
@@ -312,7 +323,7 @@ successmsg() {
                 </select>
               </div>
               <div class="col-7">
-                <input type="text" class="form-control" id="autoSizingInput" placeholder="Cari">
+                <input type="text" class="form-control" id="autoSizingInput" placeholder="Cari Data">
               </div>
               
             </form>
@@ -363,7 +374,87 @@ successmsg() {
                     </div>
                   </BModal>
             </div>
-          </div>
+          </div> -->
+
+          <form class="row align-items-center" style="margin-bottom: 2%;">
+            <!-- Dropdown Show Entries -->
+            <div class="col-auto d-flex align-items-center">
+              <label class="me-2">Show</label>
+              <select class="form-select w-auto" id="autoSizingSelect" aria-label="Select number of entries">
+                <option value="10" selected>10</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+              </select>
+              <label class="ms-2">Entries</label>
+            </div>
+
+            <!-- Input Pencarian -->
+            <div class="col-auto">
+              <input type="text" class="form-control" id="autoSizingInput" placeholder="Cari Data Proyek">
+            </div>
+
+  <!-- Tombol Tambah Task -->
+  <div class="col-auto ms-auto">
+    <button type="button" class="btn btn-success d-flex align-items-center" alt="Disable" @click="modalTT = true"><i class="fa fa-plus me-2"></i> TAMBAH TASK</button>
+    <BModal v-model="modalTT" id="modal-center" centered title="Tambah Task" hide-footer>
+                    <div class="p-3">
+                      <form>
+                        <div class="mb-3">
+                          <label for="judul-task" class="form-label fw-bold">Judul Task</label>
+                          <input type="text" class="form-control" id="autoSizingInput" placeholder="Masukan judul Task">
+                        </div>
+                        <BRow>
+                          <BCol md="6">
+                            <BFormGroup class="mb-3" label="Tingkat Urgensi" label-for="tingkat-urgensi-input">
+                                <select id="urgensi" class="form-select">
+                                  <option selected>Pilih Tingkat Urgensi</option>
+                                  <option value="1">Urgent</option>
+                                  <option value="2">Tinggi</option>
+                                  <option value="3">Sedang</option>
+                                  <option value="3">Rendah</option>
+                                </select>
+                            </BFormGroup>
+                          </BCol>
+                          <BCol md="6">
+                            <div class="form-group">
+                              <BFormGroup class="mb-3 fw-bold" label="Tipe-Task" label-for="tipe-task-input">
+                                <select id="kolaborator" class="form-select">
+                                  <option selected>Pilih Tipe Task</option>
+                                  <option value="1">Major</option>
+                                  <option value="2">Minor</option>
+                                </select>
+                              </BFormGroup>
+                            </div>
+                          </BCol>
+                        </BRow>
+
+                        <BRow>
+                          <BCol md="6">
+                            <BFormGroup class="mb-3" label="Kolaborator" label-for="kolabolator-input">
+                              <select id="kolaborator" class="form-select">
+                                    <option selected>Pilih kolaborator</option>
+                                    <option value="1">Kolaborator 1</option>
+                                    <option value="2">Kolaborator 2</option>
+                                    <option value="3">Kolaborator 3</option>
+                              </select>
+                            </BFormGroup>
+                          </BCol>
+                          <BCol md="6">
+                            <div class="form-group">
+                              <BFormGroup class="mb-3 fw-bold" label="Tipe-Task" label-for="tipe-task-input">
+                                <flat-pickr v-model="picked" :first-day-of-week="1" lang="en" confirm class="form-control"></flat-pickr>
+                              </BFormGroup>
+                            </div>
+                          </BCol>
+                        </BRow>
+                        <div class="text-end">
+                          <button type="button" class="btn btn-secondary btn-success" @click="successmsg()">Tambah</button>
+                        </div>
+                      </form>
+                    </div>
+                  </BModal>
+                </div>
+              </form>
           
             <div class="table-responsive">
               <BTableSimple class="mb-0">
@@ -391,60 +482,81 @@ successmsg() {
                             <!-- Sisa Waktu -->
                             <div class="text-center me-4">
                               <p class="text-muted mb-1">Sisa Waktu</p>
-                              <p class="fw-bold mb-0">-382 Hari</p>
+                              <p class="fw-bold mb-0">10 Hari</p>
                             </div>
                             <!-- Status Deadline -->
-                            <div class="text-center">
+                            <!-- <div class="text-center">
                               <p class="text-muted mb-1">Status Deadline</p>
                               <span class="badge bg-danger text-white rounded-pill">Terlambat 3 Tahun</span>
-                            </div>
+                            </div> -->
                           </div>
                         </div>
                         <!-- Form Fields -->
-                        <form class="space-y-3">
-                          <div>
-                            <label class="form-label fw-bold">Judul Task</label>
-                            <input type="text" class="form-control" id="autoSizingInput" value="Task A" disabled >
-                          </div>
-
-                          <div>
-                            <label class="form-label fw-bold">Tipe Task</label>
-                            <input type="text" class="form-control" id="autoSizingInput" value="Minor" disabled >
-                          </div>
-
-                          <div>
-                            <label class="form-label fw-bold">Tingkat Urgensi</label>
-                            <input type="text" class="form-control" id="autoSizingInput" value="Rendah" disabled >
-                          </div>
-
-                          <div>
-                            <label class="form-label fw-bold">Nama Kolaborator</label>
-                            <input type="text" class="form-control" id="autoSizingInput" value="User 1" disabled >
-                          </div>
-
-                          <div>
-                            <label class="form-label fw-bold">Status Task</label>
-                            <input type="text" class="form-control" id="autoSizingInput" value="Pending" disabled >
-                          </div>
-
-                          <div>
-                            <label class="form-label fw-bold">Tenggat Waktu</label>
-                            <input type="text" class="form-control" id="autoSizingInput" value="12/12/21" disabled >
-                          </div>
-                        </form>
+                        <BRow>
+                          <BCol md="6">
+                            <BFormGroup class="mb-3 fw-bold" label="Judul Task" label-for="tingkat-urgensi-input">
+                              <p>Task A</p>
+                            </BFormGroup>
+                          </BCol>
+                          <BCol md="6">
+                            <div class="form-group">
+                              <BFormGroup class="mb-3 fw-bold" label="Tipe-Task" label-for="tipe-task-input">
+                                <p>Minor</p>
+                              </BFormGroup>
+                            </div>
+                          </BCol>
+                        </BRow>
+                        <BRow>
+                          <BCol md="6">
+                            <BFormGroup class="mb-3 fw-bold" label="Tingkat Urgensi" label-for="tingkat-urgensi-input">
+                              <p>Rendah</p>
+                            </BFormGroup>
+                          </BCol>
+                          <BCol md="6">
+                            <div class="form-group">
+                              <BFormGroup class="mb-3 fw-bold" label="Nama Kolaborator" label-for="tipe-task-input">
+                               <p>User 1</p>
+                              </BFormGroup>
+                            </div>
+                          </BCol>
+                        </BRow>
+                        <BRow>
+                          <BCol md="6">
+                            <BFormGroup class="mb-3 fw-bold" label="Status Task" label-for="tingkat-urgensi-input">
+                              <p>Pending</p>
+                            </BFormGroup>
+                          </BCol>
+                          <BCol md="6">
+                            <div class="form-group">
+                              <BFormGroup class="mb-3 fw-bold" label="Tanggal Deadline" label-for="tipe-task-input">
+                                 <p>12/12/2021</p>
+                              </BFormGroup>
+                            </div>
+                          </BCol>
+                        </BRow>
 
                         <!-- Comment Section -->
                         <div class="pt-3">
-                          <div style="display: flex; align-items: center; gap: 10px;">
+                          <div style=" align-items: center; gap: 10px;">
                             <!-- Div dengan border bulat -->
-                            <div style="background-color: whitesmoke; border: 1px solid black; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center;">
+                            <!-- <div style="background-color: whitesmoke; border: 1px solid black; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center;">
                               <p style="font-weight: bold; font-size: 2em; margin: 0;">A</p>
-                            </div>
+                            </div> -->
                             <!-- Textarea -->
-                            <textarea class="form-control" placeholder="write a comment" style="flex: 1;"></textarea>
+                            <label for="nama-yang-komen">Komentar</label>
+                            <textarea class="form-control" placeholder="Ketikan Komentar" style="flex: 1;"></textarea>
                           </div>
                           <div class="text-end mt-2">
-                            <button type="button" class="btn btn-secondary">Kirim</button>
+                            <button type="button" class="btn btn-secondary btn-info" @click="sendmsg()">Kirim</button>
+                          </div>
+                          <div class="mb-3">
+                            <label for="judul-task" class="form-label fw-bold">User 1</label>
+                            <!-- <div class="d-flex justify-content-between mt-2">
+                              <label for="judul-task" class="form-label fw-bold">User 1</label>
+                              <span style="opacity: 50%;">12/12/32</span>
+                            </div> -->
+                            <input type="text" class="form-control" id="autoSizingInput" value="ini komentarnya" disabled>
+                            <p class="mt-1"><span style="opacity: 50%;">12/12/32</span></p>
                           </div>
                         </div>
                       </div>
@@ -452,59 +564,71 @@ successmsg() {
                     <BTd style="border-collapse: collapse; border: 1px solid black;"> 
                       <label class="visually-hidden" for="autoSizingSelect">Preference</label>
                       <select class="form-select" id="autoSizingSelect">
-                        <option selected>Pilih</option>
-                        <option value="1">Pending</option>
-                        <option value="2">Ongoing</option>
-                        <option value="3">Done</option>
+                        <option selected>Pending</option>
+                        <option value="1">Ongoing</option>
+                        <option value="2">Done</option>
                       </select>
                     </BTd>
-                    <BTd style="border-collapse: collapse; border: 1px solid black; text-align: center;"><span class="badge bg-danger">3 Years Ago</span></BTd>
+                    <BTd style="border-collapse: collapse; border: 1px solid black; text-align: center;"><span class="badge bg-danger">10 Hari</span></BTd>
                     <BTd style="border-collapse: collapse; border: 1px solid black;">
                       <button type="button" class="btn btn-warning btn-sm mb-1 w-100" alt="Disable" @click="modalST = true" variant="primary"><i class="bx bx-edit"></i> SUNTING</button>
-                              <BModal v-model="modalST" id="modal-center" centered title="Sunting Task" hide-footer>
-                            <div class="p-3">
-                              <form>
-                                <div class="mb-3">
-                                  <label for="judul-task" class="form-label fw-bold">Judul Task</label>
-                                  <input type="text" class="form-control" id="autoSizingInput" value="ini judul task">
-                                </div>
-                                <div class="mb-3">
-                                  <label for="kolaborator" class="form-label fw-bold">Tingkat Urgensi</label>
-                                  <select id="kolaborator" class="form-select">
-                                    <option selected>Pilih Tingkat Urgensi</option>
-                                    <option value="1">Urgent</option>
-                                    <option value="2">Tinggi</option>
-                                    <option value="3">Sedang</option>
-                                    <option value="3">Rendah</option>
-                                  </select>
-                                </div>
-                                <div class="mb-3">
-                                  <label for="kolaborator" class="form-label fw-bold">Tipe task</label>
-                                  <select id="kolaborator" class="form-select">
-                                    <option selected>Pilih Tipe Task</option>
-                                    <option value="1">Major</option>
-                                    <option value="2">Minor</option>
-                                  </select>
-                                </div>
-                                <div class="mb-3">
-                                  <label for="kolaborator" class="form-label fw-bold">Nama Kolaborator</label>
-                                  <select id="kolaborator" class="form-select">
-                                    <option selected>Pilih kolaborator</option>
-                                    <option value="1">Kolaborator 1</option>
-                                    <option value="2">Kolaborator 2</option>
-                                    <option value="3">Kolaborator 3</option>
-                                  </select>
-                                </div>
-                                <div class="mb-3">
-                                  <label for="deadline" class="form-label fw-bold">Tenggat Waktu</label>
-                                  <flat-pickr v-model="picked" :first-day-of-week="1" lang="en" confirm class="form-control"></flat-pickr>
-                                </div>
-                                <div class="text-end">
-                                  <button type="button" class="btn btn-secondary btn-success" @click="successmsg()">Simpan</button>
-                                </div>
-                              </form>
+                      <BModal v-model="modalST" id="modal-center" centered title="Sunting Task" hide-footer>
+                        <div class="p-3">
+                          <form>
+                            <div class="mb-3">
+                              <label for="judul-task" class="form-label fw-bold">Judul Task</label>
+                              <input type="text" class="form-control" id="autoSizingInput" placeholder="Masukan judul Task" value="Task A">
                             </div>
-                          </BModal>
+                            <BRow>
+                              <BCol md="6">
+                                <BFormGroup class="mb-3" label="Tingkat Urgensi" label-for="tingkat-urgensi-input">
+                                    <select id="urgensi" class="form-select">
+                                      <option selected>Pilih Tingkat Urgensi</option>
+                                      <option value="1">Urgent</option>
+                                      <option value="2">Tinggi</option>
+                                      <option value="3">Sedang</option>
+                                      <option value="3">Rendah</option>
+                                    </select>
+                                </BFormGroup>
+                              </BCol>
+                              <BCol md="6">
+                                <div class="form-group">
+                                  <BFormGroup class="mb-3 fw-bold" label="Tipe-Task" label-for="tipe-task-input">
+                                    <select id="kolaborator" class="form-select">
+                                      <option selected>Pilih Tipe Task</option>
+                                      <option value="1">Major</option>
+                                      <option value="2">Minor</option>
+                                    </select>
+                                  </BFormGroup>
+                                </div>
+                              </BCol>
+                            </BRow>
+
+                            <BRow>
+                              <BCol md="6">
+                                <BFormGroup class="mb-3" label="Kolaborator" label-for="kolabolator-input">
+                                  <select id="kolaborator" class="form-select">
+                                        <option selected>Pilih kolaborator</option>
+                                        <option value="1">Kolaborator 1</option>
+                                        <option value="2">Kolaborator 2</option>
+                                        <option value="3">Kolaborator 3</option>
+                                  </select>
+                                </BFormGroup>
+                              </BCol>
+                              <BCol md="6">
+                                <div class="form-group">
+                                  <BFormGroup class="mb-3 fw-bold" label="Tipe-Task" label-for="tipe-task-input">
+                                    <flat-pickr v-model="picked" :first-day-of-week="1" lang="en" confirm class="form-control"></flat-pickr>
+                                  </BFormGroup>
+                                </div>
+                              </BCol>
+                            </BRow>
+                            <div class="text-end">
+                              <button type="button" class="btn btn-secondary btn-success" @click="successmsg()">Simpan</button>
+                            </div>
+                          </form>
+                        </div>
+                      </BModal>
                       <button type="button" class="btn btn-danger btn-sm mb-1 w-100" alt="Disable" @click="confirm()"><i class="bx bxs-trash-alt"></i> HAPUS</button>
                     </BTd>
                   </BTr>

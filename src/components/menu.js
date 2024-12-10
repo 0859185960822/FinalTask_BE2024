@@ -1,4 +1,4 @@
-export const menuItems = [
+// export const menuItems = [
     // {
     //     id: 1,
     //     label: "menuitems.menu.text",
@@ -18,15 +18,15 @@ export const menuItems = [
         //     },
         // ]
     // },
-    {
-        id: 3,
-        isLayout: true
-    },
-    {
-        id: 4,
-        label: "Manajemen Proyek",
-        icon: "bx-briefcase-alt-2",
-        link: "/projects/manajemen-proyek",
+    // {
+    //     id: 3,
+    //     isLayout: true
+    // },
+    // {
+    //     id: 4,
+    //     label: "Manajemen Proyek",
+    //     icon: "bx-briefcase-alt-2",
+    //     link: "/projects/manajemen-proyek",
         // subItems: [
         //     {
         //         id: 38,
@@ -47,13 +47,13 @@ export const menuItems = [
             //     parentId: 37
             // },
         // ]
-    },
-    {
-        id: 5,
-        label: "Laporan Proyek",
-        // icon: "bx-briefcase-alt-2",
-        icon : "bx bxs-file",
-        link: "/projects/laporan-proyek",
+    // },
+    // {
+    //     id: 5,
+    //     label: "Laporan Proyek",
+    //     // icon: "bx-briefcase-alt-2",
+    //     icon : "bx bxs-file",
+    //     link: "/projects/laporan-proyek",
         // subItems: [
         //     {
         //         id: 38,
@@ -74,6 +74,6 @@ export const menuItems = [
             //     parentId: 37
             // },
         // ]
-    },
+//     },
    
-];
+// ];

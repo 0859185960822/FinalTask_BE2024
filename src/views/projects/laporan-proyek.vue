@@ -22,19 +22,11 @@ export default {
         <BCard no-body>
           <BCardBody class="pb-0">
             <BCardTitle>Laporan Proyek</BCardTitle>
-            <!-- <p class="card-title-desc">
-              Create responsive tables by wrapping any <code>.table</code> in
-              <code>.table-responsive</code>
-              to make them scroll horizontally on small devices (under 768px).
-            </p> -->
-            <!-- <div class="col-md-3">
-                <input type="text" class="form-control" id="searchTable" v-on:change="searchTable" v-model="searchDataTable" placeholder="Search Data ..." />
-            </div> -->
             <form class="row col-12 " style="margin-bottom: 1%;">
               <div class="col-2">
                 <label class="visually-hidden" for="autoSizingSelect">Preference</label>
                 <select class="form-select" id="autoSizingSelect">
-                  <option selected>Pilih</option>
+                  <option selected>10</option>
                   <option value="1">10</option>
                   <option value="2">50</option>
                   <option value="3">100</option>
