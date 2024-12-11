@@ -151,7 +151,7 @@ sendmsg() {
           <div style="display: flex; margin-bottom: 1%;">
             <BCardTitle>Detail Proyek</BCardTitle>
             <div class="col-3" style="margin-left: auto; margin-right: 1%;" >
-                <button type="button" class="btn btn-success h-100 w-100" alt="Disable" @click="modalTK = true" variant="primary"><i class="fa fa-plus"></i>  TAMBAH KOLABORATOR </button>
+                <button type="button" class="btn btn-success h-100 w-100" alt="Disable" @click="modalTK = true" variant="primary"><i class="fa fa-plus"></i> TAMBAH KOLABORATOR </button>
                   <BModal v-model="modalTK" id="modal-center" centered title="Tambah Kolaborator" hide-footer>
                     <div class="p-3">
                       <form>
