@@ -148,10 +148,11 @@ sendmsg() {
       <BCol lg="12">
         <BCard no-body>
           <BCardBody class="pb-0">
-          <div style="display: flex; margin-bottom: 1%;">
+          <div class="mb-1 d-md-flex">
             <BCardTitle>Detail Proyek</BCardTitle>
-            <div class="col-3" style="margin-left: auto; margin-right: 1%;" >
-                <button type="button" class="btn btn-success h-100 w-100" alt="Disable" @click="modalTK = true" variant="primary"><i class="fa fa-plus"></i> TAMBAH KOLABORATOR </button>
+            <div class="col-md-3 col-6" style="margin-left: auto; margin-right: 1%;" >
+                <button type="button" class="btn btn-success h-100 w-100 d-none d-md-flex" alt="Disable" @click="modalTK = true" variant="primary"><i class="fa fa-plus me-1 mt-1"></i> TAMBAH KOLABORATOR </button>
+                <!-- <button type="button" class="btn btn-success h-100 w-100 d-flex d-md-none" alt="Disable" @click="modalTK = true" variant="primary"><i class="fa fa-plus me-1"></i> KOLABORATOR </button> -->
                   <BModal v-model="modalTK" id="modal-center" centered title="Tambah Kolaborator" hide-footer>
                     <div class="p-3">
                       <form>
@@ -207,8 +208,9 @@ sendmsg() {
                     </div>
                   </BModal>
                 </div>
-            <div class="col-3">
-                <button type="button" class="btn btn-warning h-100 w-100" alt="Disable" @click="modalSP = true" variant="primary"><i class="fa fa-edit"></i>  SUNTING PROYEK </button>
+            <div class="col-6 col-md-3">
+                <button type="button" class="btn btn-warning h-100 w-100 d-none d-md-flex" alt="Disable" @click="modalSP = true" variant="primary"><i class="fa fa-edit me-1"></i>  SUNTING PROYEK </button>
+                <!-- <button type="button" class="btn btn-warning h-100 w-100 d-flex d-md-none" alt="Disable" @click="modalSP = true" variant="primary"><i class="fa fa-edit"></i>  PROYEK</button> -->
                 <BModal v-model="modalSP" id="modal-center" centered title="Sunting Proyek" hide-footer>
                     <div class="p-3">
                       <form>
@@ -221,54 +223,6 @@ sendmsg() {
                           <!-- <input type="text" class="form-control" id="autoSizingInput" value="ini deskripsi"> -->
                           <textarea class="form-control" placeholder="Tuliskan Deskripsi Proyek" rows="2" value="ini deskripsi proyek"></textarea>
                         </div>
-                        <!-- <div class="mb-3">
-                          <label for="judul-task" class="form-label fw-bold">Nama Kolaborator</label>
-                          <div class="row">
-                          <div class="col-12">
-                          <table class="table mb-0 mt-0 table-bordered table-condensed table-hover">
-                            <thead class="bg-dark text-center text-white">
-                              <tr>
-                                <th style="width: 50px">No</th>
-                                <th style="width: auto">Kolaborator</th>
-                                <th style="width: 50px" class="text-center">
-                                  <b-button
-                                    type="button"
-                                    class="btn btn-success btn-sm"
-                                    @click="addRowPeserta"
-                                  >
-                                    <i class="fa fa-plus"></i>
-                                  </b-button>
-                                </th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr v-for="(row_data, key_data) in instruktur_data" :key="key_data">
-                                <td class="text-center">{{ key_data + 1 }}.</td>
-                                <td>
-                                  <v-select
-                                    label="nip_name"
-                                    v-model="row_data.instruktur_data"
-                                    :options="peserta_ref"
-                                    @search="onSearchInstruktur"
-                                    placeholder="Cari dan Pilih Kolaborator..."
-                                  ></v-select>
-                                </td>
-                              
-                                <td class="text-center">
-                                  <button
-                                    type="button"
-                                    class="btn btn-danger btn-sm"
-                                    @click="deleteRow(key_data, row_data)"
-                                  >
-                                    <i class="fa fa-minus"></i>
-                                  </button>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </div>
-                      </div>
-                        </div> -->
                         <div class="mb-3">
                           <label for="deadline" class="form-label fw-bold">Tenggat Waktu</label>
                           <flat-pickr v-model="picked" :first-day-of-week="1" lang="en" confirm class="form-control"></flat-pickr>
@@ -279,6 +233,10 @@ sendmsg() {
                       </form>
                     </div>
                   </BModal>
+            </div>
+            <div class="d-flex gap-1">
+              <button type="button" class="btn btn-success h-100 w-100 d-flex d-md-none" alt="Disable" @click="modalTK = true" variant="primary"><i class="fa fa-plus me-1"></i> KOLABORATOR </button>
+            <button type="button" class="btn btn-warning h-100 w-100 d-flex d-md-none" alt="Disable" @click="modalSP = true" variant="primary"><i class="fa fa-edit"></i>  PROYEK</button>
             </div>
           </div>
           
