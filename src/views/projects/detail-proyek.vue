@@ -30,6 +30,10 @@ export default {
   components: { Layout, PageHeader,Page,flatPickr,Stat, },
   data() {
     return {
+ 
+      instruktur_data: [], // Array untuk data instruktur
+      peserta_ref: [], // Opsi referensi untuk v-select
+
       statData: [
         {
           icon: "bx bx-copy-alt",
@@ -69,6 +73,20 @@ export default {
     }, 1500);
   },
   methods: {
+
+    // Tambahkan baris instruktur baru
+    addRowPeserta() {
+      this.instruktur_data.push({
+        instruktur_data: self.instruktur_data,
+      });
+    },
+    
+
+    // Hapus baris tertentu
+    deleteRow(index) {
+      this.instruktur_data.splice(index, 1);
+    },
+  
     // Fungsi untuk memperbarui progress secara dinamis
     updateProgress(newProgress) {
       this.project.progress = newProgress;
