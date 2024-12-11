@@ -2,7 +2,6 @@
 import simplebar from "simplebar-vue";
 
 import SideNav from "./side-nav";
-
 /**
  * Sidebar component
  */
@@ -33,6 +32,7 @@ export default {
       }
     };
   },
+  
   methods: {
     onRoutechange() {
       setTimeout(() => {

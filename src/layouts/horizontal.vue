@@ -98,8 +98,9 @@ export default {
         </div>
         <!-- End Page-content -->
         <Footer />
-      </div>
+     
       <!-- end main content-->
+    </div>
     </div>
     <!-- END layout-wrapper -->
     <RightBar />
@@ -108,18 +109,36 @@ export default {
 
 <style scoped>
 /* Main Layout Styles */
-.layout-content {
+/* Wrapper utama */
+#layout-wrapper {
   display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Pastikan tinggi minimum sesuai layar */
 }
 
+/* Konten utama */
+.main-content {
+  flex: 1; /* Buat area ini fleksibel */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Page Content */
 .page-content {
-  flex: 1;
-  margin-left: 250px; /* Match sidebar width */
+  flex: 1; /* Pastikan ini mengisi ruang kosong */
+  position: relative;
+  margin-left: 250px; /* Sesuaikan dengan lebar sidebar */
   transition: margin-left 0.3s ease;
 }
 
-.content-expanded {
-  margin-left: 0;
+/* Footer */
+footer {
+  background-color: #f8f9fa;
+  text-align: center;
+  padding: 1rem 0;
+  width: 100%;
+  position: relative; /* Tetap responsif */
+  z-index: 10;
 }
 
 /* Media Queries */
@@ -127,11 +146,6 @@ export default {
   .page-content {
     margin-left: 0;
   }
-  .sidebar {
-    transform: translateX(-100%);
-  }
-  .sidebar-hidden {
-    transform: translateX(-100%);
-  }
 }
+
 </style>
