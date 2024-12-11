@@ -1,90 +1,178 @@
 <script>
 import Layout from "../../layouts/main";
 import PageHeader from "@/components/page-header";
-// import Sidebar from "../../components/side-bar.vue";
 import Page from "../../components/common/pagination.vue";
 import { ref } from "vue";
 import flatPickr from "vue-flatpickr-component";
 import "flatpickr/dist/flatpickr.css";
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
+import axios from "axios";
 
-/**
- * Task-list component
- */
 export default {
   setup() {
     const modalTP = ref(false);
     const modalSP = ref(false);
+    const picked = ref(new Date());
+
     return {
       modalTP,
       modalSP,
-      picked: ref(new Date()),
+      picked
     };
   },
-  components: { Layout, PageHeader,Page,flatPickr, },
-
+  components: {
+    Layout,
+    PageHeader,
+    Page,
+    flatPickr,
+  },
   data() {
     return {
-      instruktur_data: [], // Array untuk data instruktur
-      peserta_ref: [], // Opsi referensi untuk v-select
+      kolaborator_data: [],
+      peserta_ref: [],
+      namaProyek: "",
+      deskripsiProyek: "",
+      tenggatWaktu: "",
     };
   },
-
   methods: {
     confirm() {
-    Swal.fire({
-        title: "Apakah kamu yakin ?",
-        text: "kamu tidak bisa mengembalikan data setelah dihapus",
+      Swal.fire({
+        title: "Apakah kamu yakin?",
+        text: "Kamu tidak bisa mengembalikan data setelah dihapus",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#34c38f",
         cancelButtonColor: "#f46a6a",
-        confirmButtonText: "Ya, Hapus !",
-       
-    }).then(result => {
+        confirmButtonText: "Ya, Hapus!",
+      }).then(result => {
         if (result.value) {
-            Swal.fire("Deleted!", "Data Berhasil Dihapus.", "success");
+          Swal.fire("Deleted!", "Data Berhasil Dihapus.", "success");
         }
-    });
-},
-successmsg() {
-    Swal.fire({
+      });
+    },
+    successmsg() {
+      Swal.fire({
         title: "Data Tersimpan!",
         text: "Data Berhasil Tersimpan!",
         icon: "success",
         confirmButtonColor: "#556ee6",
-
-    });
-},
-
-updatemsg() {
-    Swal.fire({
+      });
+    },
+    updatemsg() {
+      Swal.fire({
         title: "Data Terupdate!",
         text: "Data Berhasil Terupdate!",
         icon: "success",
         confirmButtonColor: "#556ee6",
-
-    });
-},
-
-    // Tambahkan baris instruktur baru
-    addRowPeserta() {
-      this.instruktur_data.push({
-        instruktur_data: self.instruktur_data,
       });
     },
-    
-
-    // Hapus baris tertentu
+    addRowPeserta() {
+      this.kolaborator_data.push({
+        kolaborator_data: null
+      });
+    },
     deleteRow(index) {
-      this.instruktur_data.splice(index, 1);
+      this.kolaborator_data.splice(index, 1);
+    },
+
+    onSearchKolaborator(search, loading) {
+      if (search.length) {
+        loading(true);
+        this.searchKolaborator(loading, search);
+      }
+    },
+
+    // Metode untuk memanggil API pencarian instruktur
+    searchKolaborator(loading, search) {
+      const config = {
+        method: "get",
+        url: process.env.VUE_APP_BACKEND_URL_VERSION + "referensi/search-instruktur",
+        params: { search },
+        headers: {
+          Accept: "application/json",
+          Authorization: "Bearer " + localStorage.access_token,
+        },
+      };
+
+      axios(config)
+        .then((response) => {
+          if (response.data?.meta?.code === 200) {
+            this.peserta_ref = response.data.data.referensi;
+          } else {
+            this.peserta_ref = [{ user_id: 0, username: "-" }];
+          }
+          loading(false);
+        })
+        .catch(() => {
+          this.peserta_ref = [{ user_id: 0, username: "-" }];
+          loading(false);
+        });
+    },
+    
+    storeDataProyek() {
+      if (!this.namaProyek || !this.deskripsiProyek || !this.tenggatWaktu) {
+        Swal.fire({
+          icon: "warning",
+          title: "Data tidak lengkap",
+          text: "Harap lengkapi semua field sebelum menyimpan",
+        });
+        return;
+      }
+
+      const configStoreData = {
+        method: "post",
+        url: process.env.VUE_APP_BACKEND_URL_API + "admin",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.accessToken,
+        },
+        data: {
+          id: this.id || null,
+          project_name: this.namaProyek,
+          description: this.deskripsiProyek,
+          deadline: this.tenggatWaktu,
+          collaborator: this.kolaborator_data,
+        },
+      };
+
+      console.log("Data yang dikirim:", configStoreData.data);
+
+      axios(configStoreData)
+        .then((response) => {
+          console.log("Respon server:", response.data);
+          Swal.fire({
+            icon: "success",
+            title: "Berhasil",
+            text: response.data.message || "Data berhasil disimpan",
+          });
+          this.resetForm();
+        })
+        .catch((error) => {
+          console.error("Error saat mengirim data:", error);
+          if (error.response) {
+            console.error("Response:", error.response);
+          }
+          Swal.fire({
+            icon: "error",
+            title: "Gagal",
+            text: error.response?.data?.message || "Terjadi kesalahan saat menyimpan data",
+          });
+        });
+    },
+    resetForm() {
+      this.id = null;
+      this.namaProyek = "";
+      this.deskripsiProyek = "";
+      this.tenggatWaktu = "";
+      this.kolaborator_data = [];
     },
   },
-  
-
 };
-
 </script>
+
+
 
 <template>
   <!-- <Sidebar/> -->
@@ -95,103 +183,7 @@ updatemsg() {
         <BCard no-body>
           <BCardBody class="pb-0">
             <BCardTitle>Manajemen Proyek</BCardTitle>
-            <!-- <form class="row col-12" style="margin-bottom: 2%;">
-              <div class="col-2">
-                <label class="visually-hidden" for="autoSizingSelect">Preference</label>
-                <select class="form-select" id="autoSizingSelect">
-                  <option selected>Pilih</option>
-                  <option value="1">10</option>
-                  <option value="2">50</option>
-                  <option value="3">100</option>
-                </select>
-              </div>
-              <div class="d-flex align-items-center">
-                <label class="me-2">Show</label>
-                <select class="form-select w-auto" id="autoSizingSelect" aria-label="Select number of entries">
-                  <option value="10" selected>10</option>
-                  <option value="50">50</option>
-                  <option value="100">100</option>
-                </select>
-                <label class="ms-2">Entries</label>
-              </div>
-              <div class="col-3">
-                <input type="text" class="form-control" id="autoSizingInput" placeholder="Cari">
-              </div>
-              <div class="col-3" style="margin-left: auto;" >
-                <button type="button" class="btn btn-success h-100 w-100" alt="Disable" @click="modalTP = true" variant="primary"><i class="fa fa-plus"></i> TAMBAH PROYEK</button>
-                <BModal v-model="modalTP" id="modal-center" centered title="Tambah Proyek" hide-footer>
-                  <div class="p-3">
-                    <form>
-                      <div class="mb-3">
-                        <label for="judul-task" class="form-label fw-bold">Nama Proyek</label>
-                        <input type="text" class="form-control" id="autoSizingInput">
-                      </div>
-                      <div class="mb-3">
-                        <label for="judul-task" class="form-label fw-bold">Deskripsi Proyek</label>
-                        <input type="text" class="form-control" id="autoSizingInput">
-                      </div>
-                      <div class="mb-3">
-                        <label for="judul-task" class="form-label fw-bold">Nama Kolaborator</label>
-                        <div class="row">
-                        <div class="col-12">
-                          <table class="table mb-0 mt-0 table-bordered table-condensed table-hover">
-                            <thead class="bg-dark text-center text-white">
-                              <tr>
-                                <th style="width: 50px">No</th>
-                                <th style="width: auto">Kolaborator</th>
-                                <th style="width: 50px" class="text-center">
-                                  <b-button
-                                    type="button"
-                                    class="btn btn-success btn-sm"
-                                    @click="addRowPeserta"
-                                  >
-                                    <i class="fa fa-plus"></i>
-                                  </b-button>
-                                </th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr v-for="(row_data, key_data) in instruktur_data" :key="key_data">
-                                <td class="text-center">{{ key_data + 1 }}.</td>
-                                <td>
-                                  <v-select
-                                    label="nip_name"
-                                    v-model="row_data.instruktur_data"
-                                    :options="peserta_ref"
-                                    @search="onSearchInstruktur"
-                                    placeholder="Cari dan Pilih Kolaborator..."
-                                  ></v-select>
-                                </td>
-                              
-                                <td class="text-center">
-                                  <button
-                                    type="button"
-                                    class="btn btn-danger btn-sm"
-                                    @click="deleteRow(key_data, row_data)"
-                                  >
-                                    <i class="fa fa-minus"></i>
-                                  </button>
-                                </td>
-                              </tr>
-                            </tbody>
-                        </table>
-                        </div>
-                      </div>
-
-                      </div>
-                      <div class="mb-3">
-                        <label for="deadline" class="form-label fw-bold">Tenggat Waktu</label>
-                        <flat-pickr v-model="picked" :first-day-of-week="1" lang="en" confirm class="form-control"></flat-pickr>
-                      </div>
-                      <div class="text-end">
-                        <button type="button" class="btn btn-secondary btn-success" @click='successmsg()'>Simpan</button>
-                      </div>
-                    </form>
-                  </div>
-                </BModal>
-              </div>
-            </form> -->
-
+           
             <form class="row align-items-center" style="margin-bottom: 2%;">
               <!-- Dropdown Show Entries -->
               <div class="col-auto d-flex align-items-center pt-lg-4">
@@ -212,21 +204,21 @@ updatemsg() {
 
               <!-- Tombol Tambah Proyek -->
               <div class="col-auto ms-auto pt-lg-4 pt-4">
-                <button type="button" class="btn btn-success d-flex align-items-center d-none d-md-flex" alt="Disable" @click="modalTP = true"><i class="fa fa-plus me-2"></i> TAMBAH PROYEK</button>
-                <button type="button" class="btn btn-success d-flex align-items-center d-flex d-md-none" alt="Disable" @click="modalTP = true"><i class="fa fa-plus me-1"></i> PROYEK</button>
-                <BModal v-model="modalTP" id="modal-center" centered title="Tambah Proyek" hide-footer>
+                <button type="button" class="btn btn-success" @click="modalTP = true">
+                  <i class="fa fa-plus me-2"></i> TAMBAH PROYEK
+                </button>
+                <BModal v-model="modalTP" centered title="Tambah Proyek" hide-footer>
                   <div class="p-3">
-                    <form>
+                    <form @submit.prevent="storeDataProyek">
                       <div class="mb-3">
-                        <label for="judul-task" class="form-label fw-bold">Nama Proyek</label>
-                        <input type="text" class="form-control" id="autoSizingInput" placeholder="Inputkan Nama Proyek">
+                        <label for="namaProyek" class="form-label">Nama Proyek</label>
+                        <input type="text" class="form-control" v-model="namaProyek" placeholder="Inputkan Nama Proyek">
                       </div>
                       <div class="mb-3">
-                        <label for="judul-task" class="form-label fw-bold">Deskripsi Proyek</label>
-                        <!-- <input type="text-area" class="form-control" id="autoSizingInput"> -->
-                        <textarea class="form-control" placeholder="Tuliskan Deskripsi Proyek" rows="2"></textarea>
+                        <label for="deskripsiProyek" class="form-label">Deskripsi Proyek</label>
+                        <textarea class="form-control" v-model="deskripsiProyek" rows="2" placeholder="Tuliskan Deskripsi Proyek"></textarea>
                       </div>
-                      <div class="mb-3">
+                      <!-- <div class="mb-3">
                         <label for="judul-task" class="form-label fw-bold">Nama Kolaborator</label>
                         <div class="row">
                         <div class="col-12">
@@ -247,14 +239,14 @@ updatemsg() {
                               </tr>
                             </thead>
                             <tbody>
-                              <tr v-for="(row_data, key_data) in instruktur_data" :key="key_data">
+                              <tr v-for="(row_data, key_data) in kolaborator_data" :key="key_data">
                                 <td class="text-center">{{ key_data + 1 }}.</td>
                                 <td>
                                   <v-select
                                     label="nip_name"
-                                    v-model="row_data.instruktur_data"
+                                    v-model="row_data.kolaborator_data"
                                     :options="peserta_ref"
-                                    @search="onSearchInstruktur"
+                                    @search="onSearchKolaborator"
                                     placeholder="Cari dan Pilih Kolaborator..."
                                   ></v-select>
                                 </td>
@@ -273,14 +265,14 @@ updatemsg() {
                         </table>
                         </div>
                       </div>
+                      </div> -->
 
-                      </div>
                       <div class="mb-3">
-                        <label for="deadline" class="form-label fw-bold">Tenggat Waktu</label>
-                        <flat-pickr v-model="picked" :first-day-of-week="1" lang="en" confirm class="form-control"></flat-pickr>
+                        <label for="tenggatWaktu" class="form-label">Tenggat Waktu</label>
+                        <flat-pickr v-model="tenggatWaktu" class="form-control"></flat-pickr>
                       </div>
                       <div class="text-end">
-                        <button type="button" class="btn btn-secondary btn-success" @click='successmsg()'>Simpan</button>
+                        <button type="submit" class="btn btn-success">Simpan</button>
                       </div>
                     </form>
                   </div>
@@ -355,14 +347,14 @@ updatemsg() {
                               </tr>
                             </thead>
                             <tbody>
-                              <tr v-for="(row_data, key_data) in instruktur_data" :key="key_data">
+                              <tr v-for="(row_data, key_data) in kolaborator_data" :key="key_data">
                                 <td class="text-center">{{ key_data + 1 }}.</td>
                                 <td>
                                   <v-select
                                     label="nip_name"
-                                    v-model="row_data.instruktur_data"
+                                    v-model="row_data.kolaborator_data"
                                     :options="peserta_ref"
-                                    @search="onSearchInstruktur"
+                                    @search="onSearchKolaborator"
                                     placeholder="Cari dan Pilih Kolaborator..."
                                   ></v-select>
                                 </td>
