@@ -212,7 +212,8 @@ updatemsg() {
 
               <!-- Tombol Tambah Proyek -->
               <div class="col-auto ms-auto pt-lg-4 pt-4">
-                <button type="button" class="btn btn-success d-flex align-items-center" alt="Disable" @click="modalTP = true"><i class="fa fa-plus me-2"></i> <span class="d-none d-md-flex">TAMBAH PROYEK</span></button>
+                <button type="button" class="btn btn-success d-flex align-items-center d-none d-md-flex" alt="Disable" @click="modalTP = true"><i class="fa fa-plus me-2"></i> TAMBAH PROYEK</button>
+                <button type="button" class="btn btn-success d-flex align-items-center d-flex d-md-none" alt="Disable" @click="modalTP = true"><i class="fa fa-plus me-1"></i> PROYEK</button>
                 <BModal v-model="modalTP" id="modal-center" centered title="Tambah Proyek" hide-footer>
                   <div class="p-3">
                     <form>

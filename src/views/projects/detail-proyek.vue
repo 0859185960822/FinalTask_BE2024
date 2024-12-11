@@ -445,8 +445,9 @@ sendmsg() {
             </div>
 
   <!-- Tombol Tambah Task -->
-  <div class="col-auto ms-auto pt-lg-4">
-    <button type="button" class="btn btn-success d-flex align-items-center" alt="Disable" @click="modalTT = true"><i class="fa fa-plus me-2"></i> TAMBAH TASK</button>
+  <div class="col-auto ms-auto pt-lg-4 pt-4">
+    <button type="button" class="btn btn-success d-flex align-items-center d-none d-md-flex" alt="Disable" @click="modalTT = true"><i class="fa fa-plus me-2"></i>TAMBAH TASK</button>
+    <button type="button" class="btn btn-success d-flex align-items-center d-flex d-md-none" alt="Disable" @click="modalTT = true"><i class="fa fa-plus me-2"></i>TASK</button>
     <BModal v-model="modalTT" id="modal-center" centered title="Tambah Task" hide-footer>
                     <div class="p-3">
                       <form>
