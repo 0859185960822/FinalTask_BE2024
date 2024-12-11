@@ -39,41 +39,45 @@ export default {
                 <button type="button" class="btn btn-success h-100 w-100" alt="Disable"><i class="mdi-microsoft-excel"></i> EXPORT TO EXCEL</button>
               </div>
             </form> -->
+
+           
+
+
             <form class="row g-3 align-items-center" style="margin-bottom: 2%;">
   <!-- Input Nama Proyek -->
-  <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+  <!-- <div class="col-12 col-sm-6 col-md-4 col-lg-2">
     <label for="projectName" class="form-label">Cari Proyek</label>
     <input type="text" class="form-control" id="projectName" placeholder="Cari Proyek">
-  </div>
+  </div> -->
 
   <!-- Dropdown Status Proyek -->
-  <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+  <!-- <div class="col-12 col-sm-6 col-md-4 col-lg-2">
     <label for="projectStatus" class="form-label">Status Proyek</label>
     <select class="form-select" id="projectStatus">
       <option value="status" selected>Status</option>
       <option value="tepat waktu">Tepat Waktu</option>
       <option value="terlambat">Terlambat</option>
     </select>
-  </div>
+  </div> -->
 
   <!-- Input Progres -->
-  <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+  <!-- <div class="col-12 col-sm-6 col-md-4 col-lg-2">
     <label for="progress" class="form-label">Progres</label>
-    <input type="text" class="form-control" id="progress" placeholder="Cari progress">
-  </div>
+    <input type="text" class="form-control" id="progress" placeholder="Cari progress"> -->
+  <!-- </div> -->
 
   <!-- Input Sisa Waktu -->
-  <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+  <!-- <div class="col-12 col-sm-6 col-md-4 col-lg-2">
     <label for="remainingTime" class="form-label">Sisa Waktu</label>
     <input type="text" class="form-control" id="remainingTime" placeholder="Cari sisa waktu">
-  </div>
+  </div> -->
 
   <!-- Tombol Filter -->
-  <div class="col-12 col-sm-6 col-md-4 col-lg-2 d-flex pt-4 align-items-end">
+  <!-- <div class="col-12 col-sm-6 col-md-4 col-lg-2 d-flex pt-4 align-items-end">
     <button type="button" class="btn btn-info w-100">
       <i class="bx bx-filter"></i> FILTER
     </button>
-  </div>
+  </div> -->
 
   <!-- Tombol Export to Excel -->
   <div class="col-12 col-sm-6 col-md-4 col-lg-2 pt-md-0 pt-lg-4 d-flex align-items-end">
@@ -81,10 +85,10 @@ export default {
       <i class="fas fa-file-excel me-2"></i> EXPORT
     </button>
   </div>
-</form>
+<!-- </form> -->
 
-            
-            <form class="row col-auto" style="margin-bottom: 2%;">
+<!--             
+            <form class="row col-auto" style="margin-bottom: 2%;"> -->
               <!-- <div class="row col-8" style="border: 1px solid #DCDCDC; margin-left: 1%; padding: 10px;">
                 <div class="col-4">
                   <label class="visually-hidden" for="autoSizingSelect">Preference</label>
@@ -102,15 +106,68 @@ export default {
                 </div>
               </div> -->
 
-              <div class="col-auto d-flex align-items-center">
-                <label class="me-2">Show</label>
+              <!-- <label class="me-2">Show</label>
                 <select class="form-select w-auto" id="autoSizingSelect" aria-label="Select number of entries">
                   <option value="10" selected>10</option>
                   <option value="50">50</option>
                   <option value="100">100</option>
                 </select>
-                <label class="ms-2">Entries</label>
-              </div>
+                <label class="ms-2">Entries</label> -->
+
+
+                <div class="col-auto d-flex align-items-center">
+  <form class="row g-3 align-items-center" style="gap: 0.85rem; flex-wrap: wrap;">
+    
+    <!-- Show Entries -->
+    <div class="col-12 col-sm-6 col-md-2 col-lg-1 d-flex flex-column">
+      <label class="form-label">Show Entries</label>
+      <select class="form-select w-auto" id="autoSizingSelect" aria-label="Select number of entries">
+        <option value="10" selected>10</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
+      </select>
+    </div>
+
+    <!-- Input Nama Proyek -->
+    <div class="col-12 col-sm-6 col-md-3 col-lg-2 d-flex flex-column pt-3">
+      <label for="projectName" class="form-label">Cari Proyek</label>
+      <input type="text" class="form-control" id="projectName" placeholder="Cari Proyek">
+    </div>
+
+    <!-- Dropdown Status Proyek -->
+    <div class="col-12 col-sm-6 col-md-3 col-lg-2 d-flex flex-column pt-3">
+      <label for="projectStatus" class="form-label">Status Proyek</label>
+      <select class="form-select" id="projectStatus">
+        <option value="status" selected>Status</option>
+        <option value="tepat waktu">Tepat Waktu</option>
+        <option value="terlambat">Terlambat</option>
+      </select>
+    </div>
+
+    <!-- Input Progres -->
+    <div class="col-12 col-sm-6 col-md-3 col-lg-2 d-flex flex-column pt-3">
+      <label for="progress" class="form-label">Progres</label>
+      <input type="text" class="form-control" id="progress" placeholder="Cari progress">
+    </div>
+
+    <!-- Input Sisa Waktu -->
+    <div class="col-12 col-sm-6 col-md-3 col-lg-2 d-flex flex-column pt-3">
+      <label for="remainingTime" class="form-label">Sisa Waktu</label>
+      <input type="text" class="form-control" id="remainingTime" placeholder="Cari sisa waktu">
+    </div>
+
+    <!-- Button Filter -->
+    <div class="col-12 col-sm-6 col-md-3 col-lg-2 d-flex flex-column justify-content-end pt-5">
+      <button type="button" class="btn btn-info w-100">
+        <i class="bx bx-filter"></i> FILTER
+      </button>
+    </div>
+  </form>
+</div>
+
+
+
+
             </form>
            
             <div class="table-responsive">
@@ -137,10 +194,10 @@ export default {
                   <BTr style="border-collapse: collapse; border: 1px solid black">
                     <BTh scope="row">1</BTh>
                     <BTd style="border-collapse: collapse; border: 1px solid black;">Proyek A</BTd>
-                    <BTd style="border-collapse: collapse; border: 1px solid black;">Proyek Cukup sulit</BTd>
+                    <BTd style="border-collapse: collapse; border: 1px solid black;">50%</BTd>
                     <BTd style="border-collapse: collapse; border: 1px solid black;">20/11/2021</BTd>
-                    <BTd style="border-collapse: collapse; border: 1px solid black;text-align: center;"><span class="badge bg-danger">3 Years Ago</span></BTd>
-                    <BTd style="border-collapse: collapse; border: 1px solid black;text-align: center;"><span class="badge bg-danger">Terlambat</span></BTd>
+                    <BTd style="border-collapse: collapse; border: 1px solid black;text-align: center;"><span class="badge bg-danger">3 Hari</span></BTd>
+                    <BTd style="border-collapse: collapse; border: 1px solid black;text-align: center;"><span class="badge bg-danger">On going</span></BTd>
                   </BTr>
                 </BTbody>
               </BTableSimple>
