@@ -1,13 +1,11 @@
 <script>
 import router from "@/router";
+import { layoutComputed } from "@/state/helpers";
 
 import NavBar from "@/components/nav-bar";
 import SideBar from "@/components/side-bar";
 import RightBar from "@/components/right-bar";
 import Footer from "@/components/footer";
-
-import { useLayoutStore } from "@/state/pinia";
-const layoutStore = useLayoutStore();
 
 /**
  * Vertical layout
@@ -16,23 +14,13 @@ export default {
   components: { NavBar, SideBar, RightBar, Footer },
   data() {
     return {
-      type: layoutStore.leftSidebarType,
-      isMenuCondensed: false
+      type: this.$store ? this.$store.state.layout.leftSidebarType : null || null,
+      width: this.$store ? this.$store.state.layout.layoutWidth : null || null,
+      isMenuCondensed: false,
     };
   },
   computed: {
-    layoutWidth() {
-      return layoutStore.layoutWidth;
-    },
-    leftSidebarType() {
-      return layoutStore.leftSidebarType;
-    },
-    loader() {
-      return layoutStore.loader;
-    },
-    mode() {
-      return layoutStore.mode
-    }
+    ...layoutComputed,
   },
   created: () => {
     document.body.removeAttribute("data-layout", "horizontal");
@@ -65,7 +53,7 @@ export default {
     },
     hideRightSidebar() {
       document.body.classList.remove("right-bar-enabled");
-    }
+    },
   },
   mounted() {
     if (this.loader === true) {
@@ -80,7 +68,7 @@ export default {
       document.getElementById("preloader").style.display = "none";
       document.getElementById("status").style.display = "none";
     }
-  }
+  },
 };
 </script>
 
@@ -100,12 +88,7 @@ export default {
     </div>
     <div id="layout-wrapper">
       <NavBar />
-      <SideBar
-        :is-condensed="isMenuCondensed"
-        :type="leftSidebarType"
-        :width="layoutWidth"
-        :mode="mode"
-      />
+      <SideBar :is-condensed="isMenuCondensed" :type="leftSidebarType" :width="layoutWidth" />
       <!-- ============================================================== -->
       <!-- Start Page Content here -->
       <!-- ============================================================== -->
@@ -113,9 +96,9 @@ export default {
       <div class="main-content">
         <div class="page-content">
           <!-- Start Content-->
-          <BContainer fluid>
+          <div class="container-fluid">
             <slot />
-          </BContainer>
+          </div>
         </div>
         <Footer />
       </div>
@@ -123,3 +106,4 @@ export default {
     </div>
   </div>
 </template>
+

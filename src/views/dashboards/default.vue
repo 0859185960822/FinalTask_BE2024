@@ -3,8 +3,6 @@ import Layout from "../../layouts/main";
 import PageHeader from "@/components/page-header";
 // import ProjectStats from "../../components/widgets/progress1.vue";
 import Stat from "../../components/widgets/stat.vue";
-import Emailsent from "../../components/widgets/emailsent.vue";
-// import SideBar from "../../components/side-bar.vue";
 
 
 
@@ -17,8 +15,7 @@ export default {
     PageHeader,
     // ProjectStats,
     Stat,
-    Emailsent,
-    // SideBar,
+    
 
     
 
@@ -86,13 +83,12 @@ export default {
             <Stat :icon="stat.icon" :title="stat.title" :value="stat.value" />
           </BCol>
         </BRow>
-        
         </BCol>
     </BRow>
 
 
 
-        <BRow>
+        <!-- <BRow>
             <BCol md="12" lg="12">
                 <BCard>
                   <div class="d-flex align-item-center justify-content-between my-0 py-0 border">
@@ -102,13 +98,12 @@ export default {
                           content.</BCardText>
                     </div>
                     <div class="d-flex ">
-                      <BCol md="5" class="mx-5 my-0">
+                      <BCol md="4" class="mx-5 my-0">
                         <BCard bg-variant="danger" class="text-center">
                           <h5 class="mt-0 mb-4 text-white">
                             <i class="mdi mdi-alert-outline me-3"></i> Deadline<br>
                             2024-12-12
                           </h5>
-                          <BCardText class="text-center h3">20</BCardText>
                         </BCard>
                       </BCol>
                       <BCol md="4" class="mx-5 my-0">
@@ -133,15 +128,51 @@ export default {
                             </div>
                 </BCard>
             </BCol>
-            <Emailsent :updating="fetchingStats" />
-        </BRow>
+          
+        </BRow> -->
+
+
+        <div id="app" class="container mt-4">
+    <div class="card-container">
+      <!-- Baris atas -->
+      <div class="top-row">
+        <!-- Judul Proyek -->
+        <h3 class="judul-section">{{ project.name }}</h3>
+
+        <!-- Deadline -->
+        <div class="deadline-box">
+          <i class="mdi mdi-alert-outline me-3 text-white"> Deadline</i>
+          <p class="fw-bold text-white">{{ project.deadline }}</p>
+        </div>
+
+        <!-- Sisa Waktu -->
+        <div class="sisa-waktu-container">
+          <i class="mdi mdi-alert-outline me-3 text-white mt-3"> Sisa Waktu (hari)</i>
+          <p class="sisa-hari text-white fw-bold display-6">{{ project.daysLeft }}</p>
+        </div>
+      </div>
+
+      <!-- Baris progress -->
+      <div class="progress-container w-100">
+        <div class="progress-wrapper w-100">
+          <div class="d-flex justify-content-between">
+            <span>Presentase</span>
+            <span class="fw-bold">{{ project.progress }}%</span>
+          </div>
+          <div class="progress mt-2">
+            <div class="progress-bar bg-success" :style="{ width: project.progress + '%' }"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
     
   </Layout>
 </template>
 
 <style>
     .card-container {
-      background-color: #d6d6d6;
+      background-color: #ffffff;
       padding: 20px;
       border-radius: 8px;
       display: flex;
@@ -157,26 +188,26 @@ export default {
     }
     .deadline-box {
       text-align: center;
-      flex: 2;
-      background-color: white;
+      flex: 1;
+      background-color: #F46A6A;
       padding: 10px;
       border-radius: 8px;
       margin: 0 10px;
+      
     }
     .sisa-waktu-container {
-      background-color: white;
+      background-color: #F46A6A;
       border-radius: 8px;
       text-align: center;
-      /* padding: 10px; */
+      padding: 10px;
       flex: 1;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      /* margin-bottom: 2px; */
-      /* height: 200px; */
+      height: 75px;
     }
     .progress-container {
-      background-color: #50a5f1;
+      background-color: #eef5fc;
       padding: 10px;
       border-radius: 8px;
       margin-top: 10px;
