@@ -17,8 +17,6 @@ export default {
     Stat,
     
 
-    
-
   },
   data() {
     return {

@@ -1,7 +1,7 @@
 <script>
 import Layout from "../../layouts/main";
 import PageHeader from "@/components/page-header";
-// import Sidebar from "../../components/side-bar.vue";
+import Stat from "../../components/widgets/stat.vue";
 import Page from "../../components/common/pagination.vue";
 import { ref } from "vue";
 import flatPickr from "vue-flatpickr-component";
@@ -27,12 +27,31 @@ export default {
       picked: ref(new Date()),
     };
   },
-  components: { Layout, PageHeader,Page,flatPickr, },
+  components: { Layout, PageHeader,Page,flatPickr,Stat, },
   data() {
     return {
-      // statData: [
-      
-      // ],
+      statData: [
+        {
+          icon: "bx bx-copy-alt",
+          title: "Total Task",
+          value: "1,235",
+        },
+        {
+          icon: "bx bx-archive-in",
+          title: "Task Pending",
+          value: "23",
+        },
+        {
+          icon: "bx bx-purchase-tag-alt",
+          title: "Task Ongoing",
+          value: "16",
+        },
+        {
+          icon: "bx bx-list-check",
+          title: "Task Done",
+          value: "16",
+        },
+      ],
 
       project: {
         name: "Project A",
@@ -114,7 +133,7 @@ sendmsg() {
           <div style="display: flex; margin-bottom: 1%;">
             <BCardTitle>Detail Proyek</BCardTitle>
             <div class="col-3" style="margin-left: auto; margin-right: 1%;" >
-                <!-- <button type="button" class="btn btn-success h-100 w-100" alt="Disable" @click="modalTK = true" variant="primary">TAMBAH KOLABORATOR <i class="fa fa-plus"></i></button>
+                <button type="button" class="btn btn-success h-100 w-100" alt="Disable" @click="modalTK = true" variant="primary">TAMBAH KOLABORATOR <i class="fa fa-plus"></i></button>
                   <BModal v-model="modalTK" id="modal-center" centered title="Tambah Kolaborator" hide-footer>
                     <div class="p-3">
                       <form>
@@ -164,11 +183,11 @@ sendmsg() {
                         </div>
                       </div>
                         <div class="text-end mt-3">
-                          <button type="button" class="btn btn-secondary">Tambah</button>
+                          <button type="button" class="btn btn-secondary btn-success">Tambah</button>
                         </div>
                       </form>
                     </div>
-                  </BModal> -->
+                  </BModal>
                 </div>
             <div class="col-3">
                 <button type="button" class="btn btn-warning h-100 w-100" alt="Disable" @click="modalSP = true" variant="primary">SUNTING PROYEK <i class="fa fa-edit"></i> </button>
@@ -184,10 +203,10 @@ sendmsg() {
                           <!-- <input type="text" class="form-control" id="autoSizingInput" value="ini deskripsi"> -->
                           <textarea class="form-control" placeholder="Tuliskan Deskripsi Proyek" rows="2" value="ini deskripsi proyek"></textarea>
                         </div>
-                        <div class="mb-3">
+                        <!-- <div class="mb-3">
                           <label for="judul-task" class="form-label fw-bold">Nama Kolaborator</label>
                           <div class="row">
-                        <div class="col-12">
+                          <div class="col-12">
                           <table class="table mb-0 mt-0 table-bordered table-condensed table-hover">
                             <thead class="bg-dark text-center text-white">
                               <tr>
@@ -228,10 +247,10 @@ sendmsg() {
                                 </td>
                               </tr>
                             </tbody>
-                        </table>
+                          </table>
                         </div>
                       </div>
-                        </div>
+                        </div> -->
                         <div class="mb-3">
                           <label for="deadline" class="form-label fw-bold">Tenggat Waktu</label>
                           <flat-pickr v-model="picked" :first-day-of-week="1" lang="en" confirm class="form-control"></flat-pickr>
@@ -284,7 +303,20 @@ sendmsg() {
           </div> -->
 
 
-          <div class="d-flex justify-content-between align-items-center gap-5" id="tolong tengahin" style="padding: 1%; text-align: center;">
+          <BRow>
+            <BCol xl="10" md="12" lg=12>
+              <Profile :updating="fetchingStats" />
+              <Earning :updating="earningStatus" />
+            </BCol>
+            <BCol xl="12" md="12" lg="12">
+              <BRow>
+                <BCol md="3" v-for="stat of statData" :key="stat.icon">
+                  <Stat :icon="stat.icon" :title="stat.title" :value="stat.value" />
+                </BCol>
+              </BRow>
+            </BCol>
+          </BRow>
+          <!-- <div class="d-flex justify-content-between align-items-center gap-5" id="tolong tengahin" style="padding: 1%; text-align: center;">
             <div class="col-2 h-100" style="background-color:#DCDCDC; padding: 1%; border-radius: 5%;">
               <p>TOTAL TASK</p>
               <div style="background-color: white; height: 3rem; border-radius: 5%;">
@@ -309,7 +341,7 @@ sendmsg() {
                 <p style="padding-top: 5%; font-size: 2em">10</p>
               </div>
             </div>
-          </div>
+          </div> -->
 
             <!-- <div style="display: flex;" class="row col-12">
               <form class="row col-9 " style="margin-bottom: 2%;">
