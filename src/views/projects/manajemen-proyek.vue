@@ -211,8 +211,8 @@ updatemsg() {
               </div>
 
               <!-- Tombol Tambah Proyek -->
-              <div class="col-auto ms-auto pt-lg-4">
-                <button type="button" class="btn btn-success d-flex align-items-center" alt="Disable" @click="modalTP = true"><i class="fa fa-plus me-2"></i> TAMBAH PROYEK</button>
+              <div class="col-auto ms-auto pt-lg-4 pt-4">
+                <button type="button" class="btn btn-success d-flex align-items-center" alt="Disable" @click="modalTP = true"><i class="fa fa-plus me-2"></i> <span class="d-none d-md-flex">TAMBAH PROYEK</span></button>
                 <BModal v-model="modalTP" id="modal-center" centered title="Tambah Proyek" hide-footer>
                   <div class="p-3">
                     <form>
@@ -293,7 +293,7 @@ updatemsg() {
                 <BThead>
                   <BTr style="border-collapse: collapse; border: 1px solid black">
                     <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; vertical-align: middle;border-collapse: collapse; border: 1px solid black;">No</BTh>
-                    <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; border-collapse: collapse; border: 1px solid black;">Nama Proyek <button class="btn btn-sm btn-link p-0"><i class="fa fa-sort"></i></button></BTh>
+                    <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; border-collapse: collapse; border: 1px solid black;">Proyek <button class="btn btn-sm btn-link p-0"><i class="fa fa-sort"></i></button></BTh>
                     <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; border-collapse: collapse; border: 1px solid black;">Deskripsi <button class="btn btn-sm btn-link p-0"><i class="fa fa-sort"></i></button></BTh>
                     <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; border-collapse: collapse; border: 1px solid black;">Tenggat <button class="btn btn-sm btn-link p-0"><i class="fa fa-sort"></i></button></BTh>
                     <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; border-collapse: collapse; border: 1px solid black;">Sisa Waktu <button class="btn btn-sm btn-link p-0"><i class="fa fa-sort"></i></button></BTh>
