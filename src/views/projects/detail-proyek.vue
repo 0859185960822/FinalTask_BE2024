@@ -439,7 +439,7 @@ sendmsg() {
             </div>
 
             <!-- Input Pencarian -->
-            <div class="col-auto">
+            <div class="col-md-auto col-7">
               <label>Data Proyek</label>
               <input type="text" class="form-control" id="autoSizingInput" placeholder="Cari Data Proyek">
             </div>
