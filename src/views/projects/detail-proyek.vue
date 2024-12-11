@@ -429,7 +429,7 @@ sendmsg() {
           <b-card header-class="bg-transparent border-primary" class="border border-primary">
           <form class="row align-items-center" style="margin-bottom: 2%;">
             <!-- Dropdown Show Entries -->
-            <div class="col-auto d-flex align-items-center">
+            <div class="col-auto d-flex align-items-center pt-lg-4">
               <label class="me-2">Show</label>
               <select class="form-select w-auto" id="autoSizingSelect" aria-label="Select number of entries">
                 <option value="10" selected>10</option>
@@ -441,12 +441,14 @@ sendmsg() {
 
             <!-- Input Pencarian -->
             <div class="col-auto">
+              <label>Data Proyek</label>
               <input type="text" class="form-control" id="autoSizingInput" placeholder="Cari Data Proyek">
             </div>
 
   <!-- Tombol Tambah Task -->
-  <div class="col-auto ms-auto">
-    <button type="button" class="btn btn-success d-flex align-items-center" alt="Disable" @click="modalTT = true"><i class="fa fa-plus me-2"></i> TAMBAH TASK</button>
+  <div class="col-auto ms-auto pt-lg-4 pt-4">
+    <button type="button" class="btn btn-success d-flex align-items-center d-none d-md-flex" alt="Disable" @click="modalTT = true"><i class="fa fa-plus me-2"></i>TAMBAH TASK</button>
+    <button type="button" class="btn btn-success d-flex align-items-center d-flex d-md-none" alt="Disable" @click="modalTT = true"><i class="fa fa-plus me-2"></i>TASK</button>
     <BModal v-model="modalTT" id="modal-center" centered title="Tambah Task" hide-footer>
                     <div class="p-3">
                       <form>
@@ -512,7 +514,7 @@ sendmsg() {
                 <BThead>
                   <BTr style="border-collapse: collapse; border: 1px solid black">
                     <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; vertical-align: middle;border-collapse: collapse; border: 1px solid black;">No</BTh>
-                    <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; border-collapse: collapse; border: 1px solid black;">Nama Kolaborator <button class="btn btn-sm btn-link p-0"><i class="fa fa-sort"></i></button></BTh>
+                    <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; border-collapse: collapse; border: 1px solid black;">Kolaborator <button class="btn btn-sm btn-link p-0"><i class="fa fa-sort"></i></button></BTh>
                     <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; border-collapse: collapse; border: 1px solid black;">Task <button class="btn btn-sm btn-link p-0"><i class="fa fa-sort"></i></button></BTh>
                     <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; border-collapse: collapse; border: 1px solid black;">Status <button class="btn btn-sm btn-link p-0"><i class="fa fa-sort"></i></button></BTh>
                     <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; border-collapse: collapse; border: 1px solid black;">Sisa Waktu <button class="btn btn-sm btn-link p-0"><i class="fa fa-sort"></i></button></BTh>
