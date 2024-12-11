@@ -89,8 +89,11 @@ export default {
       <!-- Baris atas -->
       <div class="top-row">
         <!-- Judul Proyek -->
-        <h3 class="judul-section">{{ project.name }}</h3>
-
+        <div class="judul">
+          <h3 class="judul-section">{{ project.name }}</h3>
+          <p>ini detail project </p>
+        </div>
+         
         <!-- Deadline -->
         <div class="deadline-box">
           <i class="mdi mdi-alert-outline me-3 text-white"> Deadline</i>
@@ -135,9 +138,9 @@ export default {
       justify-content: space-between;
       align-items: center;
     }
-    .judul-section {
-      flex: 2;
-    }
+   .judul{
+    width: 500px;
+   }
     .deadline-box {
       text-align: center;
       flex: 1;

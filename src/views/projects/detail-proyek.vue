@@ -288,8 +288,10 @@ sendmsg() {
       <!-- Baris atas -->
       <div class="top-row">
         <!-- Judul Proyek -->
-        <h3 class="judul-section">{{ project.name }}</h3>
-
+        <div class="judul">
+          <h3 class="judul-section">{{ project.name }}</h3>
+          <p>ini detail project </p>
+        </div>
         <!-- Deadline -->
         <div class="deadline-box">
           <i class="mdi mdi-alert-outline me-3 text-white"> Deadline</i>
@@ -440,7 +442,7 @@ sendmsg() {
             </div>
 
             <!-- Input Pencarian -->
-            <div class="col-auto">
+            <div class="col-md-auto col-7">
               <label>Data Proyek</label>
               <input type="text" class="form-control" id="autoSizingInput" placeholder="Cari Data Proyek">
             </div>
@@ -725,9 +727,9 @@ sendmsg() {
     align-items: center;
     width: 100%;
   }
-    .judul-section {
-      flex: 2;
-    }
+  .judul{
+    width: 500px;
+   }
     .deadline-box {
       text-align: center;
       flex: 1;
