@@ -139,7 +139,7 @@ export default {
                     <BTd style="border-collapse: collapse; border: 1px solid black;">Proyek A</BTd>
                     <BTd style="border-collapse: collapse; border: 1px solid black;">Proyek Cukup sulit</BTd>
                     <BTd style="border-collapse: collapse; border: 1px solid black;">20/11/2021</BTd>
-                    <BTd style="border-collapse: collapse; border: 1px solid black;text-align: center;"><span class="badge bg-danger">3 Years Ago</span></BTd>
+                    <BTd style="border-collapse: collapse; border: 1px solid black;text-align: center;"><span class="badge bg-danger">3 Hari</span></BTd>
                     <BTd style="border-collapse: collapse; border: 1px solid black;text-align: center;"><span class="badge bg-danger">Terlambat</span></BTd>
                   </BTr>
                 </BTbody>

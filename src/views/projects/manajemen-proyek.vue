@@ -316,7 +316,7 @@ updatemsg() {
                     <BTd style="border-collapse: collapse; border: 1px solid black;">Proyek Cukup sulit</BTd>
                     <BTd style="border-collapse: collapse; border: 1px solid black;">20/11/2021</BTd>
                     <BTd style="border-collapse: collapse; border: 1px solid black;">10 Hari Yang lalu</BTd>
-                    <BTd style="border-collapse: collapse; border: 1px solid black;">20 <span style="color: red">%</span></BTd>
+                    <BTd style="border-collapse: collapse; border: 1px solid black;">20%</BTd>
                     <BTd style="border-collapse: collapse; border: 1px solid black;">
                       <router-link :to="'detail-proyek'" class="btn btn-info btn-sm mb-1 w-100">
                         <i class="bx bx-info-circle"></i> DETAILS

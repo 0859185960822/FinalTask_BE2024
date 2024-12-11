@@ -114,7 +114,7 @@ export default {
           </a>
 
           <router-link
-            :to="item.link"
+            :to="{name:item.link}"
             v-if="!hasItems(item)"
             class="side-nav-link-ref"
           >
@@ -130,7 +130,7 @@ export default {
           <ul v-if="hasItems(item)" class="sub-menu" aria-expanded="false">
             <li v-for="(subitem, index) of item.subItems" :key="index">
               <router-link
-                :to="subitem.link"
+                :to="{name:subitem.link}"
                 v-if="!hasItems(subitem)"
                 class="side-nav-link-ref"
                 >{{ $t(subitem.label) }}</router-link
