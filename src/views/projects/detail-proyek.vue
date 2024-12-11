@@ -151,7 +151,7 @@ sendmsg() {
           <div style="display: flex; margin-bottom: 1%;">
             <BCardTitle>Detail Proyek</BCardTitle>
             <div class="col-3" style="margin-left: auto; margin-right: 1%;" >
-                <button type="button" class="btn btn-success h-100 w-100" alt="Disable" @click="modalTK = true" variant="primary">TAMBAH KOLABORATOR <i class="fa fa-plus"></i></button>
+                <button type="button" class="btn btn-success h-100 w-100" alt="Disable" @click="modalTK = true" variant="primary"><i class="fa fa-plus"></i>  TAMBAH KOLABORATOR </button>
                   <BModal v-model="modalTK" id="modal-center" centered title="Tambah Kolaborator" hide-footer>
                     <div class="p-3">
                       <form>
@@ -208,7 +208,7 @@ sendmsg() {
                   </BModal>
                 </div>
             <div class="col-3">
-                <button type="button" class="btn btn-warning h-100 w-100" alt="Disable" @click="modalSP = true" variant="primary">SUNTING PROYEK <i class="fa fa-edit"></i> </button>
+                <button type="button" class="btn btn-warning h-100 w-100" alt="Disable" @click="modalSP = true" variant="primary"><i class="fa fa-edit"></i>  SUNTING PROYEK </button>
                 <BModal v-model="modalSP" id="modal-center" centered title="Sunting Proyek" hide-footer>
                     <div class="p-3">
                       <form>
@@ -282,43 +282,41 @@ sendmsg() {
             </div>
           </div>
           
-          <!-- <div id="app" class="container mt-4">
-            <div class="card-container"> -->
-              <!-- Baris atas -->
-              <!-- <div class="top-row"> -->
-                <!-- Judul Proyek -->
-                <!-- <div class="mt-2">
-                  <h4 class="judul-section">{{ project.name }}</h4>
-                  <h5>ini proyek pertama kita</h5>
-                </div>
-                <div class="w-50"></div> -->
-                <!-- Deadline -->
-                <!-- <div class="deadline-box">
-                  <p class="fw-bold mb-1">Deadline</p>
-                  <p class="fw-bold">{{ project.deadline }}</p>
-                </div> -->
+          <b-card header-class="bg-transparent border-primary" class="border border-primary">
+  <div id="app" class="container mt-4">
+    <div class="card-container">
+      <!-- Baris atas -->
+      <div class="top-row">
+        <!-- Judul Proyek -->
+        <h3 class="judul-section">{{ project.name }}</h3>
 
-                <!-- Sisa Waktu -->
-                <!-- <div class="sisa-waktu-container">
-                  <p class="fw-bold mb-1 mt-3">Sisa Waktu (hari)</p>
-                  <p class="sisa-hari">{{ project.daysLeft }}</p>
-                </div>
-              </div> -->
+        <!-- Deadline -->
+        <div class="deadline-box">
+          <i class="mdi mdi-alert-outline me-3 text-white"> Deadline</i>
+          <p class="fw-bold text-white">{{ project.deadline }}</p>
+        </div>
 
-              <!-- Baris progress -->
-              <!-- <div class="progress-container w-100">
-                <div class="progress-wrapper w-100">
-                  <div class="d-flex justify-content-between">
-                    <span>Presentase</span>
-                    <span class="fw-bold">{{ project.progress }}%</span>
-                  </div>
-                  <div class="progress mt-2">
-                    <div class="progress-bar bg-dark" :style="{ width: project.progress + '%' }"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div> -->
+        <!-- Sisa Waktu -->
+        <div class="sisa-waktu-container">
+          <i class="mdi mdi-alert-outline me-3 text-white mt-3"> Sisa Waktu (hari)</i>
+          <p class="sisa-hari text-white fw-bold md:display-6">{{ project.daysLeft }}</p>
+        </div>
+      </div>
+
+      <!-- Baris progress -->
+      <div class="progress-container w-100">
+        <div class="progress-wrapper w-100">
+          <div class="d-flex justify-content-between">
+            <span>Presentase</span>
+            <span class="fw-bold">{{ project.progress }}%</span>
+          </div>
+          <div class="progress mt-2">
+            <div class="progress-bar bg-success" :style="{ width: project.progress + '%' }"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
 
           <BRow>
@@ -334,6 +332,8 @@ sendmsg() {
               </BRow>
             </BCol>
           </BRow>
+          </b-card>
+          
           <!-- <div class="d-flex justify-content-between align-items-center gap-5" id="tolong tengahin" style="padding: 1%; text-align: center;">
             <div class="col-2 h-100" style="background-color:#DCDCDC; padding: 1%; border-radius: 5%;">
               <p>TOTAL TASK</p>
@@ -426,6 +426,7 @@ sendmsg() {
             </div>
           </div> -->
 
+          <b-card header-class="bg-transparent border-primary" class="border border-primary">
           <form class="row align-items-center" style="margin-bottom: 2%;">
             <!-- Dropdown Show Entries -->
             <div class="col-auto d-flex align-items-center pt-lg-4">
@@ -507,7 +508,7 @@ sendmsg() {
                   </BModal>
                 </div>
               </form>
-          
+              
             <div class="table-responsive">
               <BTableSimple class="mb-0">
                 <BThead>
@@ -687,10 +688,12 @@ sendmsg() {
                 </BTbody>
               </BTableSimple>
             </div>
+          </b-card>
           </BCardBody>
         </BCard>
       </BCol>
     </BRow>
+
   <Page/>
   </Layout>
 </template>
@@ -700,62 +703,59 @@ sendmsg() {
  body {
       background-color: #f8f9fa;
     }
+    
+    h4 {
+      font-weight: bold;
+      margin-bottom: 0;
+    }
     .card-container {
-      background-color: #d6d6d6;
-      padding: 20px;
-      border-radius: 8px;
-      display: flex;
-      flex-direction: column;
-    }
-    .top-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+    background-color: #F8F9FA;
+    padding: 20px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
     .judul-section {
       flex: 2;
     }
     .deadline-box {
       text-align: center;
-      flex: 2;
-      background-color: white;
+      flex: 1;
+      background-color: #F46A6A;
       padding: 10px;
       border-radius: 8px;
       margin: 0 10px;
-      height: 7rem
+      height: 75px;
     }
     .sisa-waktu-container {
-      background-color: white;
+      background-color: #F46A6A;
       border-radius: 8px;
       text-align: center;
-      /* padding: 10px; */
+      padding: 10px;
       flex: 1;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      /* margin-bottom: 2px; */
-      /* height: 200px; */
+      height: 75px;
     }
     .progress-container {
-      background-color: white;
+      background-color: #eef5fc;
       padding: 10px;
       border-radius: 8px;
       margin-top: 10px;
-      /* width: 865px; */
+      width: 100%; /* Pastikan penuh */
     }
     .progress-wrapper {
-      width: calc(100% - 250px); /* Batasi progress bar sejajar deadline */
-    }
-    .progress-bar {
-      height: 4px;
-    }
-    .sisa-hari {
-      font-size: 3rem;
-      font-weight: bold;
-      line-height: 1;
-    }
-    h4 {
-      font-weight: bold;
-      margin-bottom: 0;
+      width: 100%;
     }
 </style>

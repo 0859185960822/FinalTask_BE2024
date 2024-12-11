@@ -84,7 +84,7 @@ export default {
         </BCol>
     </BRow>
 
-        <div id="app" class="container mt-4">
+   <div id="app" class="container mt-4">
     <div class="card-container">
       <!-- Baris atas -->
       <div class="top-row">
@@ -100,7 +100,7 @@ export default {
         <!-- Sisa Waktu -->
         <div class="sisa-waktu-container">
           <i class="mdi mdi-alert-outline me-3 text-white mt-3"> Sisa Waktu (hari)</i>
-          <p class="sisa-hari text-white fw-bold display-6">{{ project.daysLeft }}</p>
+          <p class="sisa-hari text-white fw-bold md:display-6">{{ project.daysLeft }}</p>
         </div>
       </div>
 
@@ -145,7 +145,7 @@ export default {
       padding: 10px;
       border-radius: 8px;
       margin: 0 10px;
-      
+      height: 75px;
     }
     .sisa-waktu-container {
       background-color: #F46A6A;
