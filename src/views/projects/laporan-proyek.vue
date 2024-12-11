@@ -39,7 +39,6 @@ export default {
                 <button type="button" class="btn btn-success h-100 w-100" alt="Disable"><i class="mdi-microsoft-excel"></i> EXPORT TO EXCEL</button>
               </div>
             </form> -->
-
             <form class="row g-3 align-items-center" style="margin-bottom: 2%;">
   <!-- Input Nama Proyek -->
   <div class="col-12 col-sm-6 col-md-4 col-lg-2">

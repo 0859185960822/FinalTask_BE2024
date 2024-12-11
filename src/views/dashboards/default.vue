@@ -84,52 +84,6 @@ export default {
         </BCol>
     </BRow>
 
-
-
-        <!-- <BRow>
-            <BCol md="12" lg="12">
-                <BCard>
-                  <div class="d-flex align-item-center justify-content-between my-0 py-0 border">
-                    <div class="align-item-center">
-                      <BCardTitle class="h3">Project Final Task</BCardTitle>
-                      <BCardText>With supporting text below as a natural lead-in to additional
-                          content.</BCardText>
-                    </div>
-                    <div class="d-flex ">
-                      <BCol md="4" class="mx-5 my-0">
-                        <BCard bg-variant="danger" class="text-center">
-                          <h5 class="mt-0 mb-4 text-white">
-                            <i class="mdi mdi-alert-outline me-3"></i> Deadline<br>
-                            2024-12-12
-                          </h5>
-                        </BCard>
-                      </BCol>
-                      <BCol md="4" class="mx-5 my-0">
-                        <BCard class="text-center">
-                            <BCardText class="text-center">Deadline <br>20</BCardText>
-                        </BCard>
-                      </BCol>
-                    </div>
-                  </div>
-
-                        
-                            <div class="progress-container w-100">
-                              <div class="progress-wrapper w-100">
-                                <div class="d-flex justify-content-between">
-                                  <span class="text-white">Presentase</span>
-                                  <span class="fw-bold">{{ project.progress }}%</span>
-                                </div>
-                                <div class="progress mt-2">
-                                  <div class="progress-bar bg-warning" :style="{ width: project.progress + '%' }"></div>
-                                </div>
-                              </div>
-                            </div>
-                </BCard>
-            </BCol>
-          
-        </BRow> -->
-
-
         <div id="app" class="container mt-4">
     <div class="card-container">
       <!-- Baris atas -->
