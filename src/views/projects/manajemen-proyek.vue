@@ -194,7 +194,7 @@ updatemsg() {
 
             <form class="row align-items-center" style="margin-bottom: 2%;">
               <!-- Dropdown Show Entries -->
-              <div class="col-auto d-flex align-items-center">
+              <div class="col-auto d-flex align-items-center pt-lg-4">
                 <label class="me-2">Show</label>
                 <select class="form-select w-auto" id="autoSizingSelect" aria-label="Select number of entries">
                   <option value="10" selected>10</option>
@@ -206,11 +206,12 @@ updatemsg() {
 
               <!-- Input Pencarian -->
               <div class="col-auto">
-                <input type="text" class="form-control" id="autoSizingInput" placeholder="Cari Nama Project">
+                <label>Data Proyek</label>
+                <input type="text" class="form-control" id="autoSizingInput" placeholder="Cari Proyek">
               </div>
 
               <!-- Tombol Tambah Proyek -->
-              <div class="col-auto ms-auto">
+              <div class="col-auto ms-auto pt-lg-4">
                 <button type="button" class="btn btn-success d-flex align-items-center" alt="Disable" @click="modalTP = true"><i class="fa fa-plus me-2"></i> TAMBAH PROYEK</button>
                 <BModal v-model="modalTP" id="modal-center" centered title="Tambah Proyek" hide-footer>
                   <div class="p-3">
