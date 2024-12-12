@@ -16,10 +16,10 @@ export default {
       type: String,
       default: ""
     },
-    backgroundColor: {
-      type: String,
-      default: "bg-primary"
-    }
+    // backgroundColor: {
+    //   type: String,
+    //   default: "bg-warning"
+    // }
   }
 };
 </script>
@@ -33,7 +33,7 @@ export default {
           <h4 class="mb-0">{{value}}</h4>
         </div>
 
-        <div class="avatar-sm align-self-center mini-stat-icon rounded-circle" :class="backgroundColor">
+        <div class="avatar-sm align-self-center mini-stat-icon rounded-circle" :class="`${backgroundColor}`">
           <span class="avatar-title">
             <i :class="`${icon} font-size-24`"></i>
           </span>
