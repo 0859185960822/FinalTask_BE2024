@@ -38,7 +38,8 @@ export default {
         {
           icon: "bx bx-copy-alt",
           title: "Total Task",
-          value: "1,235",
+          value: "112",
+          backgroundColor: "bg-danger",
         },
         {
           icon: "bx bx-archive-in",
@@ -139,7 +140,7 @@ sendmsg() {
  
 };
 </script>
-
+console.log(pro);
 <template>
   <!-- <Sidebar/> -->
   <Layout>
@@ -211,7 +212,7 @@ sendmsg() {
             <div class="col-6 col-md-3">
                 <button type="button" class="btn btn-warning h-100 w-100 d-none d-md-flex" alt="Disable" @click="modalSP = true" variant="primary"><i class="fa fa-edit me-1"></i>  SUNTING PROYEK </button>
                 <!-- <button type="button" class="btn btn-warning h-100 w-100 d-flex d-md-none" alt="Disable" @click="modalSP = true" variant="primary"><i class="fa fa-edit"></i>  PROYEK</button> -->
-                <BModal v-model="modalSP" id="modal-center" centered title="Sunting Proyek" hide-footer>
+                <BModal v-model="modalSP" id="modal-center" size="lg" centered title="Sunting Proyek" hide-footer>
                     <div class="p-3">
                       <form>
                         <div class="mb-3">
@@ -287,7 +288,7 @@ sendmsg() {
             <BCol xl="12" md="12" lg="12">
               <BRow>
                 <BCol md="3" v-for="stat of statData" :key="stat.icon">
-                  <Stat :icon="stat.icon" :title="stat.title" :value="stat.value" />
+                  <Stat :icon="stat.icon" :title="stat.title" :value="stat.value" :backgroundColor="stat.backgroundColor"/>
                 </BCol>
               </BRow>
             </BCol>
@@ -409,7 +410,7 @@ sendmsg() {
   <div class="col-auto ms-auto pt-lg-4 pt-4">
     <button type="button" class="btn btn-success d-flex align-items-center d-none d-md-flex" alt="Disable" @click="modalTT = true"><i class="fa fa-plus me-2"></i>TAMBAH TASK</button>
     <button type="button" class="btn btn-success d-flex align-items-center d-flex d-md-none" alt="Disable" @click="modalTT = true"><i class="fa fa-plus me-2"></i>TASK</button>
-    <BModal v-model="modalTT" id="modal-center" centered title="Tambah Task" hide-footer>
+    <BModal v-model="modalTT" id="modal-center" size="lg" centered title="Tambah Task" hide-footer>
                     <div class="p-3">
                       <form>
                         <div class="mb-3">
@@ -486,7 +487,7 @@ sendmsg() {
                     <BTh scope="row">1</BTh>
                     <BTd style="border-collapse: collapse; border: 1px solid black;">User 1</BTd>
                     <BTd style="border-collapse: collapse; border: 1px solid black;"><a @click="modalDT = true" variant="primary" style="cursor: pointer;">Membuat Fitur Tambah User</a> <br><span class="badge bg-info">Major</span> <span class="badge bg-warning">Sedang</span> </BTd>
-                    <BModal v-model="modalDT" id="modal-task-detail" hide-footer>
+                    <BModal v-model="modalDT" id="modal-task-detail" size="lg" hide-footer>
                       <div class="space-y-4">
                         <!-- Header -->
                         <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
@@ -585,7 +586,7 @@ sendmsg() {
                     <BTd style="border-collapse: collapse; border: 1px solid black; text-align: center;"><span class="badge bg-danger">10 Hari</span></BTd>
                     <BTd style="border-collapse: collapse; border: 1px solid black;">
                       <button type="button" class="btn btn-warning btn-sm mb-1 w-100" alt="Disable" @click="modalST = true" variant="primary"><i class="bx bx-edit"></i> SUNTING</button>
-                      <BModal v-model="modalST" id="modal-center" centered title="Sunting Task" hide-footer>
+                      <BModal v-model="modalST" id="modal-center" size="lg" centered title="Sunting Task" hide-footer>
                         <div class="p-3">
                           <form>
                             <div class="mb-3">
@@ -647,14 +648,14 @@ sendmsg() {
                   </BTr>
                 </BTbody>
               </BTableSimple>
+              
             </div>
+            <Page/>
           </b-card>
           </BCardBody>
         </BCard>
       </BCol>
     </BRow>
-
-  <Page/>
   </Layout>
 </template>
 

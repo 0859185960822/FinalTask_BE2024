@@ -207,7 +207,7 @@ export default {
                 <button type="button" class="btn btn-success" @click="modalTP = true">
                   <i class="fa fa-plus me-2"></i> TAMBAH PROYEK
                 </button>
-                <BModal v-model="modalTP" centered title="Tambah Proyek" hide-footer>
+                <BModal v-model="modalTP" size="lg" centered title="Tambah Proyek" hide-footer>
                   <div class="p-3">
                     <form @submit.prevent="storeDataProyek">
                       <div class="mb-3">
@@ -314,7 +314,7 @@ export default {
                         <i class="bx bx-info-circle"></i> DETAILS
                       </router-link>
                       <button type="button" class="btn btn-warning btn-sm mb-1 w-100" alt="Disable" @click="modalSP = true" variant="primary"><i class="bx bx-edit"></i> SUNTING</button>
-                      <BModal v-model="modalSP" id="modal-center" centered title="Sunting Proyek" hide-footer>
+                      <BModal v-model="modalSP" id="modal-center" size="lg" centered title="Sunting Proyek" hide-footer>
                         <div class="p-3">
                           <form>
                             <div class="mb-3">
