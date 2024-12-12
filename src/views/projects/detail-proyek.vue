@@ -430,7 +430,7 @@ sendmsg() {
                           </BCol>
                           <BCol md="6">
                             <div class="form-group">
-                              <BFormGroup class="mb-3 fw-bold" label="Tipe-Task" label-for="tipe-task-input">
+                              <BFormGroup class="mb-3 fw-bold" label="Tipe Task" label-for="tipe-task-input">
                                 <select id="kolaborator" class="form-select">
                                   <option selected>Pilih Tipe Task</option>
                                   <option value="1">Major</option>
@@ -454,7 +454,7 @@ sendmsg() {
                           </BCol>
                           <BCol md="6">
                             <div class="form-group">
-                              <BFormGroup class="mb-3 fw-bold" label="Tipe-Task" label-for="tipe-task-input">
+                              <BFormGroup class="mb-3 fw-bold" label="Tanggal Deadline" label-for="tipe-task-input">
                                 <flat-pickr v-model="picked" :first-day-of-week="1" lang="en" confirm class="form-control"></flat-pickr>
                               </BFormGroup>
                             </div>
@@ -514,7 +514,7 @@ sendmsg() {
                           <BCol md="6">
                             <div class="form-group">
                               <BFormGroup class="mb-3 fw-bold" label="Tipe-Task" label-for="tipe-task-input">
-                                <p>Minor</p>
+                                <h5><span class="badge bg-info">Major</span></h5>
                               </BFormGroup>
                             </div>
                           </BCol>
@@ -522,7 +522,7 @@ sendmsg() {
                         <BRow>
                           <BCol md="6">
                             <BFormGroup class="mb-3 fw-bold" label="Tingkat Urgensi" label-for="tingkat-urgensi-input">
-                              <p>Rendah</p>
+                              <h5><span class="badge bg-warning">Sedang</span></h5>
                             </BFormGroup>
                           </BCol>
                           <BCol md="6">
@@ -536,7 +536,8 @@ sendmsg() {
                         <BRow>
                           <BCol md="6">
                             <BFormGroup class="mb-3 fw-bold" label="Status Task" label-for="tingkat-urgensi-input">
-                              <p>Pending</p>
+                              <!-- total task :biru, pending:merah, Ongoing:kuning , done:hijau -->
+                              <h5><span class="badge bg-danger">Pending</span></h5>
                             </BFormGroup>
                           </BCol>
                           <BCol md="6">
@@ -550,26 +551,25 @@ sendmsg() {
 
                         <!-- Comment Section -->
                         <div class="pt-3">
-                          <div style=" align-items: center; gap: 10px;">
+                          <div style="display: flex; gap: 10px;">
                             <!-- Div dengan border bulat -->
-                            <!-- <div style="background-color: whitesmoke; border: 1px solid black; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center;">
+                            <div style="background-color: whitesmoke; border: 1px solid black; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center;">
                               <p style="font-weight: bold; font-size: 2em; margin: 0;">A</p>
-                            </div> -->
+                            </div>
                             <!-- Textarea -->
-                            <label for="nama-yang-komen">Komentar</label>
+                            <!-- <label for="nama-yang-komen">Komentar</label> -->
                             <textarea class="form-control" placeholder="Ketikan Komentar" style="flex: 1;"></textarea>
                           </div>
-                          <div class="text-end mt-2">
+                          <div class="text-end mt-2 mb-2">
                             <button type="button" class="btn btn-secondary btn-info" @click="sendmsg()">Kirim</button>
                           </div>
-                          <div class="mb-3">
-                            <label for="judul-task" class="form-label fw-bold">User 1</label>
-                            <!-- <div class="d-flex justify-content-between mt-2">
-                              <label for="judul-task" class="form-label fw-bold">User 1</label>
-                              <span style="opacity: 50%;">12/12/32</span>
-                            </div> -->
-                            <input type="text" class="form-control" id="autoSizingInput" value="ini komentarnya" disabled>
-                            <p class="mt-1"><span style="opacity: 50%;">12/12/32</span></p>
+                          <div style="display: flex; gap: 10px;">
+                            <!-- Div dengan border bulat -->
+                            <div style="background-color: whitesmoke; border: 1px solid black; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center;">
+                              <p style="font-weight: bold; font-size: 2em; margin: 0;">A</p>
+                            </div>
+                            <!-- Textarea -->
+                            <textarea class="form-control" value="ini adalah komentar" style="flex: 1;" disabled></textarea>
                           </div>
                         </div>
                       </div>
@@ -606,7 +606,7 @@ sendmsg() {
                               </BCol>
                               <BCol md="6">
                                 <div class="form-group">
-                                  <BFormGroup class="mb-3 fw-bold" label="Tipe-Task" label-for="tipe-task-input">
+                                  <BFormGroup class="mb-3 fw-bold" label="Tipe Task" label-for="tipe-task-input">
                                     <select id="kolaborator" class="form-select">
                                       <option selected>Pilih Tipe Task</option>
                                       <option value="1">Major</option>
@@ -630,7 +630,7 @@ sendmsg() {
                               </BCol>
                               <BCol md="6">
                                 <div class="form-group">
-                                  <BFormGroup class="mb-3 fw-bold" label="Tipe-Task" label-for="tipe-task-input">
+                                  <BFormGroup class="mb-3 fw-bold" label="Tangal Deadline" label-for="tipe-task-input">
                                     <flat-pickr v-model="picked" :first-day-of-week="1" lang="en" confirm class="form-control"></flat-pickr>
                                   </BFormGroup>
                                 </div>
