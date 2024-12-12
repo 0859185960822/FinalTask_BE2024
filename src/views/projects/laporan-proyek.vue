@@ -119,7 +119,7 @@ export default {
   <form class="row g-3 align-items-center" style="gap: 0.85rem; flex-wrap: wrap;">
     
     <!-- Show Entries -->
-    <div class="col-12 col-sm-6 col-md-2 col-lg-1 d-flex flex-column">
+    <div class="col-12 col-sm-6 col-md-2 col-lg-2 mt-lg-4 d-flex flex-column">
       <label class="form-label">Show Entries</label>
       <select class="form-select w-auto" id="autoSizingSelect" aria-label="Select number of entries">
         <option value="10" selected>10</option>
@@ -145,10 +145,10 @@ export default {
     </div>
 
     <!-- Input Progres -->
-    <div class="col-12 col-sm-6 col-md-3 col-lg-2 d-flex flex-column pt-3">
+    <!-- <div class="col-12 col-sm-6 col-md-3 col-lg-2 d-flex flex-column pt-3">
       <label for="progress" class="form-label">Progres</label>
       <input type="text" class="form-control" id="progress" placeholder="Cari progress">
-    </div>
+    </div> -->
 
     <!-- Input Sisa Waktu -->
     <div class="col-12 col-sm-6 col-md-3 col-lg-2 d-flex flex-column pt-3">
@@ -164,9 +164,6 @@ export default {
     </div>
   </form>
 </div>
-
-
-
 
             </form>
            
