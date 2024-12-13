@@ -16,10 +16,10 @@ export default {
       type: String,
       default: ""
     },
-    // backgroundColor: {
-    //   type: String,
-    //   default: "bg-warning"
-    // }
+    backgroundColor: {
+      type: String,
+      default: "bg-primary"
+    }
   }
 };
 </script>

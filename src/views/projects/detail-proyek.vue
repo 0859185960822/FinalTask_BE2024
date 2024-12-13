@@ -153,7 +153,6 @@ console.log(pro);
             <BCardTitle>Detail Proyek</BCardTitle>
             <div class="col-md-3 col-6" style="margin-left: auto; margin-right: 1%;" >
                 <button type="button" class="btn btn-success h-100 w-100 d-none d-md-flex" alt="Disable" @click="modalTK = true" variant="primary"><i class="fa fa-plus me-1 mt-1"></i> TAMBAH KOLABORATOR </button>
-                <!-- <button type="button" class="btn btn-success h-100 w-100 d-flex d-md-none" alt="Disable" @click="modalTK = true" variant="primary"><i class="fa fa-plus me-1"></i> KOLABORATOR </button> -->
                   <BModal v-model="modalTK" id="modal-center" size="lg" centered title="Tambah Kolaborator" hide-footer>
                     <div class="p-3">
                       <form>
@@ -259,7 +258,7 @@ console.log(pro);
 
         <!-- Sisa Waktu -->
         <div class="sisa-waktu-container">
-          <i class="mdi mdi-alert-outline me-3 text-white mt-3"> Sisa Waktu (hari)</i>
+          <i class="mdi mdi-alert-outline me-1 text-white mt-3">Sisa Waktu (hari)</i>
           <p class="sisa-hari text-white fw-bold md:display-6">{{ project.daysLeft }}</p>
         </div>
       </div>
@@ -687,7 +686,7 @@ console.log(pro);
     width: 100%;
   }
   .judul{
-    width: 500px;
+    width: 450px;
    }
     .deadline-box {
       text-align: center;
