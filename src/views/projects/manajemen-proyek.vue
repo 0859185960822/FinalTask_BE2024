@@ -7,8 +7,6 @@ import flatPickr from "vue-flatpickr-component";
 import "flatpickr/dist/flatpickr.css";
 import Swal from 'sweetalert2';
 import axios from "axios";
-import Swal from 'sweetalert2';
-import axios from "axios";
 
 export default {
   setup() {
