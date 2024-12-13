@@ -650,7 +650,7 @@ console.log(pro);
     width: 100%;
   }
   .judul{
-    width: 450px;
+    width: 400px;
    }
     .deadline-box {
       text-align: center;
