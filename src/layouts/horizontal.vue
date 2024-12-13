@@ -1,7 +1,7 @@
 <script>
 import HorizontalTopbar from "@/components/horizontal-topbar";
 // import HorizontalNav from "@/components/horizontal-nav";
-import Sidebar from "../components/side-bar.vue";
+// import Sidebar from "../components/side-bar.vue";
 import RightBar from "@/components/right-bar";
 import Footer from "@/components/footer";
 
@@ -16,7 +16,7 @@ export default {
   components: {
     HorizontalTopbar,
     // HorizontalNav,
-    Sidebar,
+    // Sidebar,
     Footer,
     RightBar
   },

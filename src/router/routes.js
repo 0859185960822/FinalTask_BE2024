@@ -437,7 +437,7 @@ export default [
     component: () => import("../views/projects/manajemen-proyek.vue")
   },
   {
-    path: "/projects/detail-proyek",
+    path: "/projects/detail-proyek/:id",
     name: "Detail Proyek",
     meta: { title: "Detail Proyek", authRequired: true },
     component: () => import("../views/projects/detail-proyek.vue")

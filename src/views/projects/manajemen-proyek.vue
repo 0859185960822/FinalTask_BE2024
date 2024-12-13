@@ -6,7 +6,8 @@ import Page from "../../components/common/pagination.vue";
 import { ref } from "vue";
 import flatPickr from "vue-flatpickr-component";
 import "flatpickr/dist/flatpickr.css";
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
+import axios from "axios";
 
 /**
  * Task-list component
@@ -25,11 +26,18 @@ export default {
 
   data() {
     return {
+      data : [],
       instruktur_data: [], // Array untuk data instruktur
       peserta_ref: [], // Opsi referensi untuk v-select
     };
   },
 
+  mounted() {
+    this.getDataProject(),
+    setTimeout(() => {
+      this.showModal = false;
+    }, 1500);
+  },
   methods: {
     confirm() {
     Swal.fire({
@@ -47,6 +55,45 @@ export default {
         }
     });
 },
+getDataProject() {
+      this.loadingTable = true;
+
+      const token = localStorage.accessToken;
+      if (!token) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No access token found!',
+        });
+        return;
+      }
+
+      const config = {
+        method: 'get',
+        url: process.env.VUE_APP_BACKEND_URL_API + 'admin',
+        headers: {
+          Accept: 'application/json',
+          Authorization: 'Bearer ' + token,
+        },
+      };
+
+      axios(config)
+        .then((response) => {
+          this.loadingTable = false;
+          if (response.status === 200) {
+            this.data = response.data.data;
+            console.log(this.data);
+          } else {
+            this.data = [];
+          }
+        })
+        .catch((error) => {
+          this.loadingTable = false;
+          this.data = [];
+          console.error('Error:', error.response ? error.response.data : error.message);
+        });
+    },
+  },
 successmsg() {
     Swal.fire({
         title: "Data Tersimpan!",
@@ -79,10 +126,10 @@ updatemsg() {
     deleteRow(index) {
       this.instruktur_data.splice(index, 1);
     },
-  },
+  }
   
 
-};
+
 
 </script>
 
@@ -95,102 +142,7 @@ updatemsg() {
         <BCard no-body>
           <BCardBody class="pb-0">
             <BCardTitle>Manajemen Proyek</BCardTitle>
-            <!-- <form class="row col-12" style="margin-bottom: 2%;">
-              <div class="col-2">
-                <label class="visually-hidden" for="autoSizingSelect">Preference</label>
-                <select class="form-select" id="autoSizingSelect">
-                  <option selected>Pilih</option>
-                  <option value="1">10</option>
-                  <option value="2">50</option>
-                  <option value="3">100</option>
-                </select>
-              </div>
-              <div class="d-flex align-items-center">
-                <label class="me-2">Show</label>
-                <select class="form-select w-auto" id="autoSizingSelect" aria-label="Select number of entries">
-                  <option value="10" selected>10</option>
-                  <option value="50">50</option>
-                  <option value="100">100</option>
-                </select>
-                <label class="ms-2">Entries</label>
-              </div>
-              <div class="col-3">
-                <input type="text" class="form-control" id="autoSizingInput" placeholder="Cari">
-              </div>
-              <div class="col-3" style="margin-left: auto;" >
-                <button type="button" class="btn btn-success h-100 w-100" alt="Disable" @click="modalTP = true" variant="primary"><i class="fa fa-plus"></i> TAMBAH PROYEK</button>
-                <BModal v-model="modalTP" id="modal-center" centered title="Tambah Proyek" hide-footer>
-                  <div class="p-3">
-                    <form>
-                      <div class="mb-3">
-                        <label for="judul-task" class="form-label fw-bold">Nama Proyek</label>
-                        <input type="text" class="form-control" id="autoSizingInput">
-                      </div>
-                      <div class="mb-3">
-                        <label for="judul-task" class="form-label fw-bold">Deskripsi Proyek</label>
-                        <input type="text" class="form-control" id="autoSizingInput">
-                      </div>
-                      <div class="mb-3">
-                        <label for="judul-task" class="form-label fw-bold">Nama Kolaborator</label>
-                        <div class="row">
-                        <div class="col-12">
-                          <table class="table mb-0 mt-0 table-bordered table-condensed table-hover">
-                            <thead class="bg-dark text-center text-white">
-                              <tr>
-                                <th style="width: 50px">No</th>
-                                <th style="width: auto">Kolaborator</th>
-                                <th style="width: 50px" class="text-center">
-                                  <b-button
-                                    type="button"
-                                    class="btn btn-success btn-sm"
-                                    @click="addRowPeserta"
-                                  >
-                                    <i class="fa fa-plus"></i>
-                                  </b-button>
-                                </th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr v-for="(row_data, key_data) in instruktur_data" :key="key_data">
-                                <td class="text-center">{{ key_data + 1 }}.</td>
-                                <td>
-                                  <v-select
-                                    label="nip_name"
-                                    v-model="row_data.instruktur_data"
-                                    :options="peserta_ref"
-                                    @search="onSearchInstruktur"
-                                    placeholder="Cari dan Pilih Kolaborator..."
-                                  ></v-select>
-                                </td>
-                              
-                                <td class="text-center">
-                                  <button
-                                    type="button"
-                                    class="btn btn-danger btn-sm"
-                                    @click="deleteRow(key_data, row_data)"
-                                  >
-                                    <i class="fa fa-minus"></i>
-                                  </button>
-                                </td>
-                              </tr>
-                            </tbody>
-                        </table>
-                        </div>
-                      </div>
-
-                      </div>
-                      <div class="mb-3">
-                        <label for="deadline" class="form-label fw-bold">Tenggat Waktu</label>
-                        <flat-pickr v-model="picked" :first-day-of-week="1" lang="en" confirm class="form-control"></flat-pickr>
-                      </div>
-                      <div class="text-end">
-                        <button type="button" class="btn btn-secondary btn-success" @click='successmsg()'>Simpan</button>
-                      </div>
-                    </form>
-                  </div>
-                </BModal>
-              </div>
-            </form> -->
+      
 
             <form class="row align-items-center" style="margin-bottom: 2%;">
               <!-- Dropdown Show Entries -->
@@ -310,15 +262,15 @@ updatemsg() {
                   </BTr> -->
                 </BThead>
                 <BTbody>
-                  <BTr style="border-collapse: collapse; border: 1px solid black">
-                    <BTh scope="row">1</BTh>
-                    <BTd style="border-collapse: collapse; border: 1px solid black;">Proyek A</BTd>
-                    <BTd style="border-collapse: collapse; border: 1px solid black;">Proyek Cukup sulit</BTd>
-                    <BTd style="border-collapse: collapse; border: 1px solid black;">20/11/2021</BTd>
-                    <BTd style="border-collapse: collapse; border: 1px solid black;">10 Hari Yang lalu</BTd>
-                    <BTd style="border-collapse: collapse; border: 1px solid black;">20%</BTd>
+                  <BTr style="border-collapse: collapse; border: 1px solid black"  v-for="(item, index) in data.data_project" :key="index">
+                    <BTh scope="row">{{ index + 1 }}</BTh>
+                    <BTd style="border-collapse: collapse; border: 1px solid black;">{{ item.project_name }}</BTd>
+                    <BTd style="border-collapse: collapse; border: 1px solid black;">{{ item.description }}</BTd>
+                    <BTd style="border-collapse: collapse; border: 1px solid black;">{{ item.deadline }}</BTd>
+                    <BTd style="border-collapse: collapse; border: 1px solid black;">{{ item.sisa_waktu }}</BTd>
+                    <BTd style="border-collapse: collapse; border: 1px solid black;">{{item.progress_project}}%</BTd>
                     <BTd style="border-collapse: collapse; border: 1px solid black;">
-                      <router-link :to="'detail-proyek'" class="btn btn-info btn-sm mb-1 w-100">
+                      <router-link :to="{ name: 'Detail Proyek', params: { id: item.project_id } }" class="btn btn-info btn-sm mb-1 w-100">
                         <i class="bx bx-info-circle"></i> DETAILS
                       </router-link>
                       <button type="button" class="btn btn-warning btn-sm mb-1 w-100" alt="Disable" @click="modalSP = true" variant="primary"><i class="bx bx-edit"></i> SUNTING</button>

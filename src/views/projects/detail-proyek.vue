@@ -7,6 +7,7 @@ import { ref } from "vue";
 import flatPickr from "vue-flatpickr-component";
 import "flatpickr/dist/flatpickr.css";
 import Swal from 'sweetalert2'
+import axios from "axios";
 
 /**
  * Task-list component
@@ -31,8 +32,12 @@ export default {
   data() {
     return {
  
+      id: this.$route.params.id,
+      data: [],
       instruktur_data: [], // Array untuk data instruktur
       peserta_ref: [], // Opsi referensi untuk v-select
+
+      no:1,
 
       statData: [
         {
@@ -68,11 +73,55 @@ export default {
     };
   },
   mounted() {
+    this.getDataProject()
     setTimeout(() => {
       this.showModal = false;
     }, 1500);
   },
   methods: {
+    getDataProject() {
+      this.loadingTable = true;
+
+      const token = localStorage.accessToken;
+      if (!token) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No access token found!',
+        });
+        return;
+      }
+
+      const config = {
+        method: 'get',
+        url: process.env.VUE_APP_BACKEND_URL_API + 'admin/' + this.id,
+        headers: {
+          Accept: 'application/json',
+          Authorization: 'Bearer ' + token,
+        },
+      };
+
+      axios(config)
+        .then((response) => {
+          this.loadingTable = false;
+          if (response.status === 200) {
+            this.data = response.data.data;
+            console.log(this.data);
+          } else {
+            this.data = [];
+          }
+        })
+        .catch((error) => {
+          this.loadingTable = false;
+          this.data = [];
+          console.error('Error:', error.response ? error.response.data : error.message);
+        });
+    },
+  },
+
+  countTasksByStatus(status) {
+      return this.data.task.filter(data => data.status_task === status).length;
+    },
 
     // Tambahkan baris instruktur baru
     addRowPeserta() {
@@ -135,7 +184,6 @@ sendmsg() {
 
     });
 },
-  },
  
 };
 </script>
@@ -241,25 +289,26 @@ sendmsg() {
           </div>
           
           <b-card header-class="bg-transparent border-primary" class="border border-primary">
-  <div id="app" class="container mt-4">
-    <div class="card-container">
+            <div id="app" class="container mt-4">
+    <div class="card-container mb-3">
       <!-- Baris atas -->
       <div class="top-row">
         <!-- Judul Proyek -->
         <div class="judul">
-          <h3 class="judul-section">{{ project.name }}</h3>
-          <p>ini detail project </p>
+          <h3 class="judul-section">{{ data.project_name }}</h3>
+          <p>{{data.description}}</p>
         </div>
+         
         <!-- Deadline -->
         <div class="deadline-box">
           <i class="mdi mdi-alert-outline me-3 text-white"> Deadline</i>
-          <p class="fw-bold text-white">{{ project.deadline }}</p>
+          <p class="fw-bold text-white">{{ data.deadline }}</p>
         </div>
 
         <!-- Sisa Waktu -->
         <div class="sisa-waktu-container">
           <i class="mdi mdi-alert-outline me-3 text-white mt-3"> Sisa Waktu (hari)</i>
-          <p class="sisa-hari text-white fw-bold md:display-6">{{ project.daysLeft }}</p>
+          <p class="sisa-hari text-white fw-bold md:display-6">{{ data.sisa_waktu }}</p>
         </div>
       </div>
 
@@ -268,10 +317,10 @@ sendmsg() {
         <div class="progress-wrapper w-100">
           <div class="d-flex justify-content-between">
             <span>Presentase</span>
-            <span class="fw-bold">{{ project.progress }}%</span>
+            <span class="fw-bold">{{ data.progress_project }}%</span>
           </div>
           <div class="progress mt-2">
-            <div class="progress-bar bg-success" :style="{ width: project.progress + '%' }"></div>
+            <div class="progress-bar bg-success" :style="{ width: data.progress_project + '%' }"></div>
           </div>
         </div>
       </div>
@@ -279,113 +328,24 @@ sendmsg() {
   </div>
 
 
-          <BRow>
-            <BCol xl="10" md="12" lg=12>
-              <Profile :updating="fetchingStats" />
-              <Earning :updating="earningStatus" />
-            </BCol>
-            <BCol xl="12" md="12" lg="12">
-              <BRow>
-                <BCol md="3" v-for="stat of statData" :key="stat.icon">
-                  <Stat :icon="stat.icon" :title="stat.title" :value="stat.value" />
-                </BCol>
-              </BRow>
-            </BCol>
-          </BRow>
+  <BCol xl="12" md="12" lg="12">
+        <BRow>
+          <BCol md="3">
+            <Stat icon="bx bx-copy-alt" title="Total Task" :value="data.total_task" />
+          </BCol>
+          <BCol md="3">
+            <Stat icon="bx bx-archive-in" title="Pending" :value="data.task_pending" />
+          </BCol>
+          <BCol md="3">
+            <Stat icon="bx bx-purchase-tag-alt" title="On Going" :value="data.task_on_going" />
+          </BCol>
+          <BCol md="3">
+            <Stat icon="bx bx-purchase-tag-alt" title="Done" :value="data.task_done" />
+          </BCol>
+        </BRow>
+      </BCol>
           </b-card>
           
-          <!-- <div class="d-flex justify-content-between align-items-center gap-5" id="tolong tengahin" style="padding: 1%; text-align: center;">
-            <div class="col-2 h-100" style="background-color:#DCDCDC; padding: 1%; border-radius: 5%;">
-              <p>TOTAL TASK</p>
-              <div style="background-color: white; height: 3rem; border-radius: 5%;">
-                <p style="padding-top: 5%; font-size: 2em">10</p>
-              </div>
-            </div>
-            <div class="col-2 h-100" style="background-color:#DCDCDC; padding: 1%;border-radius: 5%;">
-              <p>TASK PENDING</p>
-              <div style="background-color: white; height: 3rem;border-radius: 5%;">
-                <p style="padding-top: 5%; font-size: 2em">10</p>
-              </div>
-            </div>
-            <div class="col-2 h-100" style="background-color:#DCDCDC; padding: 1%;border-radius: 5%;">
-              <p>TASK ONGOING</p>
-              <div style="background-color: white; height: 3rem;border-radius: 5%;">
-                <p style="padding-top: 5%; font-size: 2em">10</p>
-              </div>
-            </div>
-            <div class="col-2 h-100" style="background-color:#DCDCDC; padding: 1%;border-radius: 5%;">
-              <p>TASK DONE</p>
-              <div style="background-color: white; height: 3rem;border-radius: 5%;">
-                <p style="padding-top: 5%; font-size: 2em">10</p>
-              </div>
-            </div>
-          </div> -->
-
-            <!-- <div style="display: flex;" class="row col-12">
-              <form class="row col-9 " style="margin-bottom: 2%;">
-              <div class="col-2">
-                <label class="visually-hidden" for="autoSizingSelect">Preference</label>
-                <select class="form-select" id="autoSizingSelect">
-                  <option selected>Pilih</option>
-                  <option value="1">10</option>
-                  <option value="2">50</option>
-                  <option value="3">100</option>
-                </select>
-              </div>
-              <div class="col-7">
-                <input type="text" class="form-control" id="autoSizingInput" placeholder="Cari Data">
-              </div>
-              
-            </form>
-            <div class="col-auto" style="margin-left: auto;" >
-                <button type="button" class="btn btn-success h-80 w-100" alt="Disable" @click="modalTT = true" variant="primary">TAMBAH TASK <i class="fa fa-plus"></i></button>
-                <BModal v-model="modalTT" id="modal-center" centered title="Tambah Task" hide-footer>
-                    <div class="p-3">
-                      <form>
-                        <div class="mb-3">
-                          <label for="judul-task" class="form-label fw-bold">Judul Task</label>
-                          <input type="text" class="form-control" id="autoSizingInput">
-                        </div>
-                        <div class="mb-3">
-                          <label for="kolaborator" class="form-label fw-bold">Tingkat Urgensi</label>
-                          <select id="kolaborator" class="form-select">
-                            <option selected>Pilih Tingkat Urgensi</option>
-                            <option value="1">Urgent</option>
-                            <option value="2">Tinggi</option>
-                            <option value="3">Sedang</option>
-                            <option value="3">Rendah</option>
-                          </select>
-                        </div>
-                        <div class="mb-3">
-                          <label for="kolaborator" class="form-label fw-bold">Tipe task</label>
-                          <select id="kolaborator" class="form-select">
-                            <option selected>Pilih Tipe Task</option>
-                            <option value="1">Major</option>
-                            <option value="2">Minor</option>
-                          </select>
-                        </div>
-                        <div class="mb-3">
-                          <label for="kolaborator" class="form-label fw-bold">Tambah Kolaborator</label>
-                          <select id="kolaborator" class="form-select">
-                                    <option selected>Pilih kolaborator</option>
-                                    <option value="1">Kolaborator 1</option>
-                                    <option value="2">Kolaborator 2</option>
-                                    <option value="3">Kolaborator 3</option>
-                                  </select>
-                        </div>
-                        <div class="mb-3">
-                          <label for="deadline" class="form-label fw-bold">Tenggat Waktu</label>
-                          <flat-pickr v-model="picked" :first-day-of-week="1" lang="en" confirm class="form-control"></flat-pickr>
-                        </div>
-                        <div class="text-end">
-                          <button type="button" class="btn btn-secondary btn-success" @click="successmsg()">Tambah</button>
-                        </div>
-                      </form>
-                    </div>
-                  </BModal>
-            </div>
-          </div> -->
-
           <b-card header-class="bg-transparent border-primary" class="border border-primary">
           <form class="row align-items-center" style="margin-bottom: 2%;">
             <!-- Dropdown Show Entries -->
@@ -482,10 +442,12 @@ sendmsg() {
                   </BTr>
                 </BThead>
                 <BTbody>
-                  <BTr style="border-collapse: collapse; border: 1px solid black">
-                    <BTh scope="row">1</BTh>
-                    <BTd style="border-collapse: collapse; border: 1px solid black;">User 1</BTd>
-                    <BTd style="border-collapse: collapse; border: 1px solid black;"><a @click="modalDT = true" variant="primary" style="cursor: pointer;">Membuat Fitur Tambah User</a> <br><span class="badge bg-info">Major</span> <span class="badge bg-warning">Sedang</span> </BTd>
+                  <BTr style="border-collapse: collapse; border: 1px solid black" v-for="(item,index) in data.task" :key="index">
+                    <BTh scope="row">{{ index + 1 }}</BTh>
+                    <BTd style="border-collapse: collapse; border: 1px solid black;">
+                      {{ item.collaborator_id.name }}
+                    </BTd>
+                    <BTd style="border-collapse: collapse; border: 1px solid black;"><a @click="modalDT = true" variant="primary" style="cursor: pointer;">{{ item.task_name }}</a> <br><span class="badge bg-info">{{ item.type_task }}</span> <span class="badge bg-warning">{{ item.priority_task }}</span> </BTd>
                     <BModal v-model="modalDT" id="modal-task-detail" hide-footer>
                       <div class="space-y-4">
                         <!-- Header -->
@@ -495,7 +457,7 @@ sendmsg() {
                             <!-- Sisa Waktu -->
                             <div class="text-center me-4">
                               <p class="text-muted mb-1">Sisa Waktu</p>
-                              <p class="fw-bold mb-0">10 Hari</p>
+                              <p class="fw-bold mb-0">{{item.sisa_waktu}}</p>
                             </div>
                             <!-- Status Deadline -->
                             <!-- <div class="text-center">
@@ -508,13 +470,13 @@ sendmsg() {
                         <BRow>
                           <BCol md="6">
                             <BFormGroup class="mb-3 fw-bold" label="Judul Task" label-for="tingkat-urgensi-input">
-                              <p>Task A</p>
+                              <p>{{item.task_name}}</p>
                             </BFormGroup>
                           </BCol>
                           <BCol md="6">
                             <div class="form-group">
                               <BFormGroup class="mb-3 fw-bold" label="Tipe-Task" label-for="tipe-task-input">
-                                <p>Minor</p>
+                                <p>{{item.type_task}}</p>
                               </BFormGroup>
                             </div>
                           </BCol>
@@ -522,13 +484,13 @@ sendmsg() {
                         <BRow>
                           <BCol md="6">
                             <BFormGroup class="mb-3 fw-bold" label="Tingkat Urgensi" label-for="tingkat-urgensi-input">
-                              <p>Rendah</p>
+                              <p>{{item.priority_task}}</p>
                             </BFormGroup>
                           </BCol>
                           <BCol md="6">
                             <div class="form-group">
                               <BFormGroup class="mb-3 fw-bold" label="Nama Kolaborator" label-for="tipe-task-input">
-                               <p>User 1</p>
+                               <p>{{item.collaborator_id.name}}</p>
                               </BFormGroup>
                             </div>
                           </BCol>
@@ -536,13 +498,13 @@ sendmsg() {
                         <BRow>
                           <BCol md="6">
                             <BFormGroup class="mb-3 fw-bold" label="Status Task" label-for="tingkat-urgensi-input">
-                              <p>Pending</p>
+                              <p>{{item.status_task}}</p>
                             </BFormGroup>
                           </BCol>
                           <BCol md="6">
                             <div class="form-group">
                               <BFormGroup class="mb-3 fw-bold" label="Tanggal Deadline" label-for="tipe-task-input">
-                                 <p>12/12/2021</p>
+                                 <p>{{item.deadline}}</p>
                               </BFormGroup>
                             </div>
                           </BCol>
@@ -577,12 +539,15 @@ sendmsg() {
                     <BTd style="border-collapse: collapse; border: 1px solid black;"> 
                       <label class="visually-hidden" for="autoSizingSelect">Preference</label>
                       <select class="form-select" id="autoSizingSelect">
-                        <option selected>Pending</option>
+                        <option selected>{{ item.status_task }}</option>
+                        <option value="">Pending</option>
                         <option value="1">Ongoing</option>
                         <option value="2">Done</option>
                       </select>
                     </BTd>
-                    <BTd style="border-collapse: collapse; border: 1px solid black; text-align: center;"><span class="badge bg-danger">10 Hari</span></BTd>
+                    <BTd style="border-collapse: collapse; border: 1px solid black; text-align: center;">
+                      <span class="badge bg-danger">{{ item.sisa_waktu }}</span>
+                    </BTd>
                     <BTd style="border-collapse: collapse; border: 1px solid black;">
                       <button type="button" class="btn btn-warning btn-sm mb-1 w-100" alt="Disable" @click="modalST = true" variant="primary"><i class="bx bx-edit"></i> SUNTING</button>
                       <BModal v-model="modalST" id="modal-center" centered title="Sunting Task" hide-footer>

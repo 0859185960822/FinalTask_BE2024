@@ -1,7 +1,7 @@
 <script>
 // import Vertical from "./vertical";
 import Horizontal from "./horizontal";
-// import Sidebar from "../components/side-bar.vue";
+import Sidebar from "../components/side-bar.vue";
 
 import { useLayoutStore } from "@/state/pinia";
 const layoutStore = useLayoutStore();
@@ -10,7 +10,7 @@ export default {
   components: {
     // Vertical,
     Horizontal,
-    // Sidebar
+    Sidebar
   },
   data() {
     return {};
@@ -32,7 +32,7 @@ export default {
     <!-- <Vertical v-if="layoutType === 'vertical'" :layout="layoutType">
       <slot />
     </Vertical> -->
-    <!-- <Sidebar/> -->
+    <Sidebar/>
     <Horizontal v-if="layoutType === 'horizontal'" :layout="layoutType">
       <slot />
     </Horizontal>

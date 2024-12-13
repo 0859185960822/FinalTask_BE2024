@@ -3,7 +3,8 @@ import Layout from "../../layouts/main";
 import PageHeader from "@/components/page-header";
 // import ProjectStats from "../../components/widgets/progress1.vue";
 import Stat from "../../components/widgets/stat.vue";
-
+import axios from "axios";
+import Swal from "sweetalert2";
 
 
 /**
@@ -20,6 +21,7 @@ export default {
   },
   data() {
     return {
+      data : [],
       statData: [
         {
           icon: "bx bx-copy-alt",
@@ -43,12 +45,13 @@ export default {
         progress: 80, // Persentase progress
         deadline: "20 Desember 2024",
         daysLeft: 30, // Hari tersisa
-        
+
       },
  
     };
   },
   mounted() {
+    this.getDataProject(),
     setTimeout(() => {
       this.showModal = false;
     }, 1500);
@@ -57,6 +60,44 @@ export default {
     // Fungsi untuk memperbarui progress secara dinamis
     updateProgress(newProgress) {
       this.project.progress = newProgress;
+    },
+    getDataProject() {
+      this.loadingTable = true;
+
+      const token = localStorage.accessToken;
+      if (!token) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No access token found!',
+        });
+        return;
+      }
+
+      const config = {
+        method: 'get',
+        url: process.env.VUE_APP_BACKEND_URL_API + 'admin',
+        headers: {
+          Accept: 'application/json',
+          Authorization: 'Bearer ' + token,
+        },
+      };
+
+      axios(config)
+        .then((response) => {
+          this.loadingTable = false;
+          if (response.status === 200) {
+            this.data = response.data.data;
+            console.log(this.data);
+          } else {
+            this.data = [];
+          }
+        })
+        .catch((error) => {
+          this.loadingTable = false;
+          this.data = [];
+          console.error('Error:', error.response ? error.response.data : error.message);
+        });
     },
   },
  
@@ -77,33 +118,50 @@ export default {
       </BCol>
       <BCol xl="12" md="12" lg="12">
         <BRow>
-          <BCol md="4" v-for="stat of statData" :key="stat.icon">
-            <Stat :icon="stat.icon" :title="stat.title" :value="stat.value" />
+          <BCol md="4">
+            <Stat icon="bx bx-copy-alt" title="Total Project" :value="data.total_project" />
+          </BCol>
+          <BCol md="4">
+            <Stat icon="bx bx-archive-in" title="On Going" :value="data.project_on_going" />
+          </BCol>
+          <BCol md="4">
+            <Stat icon="bx bx-purchase-tag-alt" title="Done" :value="data.project_done" />
           </BCol>
         </BRow>
-        </BCol>
+      </BCol>
+      <!-- <BCol md="4">
+                <BCard no-body class="text-start">
+                    <BCardBody>
+                        <BCardTitle>Special title treatment</BCardTitle>
+                        <BCardText>
+                            With supporting text below as a natural lead-in to additional
+                            content.
+                        </BCardText>
+                       </BCardBody>
+                </BCard>
+            </BCol> -->
     </BRow>
 
    <div id="app" class="container mt-4">
-    <div class="card-container">
+    <div class="card-container mb-3"  v-for="(item, index) in data.data_project" :key="index">
       <!-- Baris atas -->
       <div class="top-row">
         <!-- Judul Proyek -->
         <div class="judul">
-          <h3 class="judul-section">{{ project.name }}</h3>
+          <h3 class="judul-section">{{ item.project_name }}</h3>
           <p>ini detail project </p>
         </div>
          
         <!-- Deadline -->
         <div class="deadline-box">
           <i class="mdi mdi-alert-outline me-3 text-white"> Deadline</i>
-          <p class="fw-bold text-white">{{ project.deadline }}</p>
+          <p class="fw-bold text-white">{{ item.deadline }}</p>
         </div>
 
         <!-- Sisa Waktu -->
         <div class="sisa-waktu-container">
           <i class="mdi mdi-alert-outline me-3 text-white mt-3"> Sisa Waktu (hari)</i>
-          <p class="sisa-hari text-white fw-bold md:display-6">{{ project.daysLeft }}</p>
+          <p class="sisa-hari text-white fw-bold md:display-6">{{ item.sisa_waktu }}</p>
         </div>
       </div>
 
@@ -112,10 +170,10 @@ export default {
         <div class="progress-wrapper w-100">
           <div class="d-flex justify-content-between">
             <span>Presentase</span>
-            <span class="fw-bold">{{ project.progress }}%</span>
+            <span class="fw-bold">{{ item.progress_project }}%</span>
           </div>
           <div class="progress mt-2">
-            <div class="progress-bar bg-success" :style="{ width: project.progress + '%' }"></div>
+            <div class="progress-bar bg-success" :style="{ width: item.progress_project + '%' }"></div>
           </div>
         </div>
       </div>
