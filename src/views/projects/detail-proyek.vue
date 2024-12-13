@@ -44,22 +44,25 @@ export default {
           icon: "bx bx-copy-alt",
           title: "Total Task",
           value: "112",
-          backgroundColor: "bg-danger",
+          // backgroundColor: "bg-danger !important",
         },
         {
           icon: "bx bx-archive-in",
           title: "Task Pending",
           value: "23",
+          backgroundColor: "bg-danger !important",
         },
         {
           icon: "bx bx-purchase-tag-alt",
           title: "Task Ongoing",
           value: "16",
+          backgroundColor: "bg-warning !important",
         },
         {
           icon: "bx bx-list-check",
           title: "Task Done",
           value: "16",
+          backgroundColor: "bg-success !important",
         },
       ],
 
@@ -334,13 +337,13 @@ console.log(pro);
             <Stat icon="bx bx-copy-alt" title="Total Task" :value="data.total_task" />
           </BCol>
           <BCol md="3">
-            <Stat icon="bx bx-archive-in" title="Pending" :value="data.task_pending" />
+            <Stat icon="bx bx-archive-in" title="Pending" :value="data.task_pending" :backgroundColor="statData[1].backgroundColor" />
           </BCol>
           <BCol md="3">
-            <Stat icon="bx bx-purchase-tag-alt" title="On Going" :value="data.task_on_going" />
+            <Stat icon="bx bx-purchase-tag-alt" title="On Going" :value="data.task_on_going" :backgroundColor="statData[2].backgroundColor"/>
           </BCol>
           <BCol md="3">
-            <Stat icon="bx bx-purchase-tag-alt" title="Done" :value="data.task_done" />
+            <Stat icon="bx bx-list-check" title="Done" :value="data.task_done" :backgroundColor="statData[3].backgroundColor" />
           </BCol>
         </BRow>
       </BCol>
@@ -650,11 +653,13 @@ console.log(pro);
     width: 100%;
   }
   .judul{
-    width: 400px;
+    width: 10%;
+    border: yellowgreen 2px solid;
+    /* font-size: 1em; */
    }
     .deadline-box {
       text-align: center;
-      flex: 1;
+      /* flex: 1; */
       background-color: #F46A6A;
       padding: 10px;
       border-radius: 8px;

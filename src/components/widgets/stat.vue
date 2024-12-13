@@ -33,8 +33,8 @@ export default {
           <h4 class="mb-0">{{value}}</h4>
         </div>
 
-        <div class="avatar-sm align-self-center mini-stat-icon rounded-circle" :class="`${backgroundColor}`">
-          <span class="avatar-title">
+        <div class="avatar-sm align-self-center mini-stat-icon rounded-circle">
+          <span class="avatar-title" :class="backgroundColor">
             <i :class="`${icon} font-size-24`"></i>
           </span>
         </div>
