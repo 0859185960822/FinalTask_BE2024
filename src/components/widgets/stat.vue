@@ -1,6 +1,6 @@
 <script>
 /**
- * Stat component -- specify the widget icon, title and value.
+ * Stat component -- specify the widget icon, title, value, and background color.
  */
 export default {
   props: {
@@ -15,6 +15,10 @@ export default {
     icon: {
       type: String,
       default: ""
+    },
+    backgroundColor: {
+      type: String,
+      default: "bg-primary"
     }
   }
 };
@@ -29,7 +33,7 @@ export default {
           <h4 class="mb-0">{{value}}</h4>
         </div>
 
-        <div class="avatar-sm align-self-center mini-stat-icon rounded-circle bg-primary">
+        <div class="avatar-sm align-self-center mini-stat-icon rounded-circle" :class="`${backgroundColor}`">
           <span class="avatar-title">
             <i :class="`${icon} font-size-24`"></i>
           </span>

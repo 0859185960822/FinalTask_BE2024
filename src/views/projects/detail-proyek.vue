@@ -43,7 +43,8 @@ export default {
         {
           icon: "bx bx-copy-alt",
           title: "Total Task",
-          value: "1,235",
+          value: "112",
+          backgroundColor: "bg-danger",
         },
         {
           icon: "bx bx-archive-in",
@@ -187,7 +188,7 @@ sendmsg() {
  
 };
 </script>
-
+console.log(pro);
 <template>
   <!-- <Sidebar/> -->
   <Layout>
@@ -200,8 +201,7 @@ sendmsg() {
             <BCardTitle>Detail Proyek</BCardTitle>
             <div class="col-md-3 col-6" style="margin-left: auto; margin-right: 1%;" >
                 <button type="button" class="btn btn-success h-100 w-100 d-none d-md-flex" alt="Disable" @click="modalTK = true" variant="primary"><i class="fa fa-plus me-1 mt-1"></i> TAMBAH KOLABORATOR </button>
-                <!-- <button type="button" class="btn btn-success h-100 w-100 d-flex d-md-none" alt="Disable" @click="modalTK = true" variant="primary"><i class="fa fa-plus me-1"></i> KOLABORATOR </button> -->
-                  <BModal v-model="modalTK" id="modal-center" centered title="Tambah Kolaborator" hide-footer>
+                  <BModal v-model="modalTK" id="modal-center" size="lg" centered title="Tambah Kolaborator" hide-footer>
                     <div class="p-3">
                       <form>
                         <div class="row">
@@ -259,7 +259,7 @@ sendmsg() {
             <div class="col-6 col-md-3">
                 <button type="button" class="btn btn-warning h-100 w-100 d-none d-md-flex" alt="Disable" @click="modalSP = true" variant="primary"><i class="fa fa-edit me-1"></i>  SUNTING PROYEK </button>
                 <!-- <button type="button" class="btn btn-warning h-100 w-100 d-flex d-md-none" alt="Disable" @click="modalSP = true" variant="primary"><i class="fa fa-edit"></i>  PROYEK</button> -->
-                <BModal v-model="modalSP" id="modal-center" centered title="Sunting Proyek" hide-footer>
+                <BModal v-model="modalSP" id="modal-center" size="lg" centered title="Sunting Proyek" hide-footer>
                     <div class="p-3">
                       <form>
                         <div class="mb-3">
@@ -369,7 +369,7 @@ sendmsg() {
   <div class="col-auto ms-auto pt-lg-4 pt-4">
     <button type="button" class="btn btn-success d-flex align-items-center d-none d-md-flex" alt="Disable" @click="modalTT = true"><i class="fa fa-plus me-2"></i>TAMBAH TASK</button>
     <button type="button" class="btn btn-success d-flex align-items-center d-flex d-md-none" alt="Disable" @click="modalTT = true"><i class="fa fa-plus me-2"></i>TASK</button>
-    <BModal v-model="modalTT" id="modal-center" centered title="Tambah Task" hide-footer>
+    <BModal v-model="modalTT" id="modal-center" size="lg" centered title="Tambah Task" hide-footer>
                     <div class="p-3">
                       <form>
                         <div class="mb-3">
@@ -390,7 +390,7 @@ sendmsg() {
                           </BCol>
                           <BCol md="6">
                             <div class="form-group">
-                              <BFormGroup class="mb-3 fw-bold" label="Tipe-Task" label-for="tipe-task-input">
+                              <BFormGroup class="mb-3 fw-bold" label="Tipe Task" label-for="tipe-task-input">
                                 <select id="kolaborator" class="form-select">
                                   <option selected>Pilih Tipe Task</option>
                                   <option value="1">Major</option>
@@ -414,7 +414,7 @@ sendmsg() {
                           </BCol>
                           <BCol md="6">
                             <div class="form-group">
-                              <BFormGroup class="mb-3 fw-bold" label="Tipe-Task" label-for="tipe-task-input">
+                              <BFormGroup class="mb-3 fw-bold" label="Tanggal Deadline" label-for="tipe-task-input">
                                 <flat-pickr v-model="picked" :first-day-of-week="1" lang="en" confirm class="form-control"></flat-pickr>
                               </BFormGroup>
                             </div>
@@ -512,26 +512,25 @@ sendmsg() {
 
                         <!-- Comment Section -->
                         <div class="pt-3">
-                          <div style=" align-items: center; gap: 10px;">
+                          <div style="display: flex; gap: 10px;">
                             <!-- Div dengan border bulat -->
-                            <!-- <div style="background-color: whitesmoke; border: 1px solid black; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center;">
+                            <div style="background-color: whitesmoke; border: 1px solid black; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center;">
                               <p style="font-weight: bold; font-size: 2em; margin: 0;">A</p>
-                            </div> -->
+                            </div>
                             <!-- Textarea -->
-                            <label for="nama-yang-komen">Komentar</label>
+                            <!-- <label for="nama-yang-komen">Komentar</label> -->
                             <textarea class="form-control" placeholder="Ketikan Komentar" style="flex: 1;"></textarea>
                           </div>
-                          <div class="text-end mt-2">
+                          <div class="text-end mt-2 mb-2">
                             <button type="button" class="btn btn-secondary btn-info" @click="sendmsg()">Kirim</button>
                           </div>
-                          <div class="mb-3">
-                            <label for="judul-task" class="form-label fw-bold">User 1</label>
-                            <!-- <div class="d-flex justify-content-between mt-2">
-                              <label for="judul-task" class="form-label fw-bold">User 1</label>
-                              <span style="opacity: 50%;">12/12/32</span>
-                            </div> -->
-                            <input type="text" class="form-control" id="autoSizingInput" value="ini komentarnya" disabled>
-                            <p class="mt-1"><span style="opacity: 50%;">12/12/32</span></p>
+                          <div style="display: flex; gap: 10px;">
+                            <!-- Div dengan border bulat -->
+                            <div style="background-color: whitesmoke; border: 1px solid black; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center;">
+                              <p style="font-weight: bold; font-size: 2em; margin: 0;">A</p>
+                            </div>
+                            <!-- Textarea -->
+                            <textarea class="form-control" value="ini adalah komentar" style="flex: 1;" disabled></textarea>
                           </div>
                         </div>
                       </div>
@@ -550,7 +549,7 @@ sendmsg() {
                     </BTd>
                     <BTd style="border-collapse: collapse; border: 1px solid black;">
                       <button type="button" class="btn btn-warning btn-sm mb-1 w-100" alt="Disable" @click="modalST = true" variant="primary"><i class="bx bx-edit"></i> SUNTING</button>
-                      <BModal v-model="modalST" id="modal-center" centered title="Sunting Task" hide-footer>
+                      <BModal v-model="modalST" id="modal-center" size="lg" centered title="Sunting Task" hide-footer>
                         <div class="p-3">
                           <form>
                             <div class="mb-3">
@@ -571,7 +570,7 @@ sendmsg() {
                               </BCol>
                               <BCol md="6">
                                 <div class="form-group">
-                                  <BFormGroup class="mb-3 fw-bold" label="Tipe-Task" label-for="tipe-task-input">
+                                  <BFormGroup class="mb-3 fw-bold" label="Tipe Task" label-for="tipe-task-input">
                                     <select id="kolaborator" class="form-select">
                                       <option selected>Pilih Tipe Task</option>
                                       <option value="1">Major</option>
@@ -595,7 +594,7 @@ sendmsg() {
                               </BCol>
                               <BCol md="6">
                                 <div class="form-group">
-                                  <BFormGroup class="mb-3 fw-bold" label="Tipe-Task" label-for="tipe-task-input">
+                                  <BFormGroup class="mb-3 fw-bold" label="Tangal Deadline" label-for="tipe-task-input">
                                     <flat-pickr v-model="picked" :first-day-of-week="1" lang="en" confirm class="form-control"></flat-pickr>
                                   </BFormGroup>
                                 </div>
@@ -612,14 +611,14 @@ sendmsg() {
                   </BTr>
                 </BTbody>
               </BTableSimple>
+              
             </div>
+            <Page/>
           </b-card>
           </BCardBody>
         </BCard>
       </BCol>
     </BRow>
-
-  <Page/>
   </Layout>
 </template>
 
@@ -651,7 +650,7 @@ sendmsg() {
     width: 100%;
   }
   .judul{
-    width: 500px;
+    width: 450px;
    }
     .deadline-box {
       text-align: center;

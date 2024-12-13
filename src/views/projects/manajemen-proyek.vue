@@ -1,29 +1,33 @@
 <script>
 import Layout from "../../layouts/main";
 import PageHeader from "@/components/page-header";
-// import Sidebar from "../../components/side-bar.vue";
 import Page from "../../components/common/pagination.vue";
 import { ref } from "vue";
 import flatPickr from "vue-flatpickr-component";
 import "flatpickr/dist/flatpickr.css";
 import Swal from 'sweetalert2';
 import axios from "axios";
+import Swal from 'sweetalert2';
+import axios from "axios";
 
-/**
- * Task-list component
- */
 export default {
   setup() {
     const modalTP = ref(false);
     const modalSP = ref(false);
+    const picked = ref(new Date());
+
     return {
       modalTP,
       modalSP,
-      picked: ref(new Date()),
+      picked
     };
   },
-  components: { Layout, PageHeader,Page,flatPickr, },
-
+  components: {
+    Layout,
+    PageHeader,
+    Page,
+    flatPickr,
+  },
   data() {
     return {
       data : [],
@@ -40,18 +44,17 @@ export default {
   },
   methods: {
     confirm() {
-    Swal.fire({
-        title: "Apakah kamu yakin ?",
-        text: "kamu tidak bisa mengembalikan data setelah dihapus",
+      Swal.fire({
+        title: "Apakah kamu yakin?",
+        text: "Kamu tidak bisa mengembalikan data setelah dihapus",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#34c38f",
         cancelButtonColor: "#f46a6a",
-        confirmButtonText: "Ya, Hapus !",
-       
-    }).then(result => {
+        confirmButtonText: "Ya, Hapus!",
+      }).then(result => {
         if (result.value) {
-            Swal.fire("Deleted!", "Data Berhasil Dihapus.", "success");
+          Swal.fire("Deleted!", "Data Berhasil Dihapus.", "success");
         }
     });
 },
@@ -100,29 +103,21 @@ successmsg() {
         text: "Data Berhasil Tersimpan!",
         icon: "success",
         confirmButtonColor: "#556ee6",
-
-    });
-},
-
-updatemsg() {
-    Swal.fire({
+      });
+    },
+    updatemsg() {
+      Swal.fire({
         title: "Data Terupdate!",
         text: "Data Berhasil Terupdate!",
         icon: "success",
         confirmButtonColor: "#556ee6",
-
-    });
-},
-
-    // Tambahkan baris instruktur baru
-    addRowPeserta() {
-      this.instruktur_data.push({
-        instruktur_data: self.instruktur_data,
       });
     },
-    
-
-    // Hapus baris tertentu
+    addRowPeserta() {
+      this.kolaborator_data.push({
+        kolaborator_data: null
+      });
+    },
     deleteRow(index) {
       this.instruktur_data.splice(index, 1);
     },
@@ -132,6 +127,8 @@ updatemsg() {
 
 
 </script>
+
+
 
 <template>
   <!-- <Sidebar/> -->
@@ -164,21 +161,21 @@ updatemsg() {
 
               <!-- Tombol Tambah Proyek -->
               <div class="col-auto ms-auto pt-lg-4 pt-4">
-                <button type="button" class="btn btn-success d-flex align-items-center d-none d-md-flex" alt="Disable" @click="modalTP = true"><i class="fa fa-plus me-2"></i> TAMBAH PROYEK</button>
-                <button type="button" class="btn btn-success d-flex align-items-center d-flex d-md-none" alt="Disable" @click="modalTP = true"><i class="fa fa-plus me-1"></i> PROYEK</button>
-                <BModal v-model="modalTP" id="modal-center" centered title="Tambah Proyek" hide-footer>
+                <button type="button" class="btn btn-success" @click="modalTP = true">
+                  <i class="fa fa-plus me-2"></i> TAMBAH PROYEK
+                </button>
+                <BModal v-model="modalTP" size="lg" centered title="Tambah Proyek" hide-footer>
                   <div class="p-3">
-                    <form>
+                    <form @submit.prevent="storeDataProyek">
                       <div class="mb-3">
-                        <label for="judul-task" class="form-label fw-bold">Nama Proyek</label>
-                        <input type="text" class="form-control" id="autoSizingInput" placeholder="Inputkan Nama Proyek">
+                        <label for="namaProyek" class="form-label">Nama Proyek</label>
+                        <input type="text" class="form-control" v-model="namaProyek" placeholder="Inputkan Nama Proyek">
                       </div>
                       <div class="mb-3">
-                        <label for="judul-task" class="form-label fw-bold">Deskripsi Proyek</label>
-                        <!-- <input type="text-area" class="form-control" id="autoSizingInput"> -->
-                        <textarea class="form-control" placeholder="Tuliskan Deskripsi Proyek" rows="2"></textarea>
+                        <label for="deskripsiProyek" class="form-label">Deskripsi Proyek</label>
+                        <textarea class="form-control" v-model="deskripsiProyek" rows="2" placeholder="Tuliskan Deskripsi Proyek"></textarea>
                       </div>
-                      <div class="mb-3">
+                      <!-- <div class="mb-3">
                         <label for="judul-task" class="form-label fw-bold">Nama Kolaborator</label>
                         <div class="row">
                         <div class="col-12">
@@ -199,14 +196,14 @@ updatemsg() {
                               </tr>
                             </thead>
                             <tbody>
-                              <tr v-for="(row_data, key_data) in instruktur_data" :key="key_data">
+                              <tr v-for="(row_data, key_data) in kolaborator_data" :key="key_data">
                                 <td class="text-center">{{ key_data + 1 }}.</td>
                                 <td>
                                   <v-select
                                     label="nip_name"
-                                    v-model="row_data.instruktur_data"
+                                    v-model="row_data.kolaborator_data"
                                     :options="peserta_ref"
-                                    @search="onSearchInstruktur"
+                                    @search="onSearchKolaborator"
                                     placeholder="Cari dan Pilih Kolaborator..."
                                   ></v-select>
                                 </td>
@@ -225,14 +222,14 @@ updatemsg() {
                         </table>
                         </div>
                       </div>
+                      </div> -->
 
-                      </div>
                       <div class="mb-3">
-                        <label for="deadline" class="form-label fw-bold">Tenggat Waktu</label>
-                        <flat-pickr v-model="picked" :first-day-of-week="1" lang="en" confirm class="form-control"></flat-pickr>
+                        <label for="tenggatWaktu" class="form-label">Tenggat Waktu</label>
+                        <flat-pickr v-model="tenggatWaktu" class="form-control"></flat-pickr>
                       </div>
                       <div class="text-end">
-                        <button type="button" class="btn btn-secondary btn-success" @click='successmsg()'>Simpan</button>
+                        <button type="submit" class="btn btn-success">Simpan</button>
                       </div>
                     </form>
                   </div>
@@ -274,7 +271,7 @@ updatemsg() {
                         <i class="bx bx-info-circle"></i> DETAILS
                       </router-link>
                       <button type="button" class="btn btn-warning btn-sm mb-1 w-100" alt="Disable" @click="modalSP = true" variant="primary"><i class="bx bx-edit"></i> SUNTING</button>
-                      <BModal v-model="modalSP" id="modal-center" centered title="Sunting Proyek" hide-footer>
+                      <BModal v-model="modalSP" id="modal-center" size="lg" centered title="Sunting Proyek" hide-footer>
                         <div class="p-3">
                           <form>
                             <div class="mb-3">
@@ -307,14 +304,14 @@ updatemsg() {
                               </tr>
                             </thead>
                             <tbody>
-                              <tr v-for="(row_data, key_data) in instruktur_data" :key="key_data">
+                              <tr v-for="(row_data, key_data) in kolaborator_data" :key="key_data">
                                 <td class="text-center">{{ key_data + 1 }}.</td>
                                 <td>
                                   <v-select
                                     label="nip_name"
-                                    v-model="row_data.instruktur_data"
+                                    v-model="row_data.kolaborator_data"
                                     :options="peserta_ref"
-                                    @search="onSearchInstruktur"
+                                    @search="onSearchKolaborator"
                                     placeholder="Cari dan Pilih Kolaborator..."
                                   ></v-select>
                                 </td>
