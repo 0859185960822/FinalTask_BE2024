@@ -5,6 +5,8 @@ import { ref } from "vue";
 import flatPickr from "vue-flatpickr-component";
 import "flatpickr/dist/flatpickr.css";
 import Page from "../../components/common/pagination.vue";
+import Swal from "sweetalert2";
+import axios from "axios";
 
 
 /**
@@ -29,6 +31,61 @@ export default {
     }
   },
   components: { Layout, PageHeader,Page,flatPickr, },
+  methods: {
+    exportLaporanProyek() {
+      this.loadingTable = true;
+
+  const token = localStorage.accessToken;
+  if (!token) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: 'No access token found!',
+    });
+    return;
+  }
+
+  const config = {
+    method: 'get',
+    url: process.env.VUE_APP_BACKEND_URL_API + 'admin/projects/export',
+    headers: {
+      Accept: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      Authorization: 'Bearer ' + token,
+    },
+    responseType: 'blob', // Tambahkan ini untuk menangani respon binary
+  };
+
+  axios(config)
+    .then((response) => {
+      this.loadingTable = false;
+
+      // Buat URL dari binary data
+      const blob = new Blob([response.data], {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'Laporan_Proyek.xlsx'; // Nama file yang akan diunduh
+      link.click();
+
+      Swal.fire({
+        icon: 'success',
+        title: 'Berhasil',
+        text: 'File berhasil diunduh!',
+      });
+    })
+    .catch((error) => {
+      this.loadingTable = false;
+
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: error.response ? error.response.data.message : 'Terjadi kesalahan!',
+      });
+      console.error('Error:', error.response ? error.response.data : error.message);
+    });
+    },
+    },
 };
 </script>
 
@@ -100,10 +157,17 @@ export default {
 
   <!-- Tombol Export to Excel -->
   <div class="col-12 col-sm-6 col-md-4 col-lg-2 pt-md-0 pt-lg-4 d-flex align-items-end">
-    <button type="button" class="btn btn-success w-100">
+    <b-button type="button" class="btn btn-success w-100" @click="exportLaporanProyek()">
       <i class="fas fa-file-excel me-2"></i> EXPORT
-    </button>
+    </b-button>
+    <!-- <b-button variant="primary" size="sm" @click="exportLaporanProyek()">
+          <i class="fas fa-file-excel"></i>
+          &nbsp;
+          <b>Export</b>
+        </b-button> -->
   </div>
+  
+  
 <!-- </form> -->
 
 <!--             
