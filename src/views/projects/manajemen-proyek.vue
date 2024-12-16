@@ -159,9 +159,8 @@ successmsg() {
 
               <!-- Tombol Tambah Proyek -->
               <div class="col-auto ms-auto pt-lg-4 pt-4">
-                <button type="button" class="btn btn-success" @click="modalTP = true">
-                  <i class="fa fa-plus me-2"></i> TAMBAH PROYEK
-                </button>
+                <button type="button" class="btn btn-success d-none d-md-flex" @click="modalTP = true"><i class="fa fa-plus me-2"></i> TAMBAH PROYEK</button>
+                <button type="button" class="btn btn-success d-flex d-md-none" @click="modalTP = true"><i class="fa fa-plus me-1"></i> PROYEK</button>
                 <BModal v-model="modalTP" size="lg" centered title="Tambah Proyek" hide-footer>
                   <div class="p-3">
                     <form @submit.prevent="storeDataProyek">
@@ -263,7 +262,7 @@ successmsg() {
                     <BTd style="border-collapse: collapse; border: 1px solid black;">{{ item.description }}</BTd>
                     <BTd style="border-collapse: collapse; border: 1px solid black;">{{ item.deadline }}</BTd>
                     <BTd style="border-collapse: collapse; border: 1px solid black;">{{ item.sisa_waktu }}</BTd>
-                    <BTd style="border-collapse: collapse; border: 1px solid black;">{{item.progress_project}}%</BTd>
+                    <BTd style="border-collapse: collapse; border: 1px solid black;">{{item.progress_project}}</BTd>
                     <BTd style="border-collapse: collapse; border: 1px solid black;">
                       <router-link :to="{ name: 'Detail Proyek', params: { id: item.project_id } }" class="btn btn-info btn-sm mb-1 w-100">
                         <i class="bx bx-info-circle"></i> DETAILS

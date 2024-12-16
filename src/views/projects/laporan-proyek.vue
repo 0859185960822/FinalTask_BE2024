@@ -5,6 +5,8 @@ import { ref } from "vue";
 import flatPickr from "vue-flatpickr-component";
 import "flatpickr/dist/flatpickr.css";
 import Page from "../../components/common/pagination.vue";
+import Swal from "sweetalert2";
+import axios from "axios";
 
 
 /**
@@ -77,6 +79,61 @@ export default {
         });
     },
   }
+  methods: {
+    exportLaporanProyek() {
+      this.loadingTable = true;
+
+  const token = localStorage.accessToken;
+  if (!token) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: 'No access token found!',
+    });
+    return;
+  }
+
+  const config = {
+    method: 'get',
+    url: process.env.VUE_APP_BACKEND_URL_API + 'admin/projects/export',
+    headers: {
+      Accept: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      Authorization: 'Bearer ' + token,
+    },
+    responseType: 'blob', // Tambahkan ini untuk menangani respon binary
+  };
+
+  axios(config)
+    .then((response) => {
+      this.loadingTable = false;
+
+      // Buat URL dari binary data
+      const blob = new Blob([response.data], {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'Laporan_Proyek.xlsx'; // Nama file yang akan diunduh
+      link.click();
+
+      Swal.fire({
+        icon: 'success',
+        title: 'Berhasil',
+        text: 'File berhasil diunduh!',
+      });
+    })
+    .catch((error) => {
+      this.loadingTable = false;
+
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: error.response ? error.response.data.message : 'Terjadi kesalahan!',
+      });
+      console.error('Error:', error.response ? error.response.data : error.message);
+    });
+    },
+    },
 };
 </script>
 
@@ -112,7 +169,7 @@ export default {
 
             <form class="row g-3 align-items-center" style="margin-bottom: 2%;">
   <!-- Input Nama Proyek -->
-  <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+  <div class="col-12 col-sm-6 col-md-4 col-lg-2">
     <label for="projectName" class="form-label">Cari Proyek</label>
     <input type="text" class="form-control" id="projectName" placeholder="Cari Proyek">
   </div>
@@ -127,8 +184,15 @@ export default {
   </div>
 
   <!-- Input Progres -->
-  <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-    <label for="progress" class="form-label">Tanggal Deadline</label>
+  <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+    <label for="progress" class="form-label">Mulai Tanggal</label>
+    <!-- <input type="text" class="form-control" id="tgl_deadline" placeholder="Cari Tanggal"> -->
+    <flat-pickr v-model="picked" :first-day-of-week="1" lang="en" confirm class="form-control"></flat-pickr>
+  </div>
+
+   <!-- Input Progres -->
+   <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+    <label for="progress" class="form-label">Hingga Tanggal</label>
     <!-- <input type="text" class="form-control" id="tgl_deadline" placeholder="Cari Tanggal"> -->
     <flat-pickr v-model="picked" :first-day-of-week="1" lang="en" confirm class="form-control"></flat-pickr>
   </div>
@@ -148,10 +212,17 @@ export default {
 
   <!-- Tombol Export to Excel -->
   <div class="col-12 col-sm-6 col-md-4 col-lg-2 pt-md-0 pt-lg-4 d-flex align-items-end">
-    <button type="button" class="btn btn-success w-100">
+    <b-button type="button" class="btn btn-success w-100" @click="exportLaporanProyek()">
       <i class="fas fa-file-excel me-2"></i> EXPORT
-    </button>
+    </b-button>
+    <!-- <b-button variant="primary" size="sm" @click="exportLaporanProyek()">
+          <i class="fas fa-file-excel"></i>
+          &nbsp;
+          <b>Export</b>
+        </b-button> -->
   </div>
+  
+  
 <!-- </form> -->
 
 <!--             
