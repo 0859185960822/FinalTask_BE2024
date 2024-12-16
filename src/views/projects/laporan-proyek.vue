@@ -121,7 +121,7 @@ export default {
 
             <form class="row g-3 align-items-center" style="margin-bottom: 2%;">
   <!-- Input Nama Proyek -->
-  <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+  <div class="col-12 col-sm-6 col-md-4 col-lg-2">
     <label for="projectName" class="form-label">Cari Proyek</label>
     <input type="text" class="form-control" id="projectName" placeholder="Cari Proyek">
   </div>
@@ -136,8 +136,15 @@ export default {
   </div>
 
   <!-- Input Progres -->
-  <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-    <label for="progress" class="form-label">Tanggal Deadline</label>
+  <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+    <label for="progress" class="form-label">Mulai Tanggal</label>
+    <!-- <input type="text" class="form-control" id="tgl_deadline" placeholder="Cari Tanggal"> -->
+    <flat-pickr v-model="picked" :first-day-of-week="1" lang="en" confirm class="form-control"></flat-pickr>
+  </div>
+
+   <!-- Input Progres -->
+   <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+    <label for="progress" class="form-label">Hingga Tanggal</label>
     <!-- <input type="text" class="form-control" id="tgl_deadline" placeholder="Cari Tanggal"> -->
     <flat-pickr v-model="picked" :first-day-of-week="1" lang="en" confirm class="form-control"></flat-pickr>
   </div>
