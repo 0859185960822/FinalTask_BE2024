@@ -31,7 +31,8 @@ export default {
   components: { Layout, PageHeader,Page,flatPickr,Stat, },
   data() {
     return {
- 
+      // projectData: null, 
+      // Data proyek dari API
       id: this.$route.params.id,
       data: [],
       instruktur_data: [], // Array untuk data instruktur
@@ -81,6 +82,8 @@ export default {
     setTimeout(() => {
       this.showModal = false;
     }, 1500);
+
+    // this.fetchProjectData();
   },
   methods: {
     getDataProject() {
@@ -104,7 +107,7 @@ export default {
           Authorization: 'Bearer ' + token,
         },
       };
-
+      // console.log(item.deadline);
       axios(config)
         .then((response) => {
           this.loadingTable = false;
@@ -203,7 +206,7 @@ console.log(pro);
           <div class="mb-1 d-md-flex">
             <BCardTitle>Detail Proyek</BCardTitle>
             <div class="col-md-3 col-6" style="margin-left: auto; margin-right: 1%;" >
-                <button type="button" class="btn btn-success h-100 w-100 d-none d-md-flex" alt="Disable" @click="modalTK = true" variant="primary"><i class="fa fa-plus me-1 mt-1"></i> TAMBAH KOLABORATOR </button>
+                <button type="button" class="btn btn-success h-100 w-100 d-none d-md-flex" alt="Disable" @click="modalTK = true" variant="primary" ><i class="fa fa-plus me-1 mt-1"></i> TAMBAH KOLABORATOR </button>
                   <BModal v-model="modalTK" id="modal-center" size="lg" centered title="Tambah Kolaborator" hide-footer>
                     <div class="p-3">
                       <form>
@@ -461,7 +464,8 @@ console.log(pro);
                             <!-- Sisa Waktu -->
                             <div class="text-center me-4">
                               <p class="text-muted mb-1">Sisa Waktu</p>
-                              <p class="fw-bold mb-0">{{item.sisa_waktu}}</p>
+                              <!-- <p class="fw-bold mb-0">{{item.sisa_waktu}}</p> -->
+                              <h5><span class="badge bg-danger">{{item.sisa_waktu}}</span></h5>
                             </div>
                             <!-- Status Deadline -->
                             <!-- <div class="text-center">
@@ -480,7 +484,7 @@ console.log(pro);
                           <BCol md="6">
                             <div class="form-group">
                               <BFormGroup class="mb-3 fw-bold" label="Tipe-Task" label-for="tipe-task-input">
-                                <p>{{item.type_task}}</p>
+                                <h5><span class="badge bg-primary">{{item.type_task}}</span></h5>
                               </BFormGroup>
                             </div>
                           </BCol>
@@ -502,13 +506,13 @@ console.log(pro);
                         <BRow>
                           <BCol md="6">
                             <BFormGroup class="mb-3 fw-bold" label="Status Task" label-for="tingkat-urgensi-input">
-                              <p>{{item.status_task}}</p>
+                              <h5><span class="badge bg-danger">{{item.status_task}}</span></h5>
                             </BFormGroup>
                           </BCol>
                           <BCol md="6">
                             <div class="form-group">
                               <BFormGroup class="mb-3 fw-bold" label="Tanggal Deadline" label-for="tipe-task-input">
-                                 <p>{{item.deadline}}</p>
+                                 <p>{{item.deadline}}12/12/2021</p>
                               </BFormGroup>
                             </div>
                           </BCol>
