@@ -29,6 +29,54 @@ export default {
     }
   },
   components: { Layout, PageHeader,Page,flatPickr, },
+  
+  mounted() {
+    this.getDataProject(),
+    setTimeout(() => {
+      this.showModal = false;
+    }, 1500);
+  },
+
+  methods : {
+    getDataProject() {
+      this.loadingTable = true;
+
+      const token = localStorage.accessToken;
+      if (!token) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No access token found!',
+        });
+        return;
+      }
+
+      const config = {
+        method: 'get',
+        url: process.env.VUE_APP_BACKEND_URL_API + 'admin',
+        headers: {
+          Accept: 'application/json',
+          Authorization: 'Bearer ' + token,
+        },
+      };
+
+      axios(config)
+        .then((response) => {
+          this.loadingTable = false;
+          if (response.status === 200) {
+            this.data = response.data.data;
+            console.log(this.data.data_project);
+          } else {
+            this.data = [];
+          }
+        })
+        .catch((error) => {
+          this.loadingTable = false;
+          this.data = [];
+          console.error('Error:', error.response ? error.response.data : error.message);
+        });
+    },
+  }
 };
 </script>
 
