@@ -485,6 +485,7 @@ storeDataEditProyek() {
                     <BTd style="border-collapse: collapse; border: 1px solid black;">{{ item.deadline }}</BTd>
                     <BTd style="border-collapse: collapse; border: 1px solid black;">{{ item.sisa_waktu }}</BTd>
                     <BTd style="border-collapse: collapse; border: 1px solid black;">{{item.progress_project}}</BTd>
+                    <BTd style="border-collapse: collapse; border: 1px solid black;">{{item.progress_project}}</BTd>
                     <BTd style="border-collapse: collapse; border: 1px solid black;">
                       <router-link :to="{ name: 'Detail Proyek', params: { id: item.project_id } }" class="btn btn-info btn-sm mb-1 w-100">
                         <i class="bx bx-info-circle"></i> DETAILS

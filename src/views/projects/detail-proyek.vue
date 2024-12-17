@@ -31,7 +31,8 @@ export default {
   components: { Layout, PageHeader,Page,flatPickr,Stat, },
   data() {
     return {
- 
+      // projectData: null, 
+      // Data proyek dari API
       id: this.$route.params.id,
       data: [],
       instruktur_data: [], // Array untuk data instruktur
@@ -44,22 +45,25 @@ export default {
           icon: "bx bx-copy-alt",
           title: "Total Task",
           value: "112",
-          backgroundColor: "bg-danger",
+          // backgroundColor: "bg-danger !important",
         },
         {
           icon: "bx bx-archive-in",
           title: "Task Pending",
           value: "23",
+          backgroundColor: "bg-danger !important",
         },
         {
-          icon: "bx bx-purchase-tag-alt",
+          icon: "bx bx-run",
           title: "Task Ongoing",
           value: "16",
+          backgroundColor: "bg-warning !important",
         },
         {
           icon: "bx bx-list-check",
           title: "Task Done",
           value: "16",
+          backgroundColor: "bg-success !important",
         },
       ],
 
@@ -78,6 +82,8 @@ export default {
     setTimeout(() => {
       this.showModal = false;
     }, 1500);
+
+    // this.fetchProjectData();
   },
   methods: {
     getDataProject() {
@@ -101,7 +107,7 @@ export default {
           Authorization: 'Bearer ' + token,
         },
       };
-
+      // console.log(item.deadline);
       axios(config)
         .then((response) => {
           this.loadingTable = false;
@@ -200,7 +206,7 @@ console.log(pro);
           <div class="mb-1 d-md-flex">
             <BCardTitle>Detail Proyek</BCardTitle>
             <div class="col-md-3 col-6" style="margin-left: auto; margin-right: 1%;" >
-                <button type="button" class="btn btn-success h-100 w-100 d-none d-md-flex" alt="Disable" @click="modalTK = true" variant="primary"><i class="fa fa-plus me-1 mt-1"></i> TAMBAH KOLABORATOR </button>
+                <button type="button" class="btn btn-success h-100 w-100 d-none d-md-flex" alt="Disable" @click="modalTK = true" variant="primary" ><i class="fa fa-plus me-1 mt-1"></i> TAMBAH KOLABORATOR </button>
                   <BModal v-model="modalTK" id="modal-center" size="lg" centered title="Tambah Kolaborator" hide-footer>
                     <div class="p-3">
                       <form>
@@ -288,59 +294,60 @@ console.log(pro);
             </div>
           </div>
           
-          <b-card header-class="bg-transparent border-primary" class="border border-primary">
-            <div id="app" class="container mt-4">
-    <div class="card-container mb-3">
-      <!-- Baris atas -->
-      <div class="top-row">
-        <!-- Judul Proyek -->
-        <div class="judul">
-          <h3 class="judul-section">{{ data.project_name }}</h3>
-          <p>{{data.description}}</p>
-        </div>
-         
-        <!-- Deadline -->
-        <div class="deadline-box">
-          <i class="mdi mdi-alert-outline me-3 text-white"> Deadline</i>
-          <p class="fw-bold text-white">{{ data.deadline }}</p>
-        </div>
-
-        <!-- Sisa Waktu -->
-        <div class="sisa-waktu-container">
-          <i class="mdi mdi-alert-outline me-3 text-white mt-3"> Sisa Waktu (hari)</i>
-          <p class="sisa-hari text-white fw-bold md:display-6">{{ data.sisa_waktu }}</p>
-        </div>
+<b-card header-class="bg-transparent border-primary" class="border border-primary">
+  <div id="app" class="container mt-4">
+  <div class="card-container mb-3">
+    <!-- Baris atas -->
+    <div class="top-row row align-items-center">
+      <!-- Judul Proyek -->
+      <div class="col-12 col-md-5 judul mb-3 mb-md-0">
+        <h3 class="judul-section">{{ data.project_name }}</h3>
+        <p>{{ data.description }}</p>
       </div>
 
-      <!-- Baris progress -->
-      <div class="progress-container w-100">
-        <div class="progress-wrapper w-100">
-          <div class="d-flex justify-content-between">
-            <span>Presentase</span>
-            <span class="fw-bold">{{ data.progress_project }}%</span>
-          </div>
-          <div class="progress mt-2">
-            <div class="progress-bar bg-success" :style="{ width: data.progress_project + '%' }"></div>
-          </div>
+      <!-- Deadline -->
+      <div class="col-12 col-md-3 deadline-box mb-3 mb-md-0">
+        <i class="mdi mdi-alert-outline me-2 text-white"> Deadline</i>
+        <p class="fw-bold text-white">{{ data.deadline }}</p>
+      </div>
+
+      <!-- Sisa Waktu -->
+      <div class="col-12 col-md-3 sisa-waktu-container">
+        <i class="mdi mdi-alert-outline me-2 text-white"> Sisa Waktu (hari)</i>
+        <p class="sisa-hari text-white fw-bold">{{ data.sisa_waktu }}</p>
+      </div>
+    </div>
+
+    <!-- Baris progress -->
+    <div class="progress-container w-100 mt-4">
+      <div class="progress-wrapper w-100">
+        <div class="d-flex justify-content-between">
+          <span>Presentase</span>
+          <span class="fw-bold">{{ data.progress_project }}</span>
+        </div>
+        <div class="progress mt-2">
+          <div class="progress-bar bg-success" :style="{ width: data.progress_project + '%' }"></div>
         </div>
       </div>
     </div>
   </div>
+</div>
+
 
 
   <BCol xl="12" md="12" lg="12">
         <BRow>
           <BCol md="3">
-            <Stat icon="bx bx-copy-alt" title="Total Task" :value="data.total_task" />
+            <Stat icon="bx bx-task" title="Total Task" :value="data.total_task" />
           </BCol>
           <BCol md="3">
-            <Stat icon="bx bx-archive-in" title="Pending" :value="data.task_pending" />
+            <Stat icon="bx bx-error-alt" title="Pending" :value="data.task_pending" :backgroundColor="statData[1].backgroundColor" />
           </BCol>
           <BCol md="3">
-            <Stat icon="bx bx-purchase-tag-alt" title="On Going" :value="data.task_on_going" />
+            <Stat icon="bx bx-run" title="On Going" :value="data.task_on_going" :backgroundColor="statData[2].backgroundColor"/>
           </BCol>
           <BCol md="3">
-            <Stat icon="bx bx-purchase-tag-alt" title="Done" :value="data.task_done" />
+            <Stat icon="bx bx-list-check" title="Done" :value="data.task_done" :backgroundColor="statData[3].backgroundColor" />
           </BCol>
         </BRow>
       </BCol>
@@ -457,7 +464,8 @@ console.log(pro);
                             <!-- Sisa Waktu -->
                             <div class="text-center me-4">
                               <p class="text-muted mb-1">Sisa Waktu</p>
-                              <p class="fw-bold mb-0">{{item.sisa_waktu}}</p>
+                              <!-- <p class="fw-bold mb-0">{{item.sisa_waktu}}</p> -->
+                              <h5><span class="badge bg-danger">{{item.sisa_waktu}}</span></h5>
                             </div>
                             <!-- Status Deadline -->
                             <!-- <div class="text-center">
@@ -476,7 +484,7 @@ console.log(pro);
                           <BCol md="6">
                             <div class="form-group">
                               <BFormGroup class="mb-3 fw-bold" label="Tipe-Task" label-for="tipe-task-input">
-                                <p>{{item.type_task}}</p>
+                                <h5><span class="badge bg-primary">{{item.type_task}}</span></h5>
                               </BFormGroup>
                             </div>
                           </BCol>
@@ -498,13 +506,13 @@ console.log(pro);
                         <BRow>
                           <BCol md="6">
                             <BFormGroup class="mb-3 fw-bold" label="Status Task" label-for="tingkat-urgensi-input">
-                              <p>{{item.status_task}}</p>
+                              <h5><span class="badge bg-danger">{{item.status_task}}</span></h5>
                             </BFormGroup>
                           </BCol>
                           <BCol md="6">
                             <div class="form-group">
                               <BFormGroup class="mb-3 fw-bold" label="Tanggal Deadline" label-for="tipe-task-input">
-                                 <p>{{item.deadline}}</p>
+                                 <p>{{item.deadline}}12/12/2021</p>
                               </BFormGroup>
                             </div>
                           </BCol>
@@ -643,35 +651,50 @@ console.log(pro);
     box-sizing: border-box;
   }
 
-  .top-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
+  /* Layout Umum */
+.top-row {
+  display: flex;
+  flex-wrap: wrap; /* Membungkus elemen di layar kecil */
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Judul */
+.judul {
+  text-align: left;
+}
+
+/* Deadline Box */
+.deadline-box,
+.sisa-waktu-container {
+  text-align: center;
+  background-color: #f46a6a;
+  padding: 10px;
+  border-radius: 8px;
+  height: auto; /* Menyesuaikan tinggi berdasarkan konten */
+}
+
+/* Progress Bar */
+.progress-container {
+  padding: 1rem 0;
+}
+
+.progress-bar {
+  transition: width 0.4s ease; /* Animasi lebar progress bar */
+}
+
+/* Responsivitas */
+@media (min-width: 768px) {
+  .deadline-box,
+  .sisa-waktu-container {
+    height: 75px; /* Tetapkan tinggi tetap di desktop */
   }
-  .judul{
-    width: 450px;
-   }
-    .deadline-box {
-      text-align: center;
-      flex: 1;
-      background-color: #F46A6A;
-      padding: 10px;
-      border-radius: 8px;
-      margin: 0 10px;
-      height: 75px;
-    }
-    .sisa-waktu-container {
-      background-color: #F46A6A;
-      border-radius: 8px;
-      text-align: center;
-      padding: 10px;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      height: 75px;
-    }
+
+  .judul {
+    width: 350px;
+  }
+}
+
     .progress-container {
       background-color: #eef5fc;
       padding: 10px;

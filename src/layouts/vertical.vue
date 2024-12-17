@@ -1,7 +1,6 @@
 <script>
 import router from "@/router";
 import { layoutComputed } from "@/state/helpers";
-
 import NavBar from "@/components/nav-bar";
 import SideBar from "@/components/side-bar";
 import RightBar from "@/components/right-bar";

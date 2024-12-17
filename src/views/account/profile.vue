@@ -123,7 +123,7 @@ export default {
     <Layout>
         <PageHeader title="Profil User" pageTitle="Akun" />
         <div class="row">
-            <div class="col-4">
+            <div class="col-12 col-md-4">
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
@@ -165,7 +165,7 @@ export default {
                     </div>
                 </div>
             </div>
-            <div class="col-8">
+            <div class="col-12 col-md-8">
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
