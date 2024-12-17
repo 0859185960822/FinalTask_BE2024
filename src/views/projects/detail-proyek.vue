@@ -8,6 +8,8 @@ import flatPickr from "vue-flatpickr-component";
 import "flatpickr/dist/flatpickr.css";
 import Swal from 'sweetalert2'
 import axios from "axios";
+import { useAuthStore } from '@/state/pinia'
+const auth = useAuthStore()
 
 /**
  * Task-list component
@@ -28,17 +30,19 @@ export default {
       picked: ref(new Date()),
     };
   },
+
   components: { Layout, PageHeader,Page,flatPickr,Stat, },
   data() {
     return {
-      // projectData: null, 
-      // Data proyek dari API
+      
       id: this.$route.params.id,
       data: [],
       instruktur_data: [], // Array untuk data instruktur
       peserta_ref: [], // Opsi referensi untuk v-select
 
       no:1,
+
+      menuItems: auth.activeRole.role_id,
 
       statData: [
         {
@@ -83,7 +87,7 @@ export default {
       this.showModal = false;
     }, 1500);
 
-    // this.fetchProjectData();
+    console.log("active roles : ", this.menuItems);
   },
   methods: {
     getDataProject() {
@@ -206,7 +210,8 @@ console.log(pro);
           <div class="mb-1 d-md-flex">
             <BCardTitle>Detail Proyek</BCardTitle>
             <div class="col-md-3 col-6" style="margin-left: auto; margin-right: 1%;" >
-                <button type="button" class="btn btn-success h-100 w-100 d-none d-md-flex" alt="Disable" @click="modalTK = true" variant="primary" ><i class="fa fa-plus me-1 mt-1"></i> TAMBAH KOLABORATOR </button>
+                <button type="button" class="btn btn-success h-100 w-100 d-none d-md-flex" alt="Disable" @click="modalTK = true" variant="primary" v-if="menuItems === 1"><i class="fa fa-plus me-1 mt-1"></i> TAMBAH KOLABORATOR </button>
+                <div v-else>{{ console.log(this.data.pm_id) }}</div>
                   <BModal v-model="modalTK" id="modal-center" size="lg" centered title="Tambah Kolaborator" hide-footer>
                     <div class="p-3">
                       <form>
@@ -264,7 +269,6 @@ console.log(pro);
                 </div>
             <div class="col-6 col-md-3">
                 <button type="button" class="btn btn-warning h-100 w-100 d-none d-md-flex" alt="Disable" @click="modalSP = true" variant="primary"><i class="fa fa-edit me-1"></i>  SUNTING PROYEK </button>
-                <!-- <button type="button" class="btn btn-warning h-100 w-100 d-flex d-md-none" alt="Disable" @click="modalSP = true" variant="primary"><i class="fa fa-edit"></i>  PROYEK</button> -->
                 <BModal v-model="modalSP" id="modal-center" size="lg" centered title="Sunting Proyek" hide-footer>
                     <div class="p-3">
                       <form>
@@ -368,8 +372,8 @@ console.log(pro);
 
             <!-- Input Pencarian -->
             <div class="col-md-auto col-7">
-              <label>Data Proyek</label>
-              <input type="text" class="form-control" id="autoSizingInput" placeholder="Cari Data Proyek">
+              <label>Data Task</label>
+              <input type="text" class="form-control" id="autoSizingInput" placeholder="Cari Data Task">
             </div>
 
   <!-- Tombol Tambah Task -->

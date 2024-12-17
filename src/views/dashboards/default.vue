@@ -129,42 +129,30 @@ export default {
           </BCol>
         </BRow>
       </BCol>
-      <!-- <BCol md="4">
-                <BCard no-body class="text-start">
-                    <BCardBody>
-                        <BCardTitle>Special title treatment</BCardTitle>
-                        <BCardText>
-                            With supporting text below as a natural lead-in to additional
-                            content.
-                        </BCardText>
-                       </BCardBody>
-                </BCard>
-            </BCol> -->
     </BRow>
 
    <div id="app" class="container mt-4">
     <div class="card-container mb-3"  v-for="(item, index) in data.data_project" :key="index">
       <!-- Baris atas -->
-      <div class="top-row">
+      <div class="top-row row align-items-center">
         <!-- Judul Proyek -->
-        <div class="judul">
-          <!-- <h3 class="judul-section">{{ item.project_name }}</h3> -->
-          <h3>
+        <div class="judul col-12 col-md-5 judul mb-3 mb-md-0">
+          <h3 class="judul-section">
             <a style="cursor: pointer;"><router-link :to="{ name: 'Detail Proyek', params: { id: item.project_id } }" style="color: black;">{{ item.project_name }}</router-link></a>
           </h3>
           <p>ini detail project </p>
         </div>
          
         <!-- Deadline -->
-        <div class="deadline-box">
-          <i class="mdi mdi-alert-outline me-3 text-white"> Deadline</i>
+        <div class="col-12 col-md-3 deadline-box mb-3 mb-md-0">
+          <i class="mdi mdi-alert-outline me-2 text-white"> Deadline</i>
           <p class="fw-bold text-white">{{ item.deadline }}</p>
         </div>
 
         <!-- Sisa Waktu -->
-        <div class="sisa-waktu-container">
+        <div class="col-12 col-md-3 sisa-waktu-container">
           <i class="mdi mdi-alert-outline me-3 text-white mt-3"> Sisa Waktu (hari)</i>
-          <p class="sisa-hari text-white fw-bold md:display-6">{{ item.sisa_waktu }}</p>
+          <p class="sisa-hari text-white fw-bold">{{ item.sisa_waktu }}</p>
         </div>
       </div>
 
@@ -194,7 +182,7 @@ export default {
       display: flex;
       flex-direction: column;
     }
-    .top-row {
+    /* .top-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -221,7 +209,51 @@ export default {
       flex-direction: column;
       justify-content: center;
       height: 75px;
-    }
+    } */
+
+     /* Layout Umum */
+.top-row {
+  display: flex;
+  flex-wrap: wrap; /* Membungkus elemen di layar kecil */
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Judul */
+.judul {
+  text-align: left;
+}
+
+/* Deadline Box */
+.deadline-box,
+.sisa-waktu-container {
+  text-align: center;
+  background-color: #f46a6a;
+  padding: 10px;
+  border-radius: 8px;
+  height: auto; /* Menyesuaikan tinggi berdasarkan konten */
+}
+
+/* Progress Bar */
+.progress-container {
+  padding: 1rem 0;
+}
+
+.progress-bar {
+  transition: width 0.4s ease; /* Animasi lebar progress bar */
+}
+
+/* Responsivitas */
+@media (min-width: 768px) {
+  .deadline-box,
+  .sisa-waktu-container {
+    height: 75px; /* Tetapkan tinggi tetap di desktop */
+  }
+
+  .judul {
+    width: 350px;
+  }
+}
     .progress-container {
       background-color: #eef5fc;
       padding: 10px;
