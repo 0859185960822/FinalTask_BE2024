@@ -374,7 +374,7 @@ console.log(pro);
                       <form>
                         <div class="mb-3">
                           <label for="judul-task" class="form-label fw-bold">Judul Task</label>
-                          <input type="text" class="form-control" id="autoSizingInput" placeholder="Masukan judul Task">
+                          <input type="text" class="form-control" v-model="judulTask" placeholder="Masukan judul Task">
                         </div>
                         <BRow>
                           <BCol md="6">
