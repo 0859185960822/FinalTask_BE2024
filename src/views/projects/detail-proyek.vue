@@ -268,7 +268,7 @@ console.log(pro);
                   </BModal>
                 </div>
             <div class="col-6 col-md-3">
-                <button type="button" class="btn btn-warning h-100 w-100 d-none d-md-flex" alt="Disable" @click="modalSP = true" variant="primary"><i class="fa fa-edit me-1"></i>  SUNTING PROYEK </button>
+                <button type="button" class="btn btn-warning h-100 w-100 d-none d-md-flex" alt="Disable" @click="modalSP = true" variant="primary" v-if="menuItems === 1"><i class="fa fa-edit me-1"></i>  SUNTING PROYEK </button>
                 <BModal v-model="modalSP" id="modal-center" size="lg" centered title="Sunting Proyek" hide-footer>
                     <div class="p-3">
                       <form>
@@ -378,8 +378,8 @@ console.log(pro);
 
   <!-- Tombol Tambah Task -->
   <div class="col-auto ms-auto pt-lg-4 pt-4">
-    <button type="button" class="btn btn-success d-flex align-items-center d-none d-md-flex" alt="Disable" @click="modalTT = true"><i class="fa fa-plus me-2"></i>TAMBAH TASK</button>
-    <button type="button" class="btn btn-success d-flex align-items-center d-flex d-md-none" alt="Disable" @click="modalTT = true"><i class="fa fa-plus me-2"></i>TASK</button>
+    <button type="button" class="btn btn-success d-flex align-items-center d-none d-md-flex" alt="Disable" @click="modalTT = true" v-if="menuItems === 1"><i class="fa fa-plus me-2"></i>TAMBAH TASK</button>
+    <button type="button" class="btn btn-success d-flex align-items-center d-flex d-md-none" alt="Disable" @click="modalTT = true" v-if="menuItems === 1"><i class="fa fa-plus me-2"></i>TASK</button>
     <BModal v-model="modalTT" id="modal-center" size="lg" centered title="Tambah Task" hide-footer>
                     <div class="p-3">
                       <form>
@@ -449,7 +449,7 @@ console.log(pro);
                     <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; border-collapse: collapse; border: 1px solid black;">Task <button class="btn btn-sm btn-link p-0"><i class="fa fa-sort"></i></button></BTh>
                     <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; border-collapse: collapse; border: 1px solid black;">Status <button class="btn btn-sm btn-link p-0"><i class="fa fa-sort"></i></button></BTh>
                     <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; border-collapse: collapse; border: 1px solid black;">Sisa Waktu <button class="btn btn-sm btn-link p-0"><i class="fa fa-sort"></i></button></BTh>
-                    <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; border-collapse: collapse; border: 1px solid black;vertical-align: middle;" rowspan="2">Aksi</BTh>
+                    <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; border-collapse: collapse; border: 1px solid black;vertical-align: middle;" rowspan="2" v-if="menuItems === 1">Aksi</BTh>
                   </BTr>
                 </BThead>
                 <BTbody>
@@ -515,7 +515,7 @@ console.log(pro);
                           </BCol>
                           <BCol md="6">
                             <div class="form-group">
-                              <BFormGroup class="mb-3 fw-bold" label="Tanggal Deadline" label-for="tipe-task-input">
+                              <BFormGroup class="mb-3 fw-bold" label="Tanggal Deadline" label-for="deadline-input">
                                  <p>{{item.deadline}}12/12/2021</p>
                               </BFormGroup>
                             </div>
@@ -559,7 +559,7 @@ console.log(pro);
                     <BTd style="border-collapse: collapse; border: 1px solid black; text-align: center;">
                       <span class="badge bg-danger">{{ item.sisa_waktu }}</span>
                     </BTd>
-                    <BTd style="border-collapse: collapse; border: 1px solid black;">
+                    <BTd style="border-collapse: collapse; border: 1px solid black;" v-if="menuItems === 1">
                       <button type="button" class="btn btn-warning btn-sm mb-1 w-100" alt="Disable" @click="modalST = true" variant="primary"><i class="bx bx-edit"></i> SUNTING</button>
                       <BModal v-model="modalST" id="modal-center" size="lg" centered title="Sunting Task" hide-footer>
                         <div class="p-3">
