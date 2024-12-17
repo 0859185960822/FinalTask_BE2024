@@ -148,7 +148,10 @@ export default {
       <div class="top-row">
         <!-- Judul Proyek -->
         <div class="judul">
-          <h3 class="judul-section">{{ item.project_name }}</h3>
+          <!-- <h3 class="judul-section">{{ item.project_name }}</h3> -->
+          <h3>
+            <a style="cursor: pointer;"><router-link :to="{ name: 'Detail Proyek', params: { id: item.project_id } }" style="color: black;">{{ item.project_name }}</router-link></a>
+          </h3>
           <p>ini detail project </p>
         </div>
          
