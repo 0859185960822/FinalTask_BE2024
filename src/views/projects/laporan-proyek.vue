@@ -38,6 +38,7 @@ export default {
     }
   },
   mounted() {
+    this.getDataProject();
     const start = moment().subtract(29, 'days');
     const end = moment();
 
@@ -65,11 +66,52 @@ export default {
     cb(start, end);
   },
 
-  components: { Layout, PageHeader,Page,
+  components: { 
+    Layout,
+    PageHeader,
+    Page,
     // flatPickr, 
   },
   
   methods: {
+    getDataProject() {
+      this.loadingTable = true;
+
+      const token = localStorage.accessToken;
+      if (!token) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No access token found!',
+        });
+        return;
+      }
+
+      const config = {
+        method: 'get',
+        url: process.env.VUE_APP_BACKEND_URL_API + 'admin',
+        headers: {
+          Accept: 'application/json',
+          Authorization: 'Bearer ' + token,
+        },
+      };
+
+      axios(config)
+        .then((response) => {
+          this.loadingTable = false;
+          if (response.status === 200) {
+            this.data = response.data.data.data_project;
+            console.log(this.data.data_project);
+          } else {
+            this.data = [];
+          }
+        })
+        .catch((error) => {
+          this.loadingTable = false;
+          this.data = [];
+          console.error('Error:', error.response ? error.response.data : error.message);
+        });
+    },
     exportLaporanProyek() {
       this.loadingTable = true;
 
@@ -108,59 +150,7 @@ export default {
           console.error('Error:', error.response ? error.response.data : error.message);
         });
     },
-    exportLaporanProyek() {
-      this.loadingTable = true;
-  
-  const token = localStorage.accessToken;
-  if (!token) {
-    Swal.fire({
-      icon: 'error',
-      title: 'Error',
-      text: 'No access token found!',
-    });
-    return;
-  }
-  
-  const config = {
-    method: 'get',
-    url: process.env.VUE_APP_BACKEND_URL_API + 'admin/projects/export',
-    headers: {
-      Accept: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-      Authorization: 'Bearer ' + token,
-    },
-    responseType: 'blob', // Tambahkan ini untuk menangani respon binary
-  };
-  
-  axios(config)
-    .then((response) => {
-      this.loadingTable = false;
-  
-      // Buat URL dari binary data
-      const blob = new Blob([response.data], {
-        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-      });
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = 'Laporan_Proyek.xlsx'; // Nama file yang akan diunduh
-      link.click();
-  
-      Swal.fire({
-        icon: 'success',
-        title: 'Berhasil',
-        text: 'File berhasil diunduh!',
-      });
-    })
-    .catch((error) => {
-      this.loadingTable = false;
-  
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: error.response ? error.response.data.message : 'Terjadi kesalahan!',
-      });
-      console.error('Error:', error.response ? error.response.data : error.message);
-    });
-    },
+    
     },
   };
   
