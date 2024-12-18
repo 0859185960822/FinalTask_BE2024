@@ -515,8 +515,8 @@ console.log(pro);
                           </BCol>
                           <BCol md="6">
                             <div class="form-group">
-                              <BFormGroup class="mb-3 fw-bold" label="Tanggal Deadline" label-for="deadline-input">
-                                 <p>{{item.deadline}}12/12/2021</p>
+                              <BFormGroup class="mb-3 fw-bold" label="Tanggal Deadline" label-for="tipe-task-input">
+                                 <p>{{item.deadline}}</p>
                               </BFormGroup>
                             </div>
                           </BCol>

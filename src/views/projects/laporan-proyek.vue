@@ -27,6 +27,7 @@ export default {
   },
   data(){
     return{
+      data: [],
       project: {
         name: "Project A",
         progress: 80, // Persentase progress
@@ -37,6 +38,7 @@ export default {
     }
   },
   mounted() {
+    this.getDataProject();
     const start = moment().subtract(29, 'days');
     const end = moment();
 
@@ -64,11 +66,52 @@ export default {
     cb(start, end);
   },
 
-  components: { Layout, PageHeader,Page,
+  components: { 
+    Layout,
+    PageHeader,
+    Page,
     // flatPickr, 
   },
   
   methods: {
+    getDataProject() {
+      this.loadingTable = true;
+
+      const token = localStorage.accessToken;
+      if (!token) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No access token found!',
+        });
+        return;
+      }
+
+      const config = {
+        method: 'get',
+        url: process.env.VUE_APP_BACKEND_URL_API + 'admin',
+        headers: {
+          Accept: 'application/json',
+          Authorization: 'Bearer ' + token,
+        },
+      };
+
+      axios(config)
+        .then((response) => {
+          this.loadingTable = false;
+          if (response.status === 200) {
+            this.data = response.data.data.data_project;
+            console.log(this.data.data_project);
+          } else {
+            this.data = [];
+          }
+        })
+        .catch((error) => {
+          this.loadingTable = false;
+          this.data = [];
+          console.error('Error:', error.response ? error.response.data : error.message);
+        });
+    },
     exportLaporanProyek() {
       this.loadingTable = true;
 
@@ -84,46 +127,33 @@ export default {
 
       const config = {
         method: 'get',
-        url: process.env.VUE_APP_BACKEND_URL_API + 'admin/projects/export',
+        url: process.env.VUE_APP_BACKEND_URL_API + 'admin',
         headers: {
-          Accept: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+          Accept: 'application/json',
           Authorization: 'Bearer ' + token,
         },
-        responseType: 'blob', // Tambahkan ini untuk menangani respon binary
       };
 
       axios(config)
         .then((response) => {
           this.loadingTable = false;
-
-          // Buat URL dari binary data
-          const blob = new Blob([response.data], {
-            type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-          });
-          const link = document.createElement('a');
-          link.href = URL.createObjectURL(blob);
-          link.download = 'Laporan_Proyek.xlsx'; // Nama file yang akan diunduh
-          link.click();
-
-          Swal.fire({
-            icon: 'success',
-            title: 'Berhasil',
-            text: 'File berhasil diunduh!',
-          });
+          if (response.status === 200) {
+            this.data = response.data.data.data_project;
+            console.log(this.data);
+          } else {
+            this.data = [];
+          }
         })
         .catch((error) => {
           this.loadingTable = false;
-
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: error.response ? error.response.data.message : 'Terjadi kesalahan!',
-          });
+          this.data = [];
           console.error('Error:', error.response ? error.response.data : error.message);
         });
-      },
     },
-};
+    
+    },
+  };
+  
 </script>
 
 <template>
@@ -199,25 +229,25 @@ export default {
                  
                 </BThead>
                 <BTbody>
-                  <BTr style="border-collapse: collapse; border: 1px solid black">
-                    <BTh scope="row">1</BTh>
-                    <BTd style="border-collapse: collapse; border: 1px solid black;">Proyek A</BTd>
+                  <BTr style="border-collapse: collapse; border: 1px solid black" v-for="(item,index) in data" :key="index">
+                    <BTh scope="row">{{ index+1 }}</BTh>
+                    <BTd style="border-collapse: collapse; border: 1px solid black;">{{item.project_name}}</BTd>
                     <BTd style="border-collapse: collapse; border: 1px solid black;">
                       <div class="progress-container w-100">
                         <div class="progress-wrapper w-100">
                           <div class="d-flex justify-content-between">
                             <span>Presentase</span>
-                            <span class="fw-bold">{{ project.progress }}%</span>
+                            <span class="fw-bold">{{ item.progress_project }}</span>
                           </div>
                           <div class="progress mt-2">
-                            <div class="progress-bar bg-success" :style="{ width: project.progress + '%' }"></div>
+                            <div class="progress-bar bg-success" :style="{ width: item.progress_project + '%' }"></div>
                           </div>
                         </div>
                       </div>
                     </BTd>
-                    <BTd style="border-collapse: collapse; border: 1px solid black;">20/11/2021</BTd>
-                    <BTd style="border-collapse: collapse; border: 1px solid black;text-align: center;"><span class="badge bg-danger">3 Hari</span></BTd>
-                    <BTd style="border-collapse: collapse; border: 1px solid black;text-align: center;"><span class="badge bg-danger">Terlambat</span></BTd>
+                    <BTd style="border-collapse: collapse; border: 1px solid black;">{{ item.deadline }}</BTd>
+                    <BTd style="border-collapse: collapse; border: 1px solid black;text-align: center;"><span class="badge bg-danger">{{ item.sisa_waktu }}</span></BTd>
+                    <BTd style="border-collapse: collapse; border: 1px solid black;text-align: center;"><span class="badge bg-danger">{{ item.status_deadline }}</span></BTd>
                   </BTr>
                 </BTbody>
               </BTableSimple>
