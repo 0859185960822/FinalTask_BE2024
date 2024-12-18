@@ -37,6 +37,12 @@ export default {
       data: [],
       instruktur_data: [], // Array untuk data instruktur
       peserta_ref: [], // Opsi referensi untuk v-select
+      judulTask: "",
+      tingkatUrgensi: "",
+      tipeTask: "",
+      tanggalDeadline: "",
+      project_id: "",
+
 
       no:1,
 
@@ -85,7 +91,22 @@ export default {
 
     // this.fetchProjectData();
   },
+
+  created() {
+  // Ambil parameter project_id dari URL
+  if (this.$route.params.id) {
+    this.project_id = this.id;
+    console.log("Project ID dari URL:", this.project_id);
+  } else {
+    console.warn("Project ID tidak ditemukan di URL");
+  }
+},
+
+
+
+
   methods: {
+
     getDataProject() {
       this.loadingTable = true;
 
@@ -124,7 +145,70 @@ export default {
           console.error('Error:', error.response ? error.response.data : error.message);
         });
     },
-  },
+
+    storeDataTambahTask() {
+  console.log("storeDataTambahTask function is called"); // Log untuk memverifikasi apakah fungsi dipanggil
+
+  // Validasi jika ada field yang kosong
+  if (!this.judulTask || !this.tingkatUrgensi || !this.tipeTask || !this.tanggalDeadline) {
+    Swal.fire({
+      icon: "warning",
+      title: "Data tidak lengkap",
+      text: "Harap lengkapi semua field sebelum menyimpan",
+    });
+    return;
+  }
+
+  // Konfigurasi request ke API
+  const configStoreData = {
+    method: "post",
+    url: process.env.VUE_APP_BACKEND_URL_API + "tasks", // Endpoint API
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.accessToken}`,
+    },
+    data: {
+      id: this.id || null,
+      project_id: this.project_id,
+      task_name: this.judulTask,
+      priority_task: parseInt(this.tingkatUrgensi), // Ubah ke integer jika perlu
+      type_task: this.tipeTask.toUpperCase(),  // Ubah ke integer jika perlu
+      deadline: this.tanggalDeadline,
+    },
+  };
+
+  console.log("Data yang dikirim:", configStoreData.data); // Log untuk melihat data yang dikirim
+
+  // Mengirim request ke API menggunakan Axios
+  axios(configStoreData)
+    .then((response) => {
+      console.log("Respon server:", response.data); // Log response dari server
+      Swal.fire({
+        icon: "success",
+        title: "Berhasil",
+        text: response.data.message || "Data berhasil disimpan",
+      });
+      this.resetForm(); // Reset form setelah berhasil
+    })
+    .catch((error) => {
+      console.error("Error saat mengirim data:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Gagal",
+        text: error.response?.data?.message || "Terjadi kesalahan saat menyimpan data",
+      });
+    });
+},
+
+resetForm() {
+  this.id = null;
+  this.judulTask = "";
+  this.tingkatUrgensi = "";
+  this.tipeTask = "";
+  this.tanggalDeadline = "";
+},
+
 
   countTasksByStatus(status) {
       return this.data.task.filter(data => data.status_task === status).length;
@@ -191,6 +275,7 @@ sendmsg() {
 
     });
 },
+  }
  
 };
 </script>
@@ -264,7 +349,7 @@ console.log(pro);
                 </div>
             <div class="col-6 col-md-3">
                 <button type="button" class="btn btn-warning h-100 w-100 d-none d-md-flex" alt="Disable" @click="modalSP = true" variant="primary"><i class="fa fa-edit me-1"></i>  SUNTING PROYEK </button>
-                <!-- <button type="button" class="btn btn-warning h-100 w-100 d-flex d-md-none" alt="Disable" @click="modalSP = true" variant="primary"><i class="fa fa-edit"></i>  PROYEK</button> -->
+                <button type="button" class="btn btn-warning h-100 w-100 d-flex d-md-none" alt="Disable" @click="modalSP = true" variant="primary"><i class="fa fa-edit"></i>  PROYEK</button>
                 <BModal v-model="modalSP" id="modal-center" size="lg" centered title="Sunting Proyek" hide-footer>
                     <div class="p-3">
                       <form>
@@ -374,42 +459,62 @@ console.log(pro);
 
   <!-- Tombol Tambah Task -->
   <div class="col-auto ms-auto pt-lg-4 pt-4">
-    <button type="button" class="btn btn-success d-flex align-items-center d-none d-md-flex" alt="Disable" @click="modalTT = true"><i class="fa fa-plus me-2"></i>TAMBAH TASK</button>
-    <button type="button" class="btn btn-success d-flex align-items-center d-flex d-md-none" alt="Disable" @click="modalTT = true"><i class="fa fa-plus me-2"></i>TASK</button>
+    <!-- Tombol Tambah Task -->
+    <button
+      type="button"
+      class="btn btn-success d-flex align-items-center d-none d-md-flex"
+      @click="modalTT = true"
+    >
+      <i class="fa fa-plus me-2"></i>TAMBAH TASK
+    </button>
+    <button
+      type="button"
+      class="btn btn-success d-flex align-items-center d-flex d-md-none"
+      @click="modalTT = true"
+    >
+      <i class="fa fa-plus me-2"></i>TASK
+    </button>
+
     <BModal v-model="modalTT" id="modal-center" size="lg" centered title="Tambah Task" hide-footer>
-                    <div class="p-3">
-                      <form>
-                        <div class="mb-3">
-                          <label for="judul-task" class="form-label fw-bold">Judul Task</label>
-                          <input type="text" class="form-control" v-model="judulTask" placeholder="Masukan judul Task">
-                        </div>
-                        <BRow>
-                          <BCol md="6">
-                            <BFormGroup class="mb-3" label="Tingkat Urgensi" label-for="tingkat-urgensi-input">
-                                <select id="urgensi" class="form-select">
-                                  <option selected>Pilih Tingkat Urgensi</option>
-                                  <option value="1">Urgent</option>
-                                  <option value="2">Tinggi</option>
-                                  <option value="3">Sedang</option>
-                                  <option value="3">Rendah</option>
-                                </select>
-                            </BFormGroup>
-                          </BCol>
-                          <BCol md="6">
-                            <div class="form-group">
-                              <BFormGroup class="mb-3 fw-bold" label="Tipe Task" label-for="tipe-task-input">
-                                <select id="kolaborator" class="form-select">
-                                  <option selected>Pilih Tipe Task</option>
-                                  <option value="1">Major</option>
-                                  <option value="2">Minor</option>
-                                </select>
-                              </BFormGroup>
-                            </div>
-                          </BCol>
-                        </BRow>
+      <div class="p-3">
+        <form @submit.prevent="storeDataTambahTask">
+          <!-- Input Judul Task -->
+          <div class="mb-3">
+            <label for="judul-task" class="form-label fw-bold">Judul Task</label>
+            <input
+              type="text"
+              class="form-control"
+              v-model="judulTask"
+              placeholder="Masukkan judul Task"
+              required
+            />
+          </div>
+
+          <BRow>
+            <BCol md="6">
+              <BFormGroup class="mb-3" label="Tingkat Urgensi" label-for="tingkat-urgensi-input">
+                <select v-model="tingkatUrgensi" id="tingkat-urgensi-input" class="form-select">
+                  <option disabled value="">Pilih Tingkat Urgensi</option>
+                  <option value="1">Urgent</option>
+                  <option value="2">Tinggi</option>
+                  <option value="3">Sedang</option>
+                  <option value="4">Rendah</option>
+                </select>
+              </BFormGroup>
+            </BCol>
+                           <BCol md="6">
+              <BFormGroup class="mb-3" label="Tipe Task" label-for="tipe-task-input">
+                <select v-model="tipeTask" id="tipe-task-input" class="form-select">
+                  <option disabled value="">Pilih Tipe Task</option>
+                  <option value="MAJOR">Major</option>
+                  <option value="MINOR">Minor</option>
+                </select>
+              </BFormGroup>
+            </BCol>
+          </BRow>
 
                         <BRow>
-                          <BCol md="6">
+                          <!-- <BCol md="6">
                             <BFormGroup class="mb-3" label="Kolaborator" label-for="kolabolator-input">
                               <select id="kolaborator" class="form-select">
                                     <option selected>Pilih kolaborator</option>
@@ -418,21 +523,26 @@ console.log(pro);
                                     <option value="3">Kolaborator 3</option>
                               </select>
                             </BFormGroup>
-                          </BCol>
+                          </BCol> -->
                           <BCol md="6">
-                            <div class="form-group">
-                              <BFormGroup class="mb-3 fw-bold" label="Tanggal Deadline" label-for="tipe-task-input">
-                                <flat-pickr v-model="picked" :first-day-of-week="1" lang="en" confirm class="form-control"></flat-pickr>
-                              </BFormGroup>
-                            </div>
-                          </BCol>
-                        </BRow>
-                        <div class="text-end">
-                          <button type="button" class="btn btn-secondary btn-success" @click="successmsg()">Tambah</button>
-                        </div>
-                      </form>
-                    </div>
-                  </BModal>
+              <BFormGroup class="mb-3" label="Tanggal Deadline" label-for="tanggal-deadline-input">
+                <flat-pickr
+                  v-model="tanggalDeadline"
+                  :first-day-of-week="1"
+                  lang="en"
+                  class="form-control"
+                ></flat-pickr>
+              </BFormGroup>
+            </BCol>
+          </BRow>
+
+          <!-- Tombol Submit -->
+          <div class="text-end">
+            <button type="submit" class="btn btn-success">Tambah</button>
+          </div>
+        </form>
+      </div>
+    </BModal>
                 </div>
               </form>
               
@@ -581,8 +691,8 @@ console.log(pro);
                                   <BFormGroup class="mb-3 fw-bold" label="Tipe Task" label-for="tipe-task-input">
                                     <select id="kolaborator" class="form-select">
                                       <option selected>Pilih Tipe Task</option>
-                                      <option value="1">Major</option>
-                                      <option value="2">Minor</option>
+                                      <option value="major">Major</option>
+                                      <option value="minor">Minor</option>
                                     </select>
                                   </BFormGroup>
                                 </div>
