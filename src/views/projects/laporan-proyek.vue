@@ -1,12 +1,16 @@
 <script>
 import Layout from "../../layouts/main";
 import PageHeader from "@/components/page-header";
-import { ref } from "vue";
-import flatPickr from "vue-flatpickr-component";
+// import { ref } from "vue";
+// import flatPickr from "vue-flatpickr-component";
 import "flatpickr/dist/flatpickr.css";
 import Page from "../../components/common/pagination.vue";
 import Swal from "sweetalert2";
 import axios from "axios";
+import $ from 'jquery';
+import moment from 'moment';
+import 'daterangepicker/daterangepicker.css';
+import 'daterangepicker';
 
 
 /**
@@ -14,12 +18,12 @@ import axios from "axios";
  */
 export default {
   setup() {
-    const picked = ref(new Date());
-    const picked2 = ref(new Date());
-    return {
-      picked,
-      picked2,
-    };
+    // const picked = ref(new Date());
+    // const picked2 = ref(new Date());
+    // return {
+    //   picked,
+    //   picked2,
+    // };
   },
   data(){
     return{
@@ -29,9 +33,41 @@ export default {
         deadline: "20 Desember 2024",
         daysLeft: 30, // Hari tersisa
       },
+      dateRange: '', // Untuk menyimpan tanggal yang dipilih
     }
   },
-  components: { Layout, PageHeader,Page,flatPickr, },
+  mounted() {
+    const start = moment().subtract(29, 'days');
+    const end = moment();
+
+    const cb = (start, end) => {
+      this.dateRange = `${start.format('MMMM D, YYYY')} - ${end.format('MMMM D, YYYY')}`;
+    };
+
+    $(this.$refs.reportrange).daterangepicker(
+      {
+        startDate: start,
+        endDate: end,
+        ranges: {
+          'Today': [moment(), moment()],
+          'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+          'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+          'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+          'This Month': [moment().startOf('month'), moment().endOf('month')],
+          'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+        },
+      },
+      cb
+    );
+
+    // Set the initial date range
+    cb(start, end);
+  },
+
+  components: { Layout, PageHeader,Page,
+    // flatPickr, 
+  },
+  
   methods: {
     exportLaporanProyek() {
       this.loadingTable = true;
@@ -116,17 +152,23 @@ export default {
     </select>
   </div>
 
-  <!-- Input Progres -->
-  <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+  <!-- date-->
+   <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+    <label for="dateRange">Sort Tanggal</label>
+      <div id="reportrange" ref="reportrange" style="background: #fff; cursor: pointer; border: 1px solid #ccc;">
+        <i class="fa fa-calendar"></i>&nbsp;<span>{{ dateRange }}</span> <i class="fa fa-caret-down"></i>
+      </div>
+   </div>
+
+ <!-- <div class="col-12 col-sm-6 col-md-4 col-lg-2">
     <label for="progress" class="form-label">Mulai Tanggal</label>
     <flat-pickr v-model="picked" :first-day-of-week="1" lang="en" confirm class="form-control"></flat-pickr>
-  </div>
+  </div> -->
 
-   <!-- Input Progres -->
-   <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+   <!-- <div class="col-12 col-sm-6 col-md-4 col-lg-2">
     <label for="progress" class="form-label">Hingga Tanggal</label>
     <flat-pickr v-model="picked2" :first-day-of-week="1" lang="en" confirm class="form-control"></flat-pickr>
-  </div>
+  </div>  -->
 
   <!-- Tombol Filter -->
   <div class="col-12 col-sm-6 col-md-4 col-lg-2 d-flex pt-4 align-items-end">

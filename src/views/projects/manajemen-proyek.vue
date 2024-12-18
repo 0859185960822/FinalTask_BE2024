@@ -367,12 +367,7 @@ storeDataEditProyek() {
   }
 };
   
-
-
-
 </script>
-
-
 
 <template>
   <!-- <Sidebar/> -->
@@ -480,7 +475,7 @@ storeDataEditProyek() {
                     <BTd style="border-collapse: collapse; border: 1px solid black;">{{ item.project_name }}</BTd>
                     <BTd style="border-collapse: collapse; border: 1px solid black;">{{ item.description }}</BTd>
                     <BTd style="border-collapse: collapse; border: 1px solid black;">{{ item.deadline }}</BTd>
-                    <BTd style="border-collapse: collapse; border: 1px solid black;">{{ item.sisa_waktu }}</BTd>
+                    <BTd style="border-collapse: collapse; border: 1px solid black;">{{ item.sisa_waktu }} hari</BTd>
                     <BTd style="border-collapse: collapse; border: 1px solid black;">{{item.progress_project}}</BTd>
                     <!-- <BTd style="border-collapse: collapse; border: 1px solid black;">{{item.progress_project}}</BTd> -->
                     <BTd style="border-collapse: collapse; border: 1px solid black;">
