@@ -367,12 +367,7 @@ storeDataEditProyek() {
   }
 };
   
-
-
-
 </script>
-
-
 
 <template>
   <!-- <Sidebar/> -->
@@ -405,11 +400,8 @@ storeDataEditProyek() {
 
               <!-- Tombol Tambah Proyek -->
               <div class="col-auto ms-auto pt-lg-4 pt-4">
-  <button type="button" class="btn btn-success" @click="showModal.uploadProyek = true">
-    <i class="fa fa-plus me-2"></i> TAMBAH PROYEK
-  </button>
- 
-
+      <button type="button" class="btn btn-success d-none d-md-flex" @click="showModal.uploadProyek = true"><i class="fa fa-plus me-2"></i> TAMBAH PROYEK</button>
+      <button type="button" class="btn btn-success d-flex d-md-none" @click="showModal.uploadProyek = true"><i class="fa fa-plus me-1"></i> PROYEK</button>
 
   <BModal v-model="showModal.uploadProyek" centered title="Tambah Proyek" hide-footer>
     <div class="p-3">
@@ -483,9 +475,9 @@ storeDataEditProyek() {
                     <BTd style="border-collapse: collapse; border: 1px solid black;">{{ item.project_name }}</BTd>
                     <BTd style="border-collapse: collapse; border: 1px solid black;">{{ item.description }}</BTd>
                     <BTd style="border-collapse: collapse; border: 1px solid black;">{{ item.deadline }}</BTd>
-                    <BTd style="border-collapse: collapse; border: 1px solid black;">{{ item.sisa_waktu }}</BTd>
+                    <BTd style="border-collapse: collapse; border: 1px solid black;">{{ item.sisa_waktu }} hari</BTd>
                     <BTd style="border-collapse: collapse; border: 1px solid black;">{{item.progress_project}}</BTd>
-                    <BTd style="border-collapse: collapse; border: 1px solid black;">{{item.progress_project}}</BTd>
+                    <!-- <BTd style="border-collapse: collapse; border: 1px solid black;">{{item.progress_project}}</BTd> -->
                     <BTd style="border-collapse: collapse; border: 1px solid black;">
                       <router-link :to="{ name: 'Detail Proyek', params: { id: item.project_id } }" class="btn btn-info btn-sm mb-1 w-100">
                         <i class="bx bx-info-circle"></i> DETAILS

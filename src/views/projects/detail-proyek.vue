@@ -8,6 +8,8 @@ import flatPickr from "vue-flatpickr-component";
 import "flatpickr/dist/flatpickr.css";
 import Swal from 'sweetalert2'
 import axios from "axios";
+import { useAuthStore } from '@/state/pinia'
+const auth = useAuthStore()
 
 /**
  * Task-list component
@@ -28,11 +30,11 @@ export default {
       picked: ref(new Date()),
     };
   },
+
   components: { Layout, PageHeader,Page,flatPickr,Stat, },
   data() {
     return {
-      // projectData: null, 
-      // Data proyek dari API
+      
       id: this.$route.params.id,
       data: [],
       instruktur_data: [], // Array untuk data instruktur
@@ -45,6 +47,8 @@ export default {
 
 
       no:1,
+
+      menuItems: auth.activeRole.role_id,
 
       statData: [
         {
@@ -291,7 +295,8 @@ console.log(pro);
           <div class="mb-1 d-md-flex">
             <BCardTitle>Detail Proyek</BCardTitle>
             <div class="col-md-3 col-6" style="margin-left: auto; margin-right: 1%;" >
-                <button type="button" class="btn btn-success h-100 w-100 d-none d-md-flex" alt="Disable" @click="modalTK = true" variant="primary" ><i class="fa fa-plus me-1 mt-1"></i> TAMBAH KOLABORATOR </button>
+                <button type="button" class="btn btn-success h-100 w-100 d-none d-md-flex" alt="Disable" @click="modalTK = true" variant="primary" v-if="menuItems === 1"><i class="fa fa-plus me-1 mt-1"></i> TAMBAH KOLABORATOR </button>
+                <div v-else>{{ console.log(this.data.pm_id) }}</div>
                   <BModal v-model="modalTK" id="modal-center" size="lg" centered title="Tambah Kolaborator" hide-footer>
                     <div class="p-3">
                       <form>
@@ -348,8 +353,7 @@ console.log(pro);
                   </BModal>
                 </div>
             <div class="col-6 col-md-3">
-                <button type="button" class="btn btn-warning h-100 w-100 d-none d-md-flex" alt="Disable" @click="modalSP = true" variant="primary"><i class="fa fa-edit me-1"></i>  SUNTING PROYEK </button>
-                <button type="button" class="btn btn-warning h-100 w-100 d-flex d-md-none" alt="Disable" @click="modalSP = true" variant="primary"><i class="fa fa-edit"></i>  PROYEK</button>
+                <button type="button" class="btn btn-warning h-100 w-100 d-none d-md-flex" alt="Disable" @click="modalSP = true" variant="primary" v-if="menuItems === 1"><i class="fa fa-edit me-1"></i>  SUNTING PROYEK </button>
                 <BModal v-model="modalSP" id="modal-center" size="lg" centered title="Sunting Proyek" hide-footer>
                     <div class="p-3">
                       <form>
@@ -374,8 +378,8 @@ console.log(pro);
                   </BModal>
             </div>
             <div class="d-flex gap-1">
-              <button type="button" class="btn btn-success h-100 w-100 d-flex d-md-none" alt="Disable" @click="modalTK = true" variant="primary"><i class="fa fa-plus me-1"></i> KOLABORATOR </button>
-            <button type="button" class="btn btn-warning h-100 w-100 d-flex d-md-none" alt="Disable" @click="modalSP = true" variant="primary"><i class="fa fa-edit"></i>  PROYEK</button>
+              <button type="button" class="btn btn-success h-100 w-100 d-flex d-md-none" alt="Disable" @click="modalTK = true" variant="primary" v-if="menuItems === 1"><i class="fa fa-plus me-1"></i> KOLABORATOR </button>
+            <button type="button" class="btn btn-warning h-100 w-100 d-flex d-md-none" alt="Disable" @click="modalSP = true" variant="primary" v-if="menuItems === 1"><i class="fa fa-edit"></i>  PROYEK</button>
             </div>
           </div>
           
@@ -453,8 +457,8 @@ console.log(pro);
 
             <!-- Input Pencarian -->
             <div class="col-md-auto col-7">
-              <label>Data Proyek</label>
-              <input type="text" class="form-control" id="autoSizingInput" placeholder="Cari Data Proyek">
+              <label>Data Task</label>
+              <input type="text" class="form-control" id="autoSizingInput" placeholder="Cari Data Task">
             </div>
 
   <!-- Tombol Tambah Task -->
@@ -555,7 +559,7 @@ console.log(pro);
                     <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; border-collapse: collapse; border: 1px solid black;">Task <button class="btn btn-sm btn-link p-0"><i class="fa fa-sort"></i></button></BTh>
                     <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; border-collapse: collapse; border: 1px solid black;">Status <button class="btn btn-sm btn-link p-0"><i class="fa fa-sort"></i></button></BTh>
                     <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; border-collapse: collapse; border: 1px solid black;">Sisa Waktu <button class="btn btn-sm btn-link p-0"><i class="fa fa-sort"></i></button></BTh>
-                    <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; border-collapse: collapse; border: 1px solid black;vertical-align: middle;" rowspan="2">Aksi</BTh>
+                    <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; border-collapse: collapse; border: 1px solid black;vertical-align: middle;" rowspan="2" v-if="menuItems === 1">Aksi</BTh>
                   </BTr>
                 </BThead>
                 <BTbody>
@@ -622,7 +626,7 @@ console.log(pro);
                           <BCol md="6">
                             <div class="form-group">
                               <BFormGroup class="mb-3 fw-bold" label="Tanggal Deadline" label-for="tipe-task-input">
-                                 <p>{{item.deadline}}12/12/2021</p>
+                                 <p>{{item.deadline}}</p>
                               </BFormGroup>
                             </div>
                           </BCol>
@@ -665,7 +669,7 @@ console.log(pro);
                     <BTd style="border-collapse: collapse; border: 1px solid black; text-align: center;">
                       <span class="badge bg-danger">{{ item.sisa_waktu }}</span>
                     </BTd>
-                    <BTd style="border-collapse: collapse; border: 1px solid black;">
+                    <BTd style="border-collapse: collapse; border: 1px solid black;" v-if="menuItems === 1">
                       <button type="button" class="btn btn-warning btn-sm mb-1 w-100" alt="Disable" @click="modalST = true" variant="primary"><i class="bx bx-edit"></i> SUNTING</button>
                       <BModal v-model="modalST" id="modal-center" size="lg" centered title="Sunting Task" hide-footer>
                         <div class="p-3">
