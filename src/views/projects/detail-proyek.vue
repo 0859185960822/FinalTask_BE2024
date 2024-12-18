@@ -293,8 +293,8 @@ console.log(pro);
                   </BModal>
             </div>
             <div class="d-flex gap-1">
-              <button type="button" class="btn btn-success h-100 w-100 d-flex d-md-none" alt="Disable" @click="modalTK = true" variant="primary"><i class="fa fa-plus me-1"></i> KOLABORATOR </button>
-            <button type="button" class="btn btn-warning h-100 w-100 d-flex d-md-none" alt="Disable" @click="modalSP = true" variant="primary"><i class="fa fa-edit"></i>  PROYEK</button>
+              <button type="button" class="btn btn-success h-100 w-100 d-flex d-md-none" alt="Disable" @click="modalTK = true" variant="primary" v-if="menuItems === 1"><i class="fa fa-plus me-1"></i> KOLABORATOR </button>
+            <button type="button" class="btn btn-warning h-100 w-100 d-flex d-md-none" alt="Disable" @click="modalSP = true" variant="primary" v-if="menuItems === 1"><i class="fa fa-edit"></i>  PROYEK</button>
             </div>
           </div>
           
