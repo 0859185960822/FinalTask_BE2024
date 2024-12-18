@@ -119,13 +119,13 @@ export default {
       <BCol xl="12" md="12" lg="12">
         <BRow>
           <BCol md="4">
-            <Stat icon="bx bx-copy-alt" title="Total Project" :value="data.total_project" />
+            <Stat icon="bx bxs-briefcase" title="Total Project" :value="data.total_project" />
           </BCol>
           <BCol md="4">
-            <Stat icon="bx bx-archive-in" title="On Going" :value="data.project_on_going" />
+            <Stat icon="bx bx-run" title="On Going" :value="data.project_on_going" />
           </BCol>
           <BCol md="4">
-            <Stat icon="bx bx-purchase-tag-alt" title="Done" :value="data.project_done" />
+            <Stat icon="bx bx-list-check" title="Done" :value="data.project_done" />
           </BCol>
         </BRow>
       </BCol>
