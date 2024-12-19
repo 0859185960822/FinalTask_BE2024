@@ -264,7 +264,7 @@ export default {
 
            <form class="row g-3 align-items-center" style="margin-bottom: 2%;">
             <!-- Input Nama Proyek -->
-            <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
               <label for="projectName" class="form-label">Cari Proyek</label>
               <input type="text" class="form-control" id="projectName" v-model="filterTitle"  placeholder="Cari Proyek">
             </div>
