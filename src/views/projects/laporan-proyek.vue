@@ -37,7 +37,7 @@ export default {
       dateRange: '', // Untuk menyimpan tanggal yang dipilih
       filterTitle: '',
       filterStatus: '',
-      projects: [],
+      // projects: [],
       loadingTable: false,
     }
   },
@@ -228,7 +228,7 @@ export default {
         axios(config)
           .then((response) => {
             this.loadingTable = false;
-            this.projects = response.data.data;
+            this.data = response.data.data.data_projects;
             Swal.fire({
               icon: 'success',
               title: 'Berhasil',
