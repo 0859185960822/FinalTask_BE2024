@@ -30,7 +30,7 @@ export default {
     return {
       data : [],
       project_id: '',
-      instruktur_data: [], // Array untuk data instruktur
+      kolaborator_data: [], // Array untuk data instruktur
       peserta_ref: [], // Opsi referensi untuk v-select
       namaProyek: "",
       deskripsiProyek: "",
@@ -139,8 +139,8 @@ successmsg() {
       });
     },
     addRowPeserta() {
-      this.instruktur_data.push({
-        instruktur_data: self.instruktur_data,
+      this.kolaborator_data.push({
+        kolaborator_data: self.kolaborator_data,
       });
     },
     deleteRow(index) {
@@ -158,7 +158,7 @@ successmsg() {
     searchKolaborator(loading, search) {
       const config = {
         method: "get",
-        url: process.env.VUE_APP_BACKEND_URL_VERSION + "referensi/search-instruktur",
+        url: process.env.VUE_APP_BACKEND_URL_VERSION + "task/get-collaborators",
         params: { search },
         headers: {
           Accept: "application/json",
@@ -171,12 +171,12 @@ successmsg() {
           if (response.data?.meta?.code === 200) {
             this.peserta_ref = response.data.data.referensi;
           } else {
-            this.peserta_ref = [{ user_id: 0, username: "-" }];
+            this.peserta_ref = [{ user_id: 0, name: "-" }];
           }
           loading(false);
         })
         .catch(() => {
-          this.peserta_ref = [{ user_id: 0, username: "-" }];
+          this.peserta_ref = [{ user_id: 0, name: "-" }];
           loading(false);
         });
     },
@@ -424,6 +424,55 @@ storeDataEditProyek() {
               placeholder="Tuliskan Deskripsi Proyek"
             ></textarea>
           </div>
+
+           <div class="mb-3">
+                <label for="judul-task" class="form-label fw-bold">Nama Kolaborator</label>
+                    <div class="row">
+                        <div class="col-12">
+                          <table class="table mb-0 mt-0 table-bordered table-condensed table-hover">
+                            <thead class="bg-dark text-center text-white">
+                              <tr>
+                                <th style="width: 50px">No</th>
+                                <th style="width: auto">Kolaborator</th>
+                                <th style="width: 50px" class="text-center">
+                                  <b-button
+                                    type="button"
+                                    class="btn btn-success btn-sm"
+                                    @click="addRowPeserta"
+                                  >
+                                    <i class="fa fa-plus"></i>
+                                  </b-button>
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr v-for="(row_data, key_data) in kolaborator_data" :key="key_data">
+                                <td class="text-center">{{ key_data + 1 }}.</td>
+                                <td>
+                                  <v-select
+                                    label="nip_name"
+                                    v-model="row_data.kolaborator_data"
+                                    :options="peserta_ref"
+                                    @search="onSearchKolaborator"
+                                    placeholder="Cari dan Pilih Kolaborator..."
+                                  ></v-select>
+                                </td>
+                              
+                                <td class="text-center">
+                                  <button
+                                    type="button"
+                                    class="btn btn-danger btn-sm"
+                                    @click="deleteRow(key_data, row_data)"
+                                  >
+                                    <i class="fa fa-minus"></i>
+                                  </button>
+                                </td>
+                              </tr>
+                            </tbody>
+                        </table>
+                        </div>
+                      </div>
+                    </div> 
 
           <div class="mb-3">
             <label for="deadline" class="form-label fw-bold">Tenggat Waktu</label>

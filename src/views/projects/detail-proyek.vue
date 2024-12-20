@@ -19,13 +19,13 @@ export default {
     const modalTK = ref(false);
     const modalTT = ref(false);
     const modalST = ref(false);
-    const modalSP = ref(false);
+    // const modalSP = ref(false);
     const modalDT = ref(false);
     return {
       modalTK,
       modalTT,
       modalST,
-      modalSP,
+      // modalSP,
       modalDT,
       picked: ref(new Date()),
     };
@@ -37,18 +37,17 @@ export default {
       
       id: this.$route.params.id,
       data: [],
-      instruktur_data: [], // Array untuk data instruktur
+      kolaborator_data: [], // Array untuk data instruktur
       peserta_ref: [], // Opsi referensi untuk v-select
       judulTask: "",
       tingkatUrgensi: "",
       tipeTask: "",
       tanggalDeadline: "",
       project_id: "",
-
-
-      no:1,
-
       menuItems: auth.activeRole.role_id,
+
+  
+      no:1,
 
       statData: [
         {
@@ -84,6 +83,10 @@ export default {
         daysLeft: 30, // Hari tersisa
         
       },
+
+      showModal: {
+                editProyek: false,
+            },
  
     };
   },
@@ -91,6 +94,7 @@ export default {
     this.getDataProject()
     setTimeout(() => {
       this.showModal = false;
+      this.showModal.editProyek = false;
     }, 1500);
 
     // this.fetchProjectData();
@@ -220,15 +224,14 @@ resetForm() {
 
     // Tambahkan baris instruktur baru
     addRowPeserta() {
-      this.instruktur_data.push({
-        instruktur_data: self.instruktur_data,
+      this.kolaborator_data.push({
+        kolaborator_data: self.kolaborator_data,
       });
     },
     
-
     // Hapus baris tertentu
     deleteRow(index) {
-      this.instruktur_data.splice(index, 1);
+      this.kolaborator_data.splice(index, 1);
     },
   
     // Fungsi untuk memperbarui progress secara dinamis
@@ -279,11 +282,142 @@ sendmsg() {
 
     });
 },
+
+editProyek(project_id) {
+  console.log(`Memuat data proyek dengan ID: ${project_id}`);
+
+  // Reset data sebelum memuat yang baru
+  this.project_id = null,
+  this.namaProyek = "";
+  this.deskripsiProyek = "";
+  this.tenggatWaktu = "";
+  this.kolaborator_data = [];
+
+  // Menampilkan loading
+  Swal.fire({
+    title: '<i class="fas fa-spinner fa-spin"></i>',
+    text: "Loading...",
+    showConfirmButton: false,
+    allowOutsideClick: false,
+    allowEscapeKey: false,
+  });
+
+  // Konfigurasi untuk mengambil data proyek
+  const configGetData = {
+    method: "get",
+    url: process.env.VUE_APP_BACKEND_URL_API + 'admin/' + project_id,
+  
+    headers: {
+      Accept: "application/json",
+      Authorization: `Bearer ${localStorage.accessToken}`,
+    },
+  };
+
+  axios(configGetData)
+    .then((response) => {
+      console.log("Respon server:", response.data);
+      const resData = response.data.data;
+
+      // Validasi data respons
+      if (resData) {
+      console.log("Data proyek ditemukan:", resData);
+      this.project_id = resData.project_id || null;
+      this.namaProyek = resData.project_name || "";
+      this.deskripsiProyek = resData.description || "";
+      this.tenggatWaktu = resData.deadline || "";
+      this.kolaborator_data = resData.collaborator || [];
+      this.showModal.editProyek = true; // Tampilkan modal
+    } else {
+      throw new Error("Data proyek tidak ditemukan.");
+    }
+
+      this.showModal.editProyek = true; // Menampilkan modal untuk edit
+    })
+    .catch((error) => {
+      console.error("Error mengambil data proyek:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Gagal",
+        text: error.response?.data?.message || "Terjadi kesalahan saat memuat data proyek.",
+      });
+    })
+    .finally(() => {
+      Swal.close(); // Selalu tutup loading
+    });
+},
+
+
+showModalEditProyek(id) { 
+    console.log("Tombol SUNTING diklik, ID Proyek:", id);
+    this.editProyek(id);
+    this.showModal.editProyek = true;
+  },
+
+storeDataEditProyek() {
+  console.log("storeDataEditProyek function is called"); // Log untuk verifikasi
+
+  // Validasi input
+  if (!this.namaProyek || !this.deskripsiProyek || !this.tenggatWaktu) {
+    Swal.fire({
+      icon: "warning",
+      title: "Data tidak lengkap",
+      text: "Harap lengkapi semua field sebelum menyimpan",
+    });
+    return;
+  }
+
+  // Konfigurasi axios untuk update data proyek
+  const configEditData = {
+    method: "put",
+    url: process.env.VUE_APP_BACKEND_URL_API +'admin/' + this.project_id,  // Pastikan URL API benar
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.accessToken}`, // Token akses
+    },
+    data: {
+      project_id: this.project_id,  // ID proyek yang akan diedit
+      project_name: this.namaProyek,  // Nama proyek
+      description: this.deskripsiProyek,  // Deskripsi proyek
+      deadline: this.tenggatWaktu,  // Tenggat waktu proyek
+      collaborator: this.kolaborator_data,  // Data kolaborator
+    },
+  };
+
+  console.log("Data yang dikirim untuk update:", configEditData.data); // Log data yang dikirim
+
+  // Kirim permintaan ke backend untuk update data proyek
+  axios(configEditData)
+    .then((response) => {
+      console.log("Respon server:", response.data); // Log response dari server
+      Swal.fire({
+        icon: "success",
+        title: "Berhasil",
+        text: response.data.message || "Data berhasil diperbarui",
+        timer: 2000, // Otomatis menutup pesan setelah 2 detik
+        timerProgressBar: true,
+        showConfirmButton: false, // Tidak ada tombol konfirmasi
+      }).then(() => {
+        this.showModal.editProyek = false; // Tutup modal setelah berhasil
+        this.resetForm(); // Reset form setelah menyimpan
+        this.getDataUploadProyek(); // Refresh data yang ditampilkan di tabel
+      });
+    })
+    .catch((error) => {
+      console.error("Error saat memperbarui data proyek:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Gagal",
+        text: error.response?.data?.message || "Terjadi kesalahan saat memperbarui data.",
+      });
+    });
+},
+
+
   }
  
 };
 </script>
-console.log(pro);
 <template>
   <!-- <Sidebar/> -->
   <Layout>
@@ -319,14 +453,14 @@ console.log(pro);
                               </tr>
                             </thead>
                             <tbody>
-                              <tr v-for="(row_data, key_data) in instruktur_data" :key="key_data">
+                              <tr v-for="(row_data, key_data) in kolaborator_data" :key="key_data">
                                 <td class="text-center">{{ key_data + 1 }}.</td>
                                 <td>
                                   <v-select
                                     label="nip_name"
-                                    v-model="row_data.instruktur_data"
+                                    v-model="row_data.kolaborator_data"
                                     :options="peserta_ref"
-                                    @search="onSearchInstruktur"
+                                    @search="onSearchKolaborator"
                                     placeholder="Cari dan Pilih Kolaborator..."
                                   ></v-select>
                                 </td>
@@ -352,34 +486,72 @@ console.log(pro);
                     </div>
                   </BModal>
                 </div>
+
             <div class="col-6 col-md-3">
-                <button type="button" class="btn btn-warning h-100 w-100 d-none d-md-flex" alt="Disable" @click="modalSP = true" variant="primary" v-if="menuItems === 1"><i class="fa fa-edit me-1"></i>  SUNTING PROYEK </button>
-                <BModal v-model="modalSP" id="modal-center" size="lg" centered title="Sunting Proyek" hide-footer>
-                    <div class="p-3">
-                      <form>
-                        <div class="mb-3">
-                          <label for="judul-task" class="form-label fw-bold">Nama Proyek</label>
-                          <input type="text" class="form-control" id="autoSizingInput" value="Proyek A">
-                        </div>
-                        <div class="mb-3">
-                          <label for="judul-task" class="form-label fw-bold">Deskripsi Proyek</label>
-                          <!-- <input type="text" class="form-control" id="autoSizingInput" value="ini deskripsi"> -->
-                          <textarea class="form-control" placeholder="Tuliskan Deskripsi Proyek" rows="2" value="ini deskripsi proyek"></textarea>
-                        </div>
-                        <div class="mb-3">
-                          <label for="deadline" class="form-label fw-bold">Tenggat Waktu</label>
-                          <flat-pickr v-model="picked" :first-day-of-week="1" lang="en" confirm class="form-control"></flat-pickr>
-                        </div>
-                        <div class="text-end">
-                          <button type="button" class="btn btn-secondary btn-success" @click="updatemsg()">Simpan</button>
-                        </div>
-                      </form>
-                    </div>
-                  </BModal>
+              <button 
+                type="button" 
+                class="btn btn-warning h-100 w-100 d-none d-md-flex" 
+                title="Edit Proyek" 
+                @click="showModalEditProyek(this.project_id)" 
+                v-if="menuItems === 1">
+                <i class="fa fa-edit me-1"></i> SUNTING PROYEK
+              </button>
+
+
+                <BModal 
+  v-model="showModal.editProyek" 
+  id="modal-center"  
+  centered 
+  title="Sunting Proyek" 
+  hide-footer>
+  <div class="p-3">
+    <form @submit.prevent="storeDataEditProyek()">
+      <!-- Input Nama Proyek -->
+      <div class="mb-3">
+        <label for="namaProyek" class="form-label">Nama Proyek</label>
+        <input
+          type="text"
+          class="form-control"
+          v-model="namaProyek"
+          placeholder="Inputkan Nama Proyek"
+        />
+      </div>
+
+      <!-- Input Deskripsi Proyek -->
+      <div class="mb-3">
+        <label for="deskripsiProyek" class="form-label">Deskripsi Proyek</label>
+        <textarea
+          class="form-control"
+          v-model="deskripsiProyek"
+          rows="2"
+          placeholder="Tuliskan Deskripsi Proyek"
+        ></textarea>
+      </div>
+
+      <!-- Input Tenggat Waktu -->
+      <div class="mb-3">
+        <label for="deadline" class="form-label fw-bold">Tenggat Waktu</label>
+        <flat-pickr
+          v-model="tenggatWaktu"
+          :first-day-of-week="1"
+          lang="en"
+          confirm
+          class="form-control"
+        ></flat-pickr>
+      </div>
+
+      <!-- Tombol Simpan -->
+      <div class="text-end">
+        <button type="submit" class="btn btn-success">Simpan</button>
+      </div>
+    </form>
+  </div>
+</BModal>
+
             </div>
             <div class="d-flex gap-1">
               <button type="button" class="btn btn-success h-100 w-100 d-flex d-md-none" alt="Disable" @click="modalTK = true" variant="primary" v-if="menuItems === 1"><i class="fa fa-plus me-1"></i> KOLABORATOR </button>
-            <button type="button" class="btn btn-warning h-100 w-100 d-flex d-md-none" alt="Disable" @click="modalSP = true" variant="primary" v-if="menuItems === 1"><i class="fa fa-edit"></i>  PROYEK</button>
+            <!-- <button type="button" class="btn btn-warning h-100 w-100 d-flex d-md-none" alt="Disable" @click="modalSP = true" variant="primary" v-if="menuItems === 1"><i class="fa fa-edit"></i>  PROYEK</button> -->
             </div>
           </div>
           
