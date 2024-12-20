@@ -37,7 +37,7 @@ export default {
       dateRange: '', // Untuk menyimpan tanggal yang dipilih
       filterTitle: '',
       filterStatus: '',
-      projects: [],
+      // projects: [],
       loadingTable: false,
     }
   },
@@ -228,7 +228,7 @@ export default {
         axios(config)
           .then((response) => {
             this.loadingTable = false;
-            this.projects = response.data.data;
+            this.data = response.data.data.data_projects;
             Swal.fire({
               icon: 'success',
               title: 'Berhasil',
@@ -287,16 +287,6 @@ export default {
                 </div>
             </div>
             {{ console.log(this.start) }}
-
-          <!-- <div class="col-12 col-sm-6 col-md-4 col-lg-2">
-              <label for="progress" class="form-label">Mulai Tanggal</label>
-              <flat-pickr v-model="picked" :first-day-of-week="1" lang="en" confirm class="form-control"></flat-pickr>
-            </div> -->
-
-            <!-- <div class="col-12 col-sm-6 col-md-4 col-lg-2">
-              <label for="progress" class="form-label">Hingga Tanggal</label>
-              <flat-pickr v-model="picked2" :first-day-of-week="1" lang="en" confirm class="form-control"></flat-pickr>
-            </div>  -->
 
             <!-- Tombol Filter -->
             <div class="col-12 col-sm-6 col-md-4 col-lg-2 d-flex pt-4 align-items-end">

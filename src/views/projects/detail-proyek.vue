@@ -54,7 +54,6 @@ export default {
           icon: "bx bx-copy-alt",
           title: "Total Task",
           value: "112",
-          // backgroundColor: "bg-danger !important",
         },
         {
           icon: "bx bx-archive-in",
@@ -88,6 +87,10 @@ export default {
                 editProyek: false,
             },
  
+      },
+      
+      query: "", // Kata kunci pencarian
+      task: [], // Hasil pencarian proyek    
     };
   },
   mounted() {
@@ -142,7 +145,7 @@ export default {
           this.loadingTable = false;
           if (response.status === 200) {
             this.data = response.data.data;
-            console.log(this.data);
+            // console.log(this.data);
           } else {
             this.data = [];
           }
@@ -153,6 +156,62 @@ export default {
           console.error('Error:', error.response ? error.response.data : error.message);
         });
     },
+
+    cariProyek() {
+    let self = this;
+    self.loadingTable = true;
+
+    // Konfigurasi Axios
+    var config = {
+        method: "post",
+        url: process.env.VUE_APP_BACKEND_URL_API + "task-management/search",
+        params: {
+            search: self.query, // Query pencarian
+        },
+        headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${localStorage.accessToken}`, // Token dari localStorage
+        },
+    };
+
+    // Panggil API
+    axios(config)
+        .then(function (response) {
+            let response_data = response.data;
+
+            console.log(response_data); // Debugging untuk memastikan struktur response
+
+            if (response_data.meta.code === 200) {
+                // Berhasil mengambil data
+                self.data.task = response_data.data; // Simpan data ke variabel
+            } else {
+                // Jika response gagal
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: response_data.meta.message, // Perbaiki akses properti di sini
+                });
+            }
+        })
+        .catch(function (error) {
+            console.error("Error fetching data:", error);
+
+            // Tampilkan pesan kesalahan
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: error.response && error.response.data.meta 
+                    ? error.response.data.meta.message 
+                    : "Terjadi kesalahan saat mengambil data.",
+            });
+        })
+        .finally(() => {
+            // Pastikan indikator loading dihentikan
+            self.loadingTable = false;
+        });
+},
+
+  },
 
     storeDataTambahTask() {
   console.log("storeDataTambahTask function is called"); // Log untuk memverifikasi apakah fungsi dipanggil
@@ -630,7 +689,7 @@ storeDataEditProyek() {
             <!-- Input Pencarian -->
             <div class="col-md-auto col-7">
               <label>Data Task</label>
-              <input type="text" class="form-control" id="autoSizingInput" placeholder="Cari Data Task">
+              <input type="text" v-model="query" @input="cariProyek()" class="form-control" id="autoSizingInput" placeholder="Cari Data Task">
             </div>
 
   <!-- Tombol Tambah Task -->
@@ -905,7 +964,6 @@ storeDataEditProyek() {
                   </BTr>
                 </BTbody>
               </BTableSimple>
-              
             </div>
             <Page/>
           </b-card>
