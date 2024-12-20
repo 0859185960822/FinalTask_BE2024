@@ -431,9 +431,9 @@ storeDataEditProyek() {
             <div class="col-md-3 col-6" style="margin-left: auto; margin-right: 1%;" >
                 <button type="button" class="btn btn-success h-100 w-100 d-none d-md-flex" alt="Disable" @click="modalTK = true" variant="primary" v-if="menuItems === 1"><i class="fa fa-plus me-1 mt-1"></i> TAMBAH KOLABORATOR </button>
                 <div v-else>{{ console.log(this.data.pm_id) }}</div>
-                  <BModal v-model="modalTK" id="modal-center" size="lg" centered title="Tambah Kolaborator" hide-footer>
+                  <BModal v-model="showModal.tambahKolaborator" id="modal-center" size="lg" centered title="Tambah Kolaborator" hide-footer>
                     <div class="p-3">
-                      <form>
+                      <form @submit.prevent="storeDataTambahKolaborator()">
                         <div class="row">
                         <div class="col-12">
                           <table class="table mb-0 mt-0 table-bordered table-condensed table-hover">

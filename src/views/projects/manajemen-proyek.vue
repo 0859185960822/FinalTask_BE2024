@@ -159,18 +159,19 @@ successmsg() {
     searchKolaborator(loading, search) {
       const config = {
         method: "get",
-        url: process.env.VUE_APP_BACKEND_URL_VERSION + "task/get-collaborators",
+        url: process.env.VUE_APP_BACKEND_URL_API + "tasks/get-collaborators",
         params: { search },
         headers: {
-          Accept: "application/json",
-          Authorization: "Bearer " + localStorage.access_token,
-        },
+                Accept: "application/json",
+                Authorization:`Bearer ${localStorage.accessToken}`, 
+            },
       };
 
       axios(config)
         .then((response) => {
           if (response.data?.meta?.code === 200) {
-            this.peserta_ref = response.data.data.referensi;
+            this.peserta_ref = response.data.data;
+            console.log(this.peserta_ref);
           } else {
             this.peserta_ref = [{ user_id: 0, name: "-" }];
           }
@@ -203,11 +204,10 @@ successmsg() {
       Authorization: `Bearer ${localStorage.accessToken}`,
     },
     data: {
-      id: this.id || null,
       project_name: this.namaProyek,
       description: this.deskripsiProyek,
       deadline: this.tenggatWaktu,
-      collaborator: this.kolaborator_data,
+      collaborator: JSON.stringify(this.kolaborator_data),
     },
   };
 
@@ -233,7 +233,6 @@ successmsg() {
     });
 },
     resetForm() {
-      this.id = null;
       this.namaProyek = "";
       this.deskripsiProyek = "";
       this.tenggatWaktu = "";
@@ -330,7 +329,7 @@ storeDataEditProyek() {
       project_name: this.namaProyek,  // Nama proyek
       description: this.deskripsiProyek,  // Deskripsi proyek
       deadline: this.tenggatWaktu,  // Tenggat waktu proyek
-      collaborator: this.kolaborator_data,  // Data kolaborator
+      collaborator: JSON.stringify(this.kolaborator_data),
     },
   };
 
@@ -495,7 +494,7 @@ cariProyek() {
                                 <td class="text-center">{{ key_data + 1 }}.</td>
                                 <td>
                                   <v-select
-                                    label="nip_name"
+                                    label="name"
                                     v-model="row_data.kolaborator_data"
                                     :options="peserta_ref"
                                     @search="onSearchKolaborator"
@@ -599,6 +598,55 @@ cariProyek() {
                                   placeholder="Tuliskan Deskripsi Proyek"
                                 ></textarea>
                               </div>
+
+                              <div class="mb-3">
+                <label for="judul-task" class="form-label fw-bold">Nama Kolaborator</label>
+                    <div class="row">
+                        <div class="col-12">
+                          <table class="table mb-0 mt-0 table-bordered table-condensed table-hover">
+                            <thead class="bg-dark text-center text-white">
+                              <tr>
+                                <th style="width: 50px">No</th>
+                                <th style="width: auto">Kolaborator</th>
+                                <th style="width: 50px" class="text-center">
+                                  <b-button
+                                    type="button"
+                                    class="btn btn-success btn-sm"
+                                    @click="addRowPeserta"
+                                  >
+                                    <i class="fa fa-plus"></i>
+                                  </b-button>
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr v-for="(row_data, key_data) in kolaborator_data" :key="key_data">
+                                <td class="text-center">{{ key_data + 1 }}.</td>
+                                <td>
+                                  <v-select
+                                    label="name"
+                                    v-model="row_data.kolaborator_data"
+                                    :options="peserta_ref"
+                                    @search="onSearchKolaborator"
+                                    placeholder="Cari dan Pilih Kolaborator..."
+                                  ></v-select>
+                                </td>
+                              
+                                <td class="text-center">
+                                  <button
+                                    type="button"
+                                    class="btn btn-danger btn-sm"
+                                    @click="deleteRow(key_data, row_data)"
+                                  >
+                                    <i class="fa fa-minus"></i>
+                                  </button>
+                                </td>
+                              </tr>
+                            </tbody>
+                        </table>
+                        </div>
+                      </div>
+                    </div>
                            
                             <div class="mb-3">
                                 <label for="deadline" class="form-label fw-bold">Tenggat Waktu</label>
