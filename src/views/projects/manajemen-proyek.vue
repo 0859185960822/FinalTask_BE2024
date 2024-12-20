@@ -35,7 +35,8 @@ export default {
       namaProyek: "",
       deskripsiProyek: "",
       tenggatWaktu: "",
-      
+      query: "", // Kata kunci pencarian
+      projects: [], // Hasil pencarian proyek      
 
       
       showModal: {
@@ -56,7 +57,7 @@ export default {
   },
   methods: {
 
-    showModalUploadProyek() {
+  showModalUploadProyek() {
   console.log("Tombol TAMBAH PROYEK diklik");
   this.resetForm();
   this.showModal.uploadProyek = true;
@@ -98,7 +99,7 @@ getDataProject() {
 
       const config = {
         method: 'get',
-        url: process.env.VUE_APP_BACKEND_URL_API + 'admin',
+        url: process.env.VUE_APP_BACKEND_URL_API + 'project-management',
         headers: {
           Accept: 'application/json',
           Authorization: 'Bearer ' + token,
@@ -362,7 +363,51 @@ storeDataEditProyek() {
     });
 },
 
+cariProyek() {
+        let self = this;
+        self.loadingTable = true;
 
+        // Konfigurasi Axios
+        var config = {
+            method: "post",
+            url: process.env.VUE_APP_BACKEND_URL_API + "project-management/search",
+            params: {
+                search: self.query, // Query pencarian
+            },
+            headers: {
+                Accept: "application/json",
+                Authorization:`Bearer ${localStorage.accessToken}`, 
+            },
+        };
+
+        // Panggil API
+        axios(config)
+            .then(function (response) {
+                let response_data = response.data;
+
+                if (response_data.meta.code === 200) {
+                    // Berhasil mengambil data
+                    self.data.data_project = response_data.data; // Simpan data ke variabel
+                } else {
+                    // Jika error
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: response_data.meta.message,
+                    });
+                }
+                self.loadingTable = false;
+            })
+            .catch(function (error) {
+                console.error("Error fetching data:", error);
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: "Terjadi kesalahan saat mengambil data.",
+                });
+                self.loadingTable = false;
+            });
+    },
 
   }
 };
@@ -395,7 +440,7 @@ storeDataEditProyek() {
               <!-- Input Pencarian -->
               <div class="col-auto">
                 <label>Data Proyek</label>
-                <input type="text" class="form-control" id="autoSizingInput" placeholder="Cari Proyek">
+                <input type="text" v-model="query" @input="cariProyek()" class="form-control" id="autoSizingInput" placeholder="Cari Proyek">
               </div>
 
               <!-- Tombol Tambah Proyek -->
@@ -474,36 +519,29 @@ storeDataEditProyek() {
                       </div>
                     </div> 
 
-          <div class="mb-3">
-            <label for="deadline" class="form-label fw-bold">Tenggat Waktu</label>
-            <flat-pickr
-              v-model="tenggatWaktu"
-              :first-day-of-week="1"
-              lang="en"
-              confirm
-              class="form-control"
-            ></flat-pickr>
+                <div class="mb-3">
+                  <label for="deadline" class="form-label fw-bold">Tenggat Waktu</label>
+                  <flat-pickr
+                    v-model="tenggatWaktu"
+                    :first-day-of-week="1"
+                    lang="en"
+                    confirm
+                    class="form-control"
+                  ></flat-pickr>
+                </div>
+
+              <div class="text-end">
+                <button type="submit" class="btn btn-success" @click="console.log('Tombol diklik')">
+                  Simpan
+                </button>
+
+              </div>
+            </form>
           </div>
-
-        <div class="text-end">
-          <!-- <b-button variant="success" type="submit">
-                        <i class="fas fa-check"></i>
-                        &nbsp;
-                        <b>Simpan</b>
-                    </b-button> -->
-          <!-- <button type="button" class="btn btn-secondary btn-success" @click='successmsg'>Simpan</button> -->
-          <button type="submit" class="btn btn-success" @click="console.log('Tombol diklik')">
-            Simpan
-          </button>
-
-        </div>
+        </BModal>
+      </div>
       </form>
-    </div>
-  </BModal>
-</div>
-</form>
-
-           
+ 
             <div class="table-responsive">
               <BTableSimple class="mb-0">
                 <BThead>
@@ -526,7 +564,6 @@ storeDataEditProyek() {
                     <BTd style="border-collapse: collapse; border: 1px solid black;">{{ item.deadline }}</BTd>
                     <BTd style="border-collapse: collapse; border: 1px solid black;">{{ item.sisa_waktu }} hari</BTd>
                     <BTd style="border-collapse: collapse; border: 1px solid black;">{{item.progress_project}}</BTd>
-                    <!-- <BTd style="border-collapse: collapse; border: 1px solid black;">{{item.progress_project}}</BTd> -->
                     <BTd style="border-collapse: collapse; border: 1px solid black;">
                       <router-link :to="{ name: 'Detail Proyek', params: { id: item.project_id } }" class="btn btn-info btn-sm mb-1 w-100">
                         <i class="bx bx-info-circle"></i> DETAILS
