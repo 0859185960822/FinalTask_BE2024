@@ -16,13 +16,13 @@ const auth = useAuthStore()
  */
 export default {
   setup() {
-    const modalTK = ref(false);
+    // const modalTK = ref(false);
     const modalTT = ref(false);
     const modalST = ref(false);
     // const modalSP = ref(false);
     const modalDT = ref(false);
     return {
-      modalTK,
+      // modalTK,
       modalTT,
       modalST,
       // modalSP,
@@ -44,6 +44,7 @@ export default {
       tipeTask: "",
       tanggalDeadline: "",
       project_id: "",
+      userIds: "",
       menuItems: auth.activeRole.role_id,
 
   
@@ -83,21 +84,20 @@ export default {
         
       },
 
-      showModal: {
-                editProyek: false,
-            },
- 
-      },
-      
       query: "", // Kata kunci pencarian
       task: [], // Hasil pencarian proyek    
+      showModal: {
+                editProyek: false,
+                tambahKolaborator: false,
+            },
+        
     };
   },
   mounted() {
     this.getDataProject()
     setTimeout(() => {
-      this.showModal = false;
       this.showModal.editProyek = false;
+      this.showModal.tambahKolaborator = false;
     }, 1500);
 
     // this.fetchProjectData();
@@ -113,10 +113,92 @@ export default {
   }
 },
 
-
-
-
   methods: {
+
+    showModalTambahKolaborator() {
+  console.log("Tombol TAMBAH KOLABORATOR diklik");
+  this.resetForm();
+  this.showModal.tambahKolaborator = true;
+},
+
+onSearchKolaborator(search, loading) {
+      if (search.length) {
+        loading(true);
+        this.searchKolaborator(loading, search);
+      }
+    },
+
+searchKolaborator(loading, search) {
+      const config = {
+        method: "get",
+        url: process.env.VUE_APP_BACKEND_URL_API + "tasks/get-collaborators",
+        params: { search },
+        headers: {
+                Accept: "application/json",
+                Authorization:`Bearer ${localStorage.accessToken}`, 
+            },
+      };
+
+      axios(config)
+        .then((response) => {
+          if (response.data?.meta?.code === 200) {
+            this.peserta_ref = response.data.data;
+            console.log(this.peserta_ref);
+          } else {
+            this.peserta_ref = [{ user_id: 0, name: "-" }];
+          }
+          loading(false);
+        })
+        .catch(() => {
+          this.peserta_ref = [{ user_id: 0, name: "-" }];
+          loading(false);
+        });
+    },
+
+
+    storeDataTambahKolaborator() {
+      console.log("storeDataTambahKolaborator function is called"); 
+      this.userIds = this.kolaborator_data.map((kolaborator_data) => kolaborator_data.user_id);
+
+
+  const configStoreData = {
+    method: "post",
+    url: process.env.VUE_APP_BACKEND_URL_API + "admin/add-collaborator",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.accessToken}`,
+    },
+    data: {
+      project_id: this.project_id, 
+      // user_id: JSON.stringify(this.kolaborator_data),
+      user_id: this.userIds, // Hanya kirim user_id
+    },
+  };
+
+  console.log("Data yang dikirim:", configStoreData.data);  // Log untuk melihat data yang dikirim
+
+  axios(configStoreData)
+    .then((response) => {
+      console.log("Respon server:", response.data);  // Log response dari server
+      Swal.fire({
+        icon: "success",
+        title: "Berhasil",
+        text: response.data.message || "Data berhasil disimpan",
+      });
+      this.resetForm();  // Reset form setelah berhasil
+    })
+    .catch((error) => {
+      console.error("Error saat mengirim data:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Gagal",
+        text: error.response?.data?.message || "Terjadi kesalahan saat menyimpan data",
+      });
+    });
+},
+  
+
 
     getDataProject() {
       this.loadingTable = true;
@@ -211,7 +293,6 @@ export default {
         });
 },
 
-  },
 
     storeDataTambahTask() {
   console.log("storeDataTambahTask function is called"); // Log untuk memverifikasi apakah fungsi dipanggil
@@ -287,8 +368,6 @@ resetForm() {
         kolaborator_data: self.kolaborator_data,
       });
     },
-    
-    // Hapus baris tertentu
     deleteRow(index) {
       this.kolaborator_data.splice(index, 1);
     },
@@ -488,8 +567,9 @@ storeDataEditProyek() {
           <div class="mb-1 d-md-flex">
             <BCardTitle>Detail Proyek</BCardTitle>
             <div class="col-md-3 col-6" style="margin-left: auto; margin-right: 1%;" >
-                <button type="button" class="btn btn-success h-100 w-100 d-none d-md-flex" alt="Disable" @click="modalTK = true" variant="primary" v-if="menuItems === 1"><i class="fa fa-plus me-1 mt-1"></i> TAMBAH KOLABORATOR </button>
+                <button type="button" class="btn btn-success h-100 w-100 d-none d-md-flex" alt="Disable" @click="showModal.tambahKolaborator = true" variant="primary" v-if="menuItems === 1"><i class="fa fa-plus me-1 mt-1"></i> TAMBAH KOLABORATOR </button>
                 <div v-else>{{ console.log(this.data.pm_id) }}</div>
+
                   <BModal v-model="showModal.tambahKolaborator" id="modal-center" size="lg" centered title="Tambah Kolaborator" hide-footer>
                     <div class="p-3">
                       <form @submit.prevent="storeDataTambahKolaborator()">
@@ -516,7 +596,7 @@ storeDataEditProyek() {
                                 <td class="text-center">{{ key_data + 1 }}.</td>
                                 <td>
                                   <v-select
-                                    label="nip_name"
+                                    label="name"
                                     v-model="row_data.kolaborator_data"
                                     :options="peserta_ref"
                                     @search="onSearchKolaborator"
@@ -539,7 +619,7 @@ storeDataEditProyek() {
                         </div>
                       </div>
                         <div class="text-end mt-3">
-                          <button type="button" class="btn btn-secondary btn-success">Tambah</button>
+                          <button type="submit" class="btn btn-secondary btn-success">Tambah</button>
                         </div>
                       </form>
                     </div>
@@ -609,7 +689,7 @@ storeDataEditProyek() {
 
             </div>
             <div class="d-flex gap-1">
-              <button type="button" class="btn btn-success h-100 w-100 d-flex d-md-none" alt="Disable" @click="modalTK = true" variant="primary" v-if="menuItems === 1"><i class="fa fa-plus me-1"></i> KOLABORATOR </button>
+              <!-- <button type="button" class="btn btn-success h-100 w-100 d-flex d-md-none" alt="Disable" @click="modalTK = true" variant="primary" v-if="menuItems === 1"><i class="fa fa-plus me-1"></i> KOLABORATOR </button> -->
             <!-- <button type="button" class="btn btn-warning h-100 w-100 d-flex d-md-none" alt="Disable" @click="modalSP = true" variant="primary" v-if="menuItems === 1"><i class="fa fa-edit"></i>  PROYEK</button> -->
             </div>
           </div>

@@ -54,7 +54,6 @@ export default {
 
   },
   methods: {
-
   showModalUploadProyek() {
   console.log("Tombol TAMBAH PROYEK diklik");
   this.resetForm();
