@@ -1,8 +1,6 @@
 <script>
 import Layout from "../../layouts/main";
 import PageHeader from "@/components/page-header";
-// import { ref } from "vue";
-// import flatPickr from "vue-flatpickr-component";
 import "flatpickr/dist/flatpickr.css";
 import Page from "../../components/common/pagination.vue";
 import Swal from "sweetalert2";
@@ -17,14 +15,7 @@ import 'daterangepicker';
  * Task-list component
  */
 export default {
-  // setup() {
-  //   // const picked = ref(new Date());
-  //   // const picked2 = ref(new Date());
-  //   // return {
-  //   //   picked,
-  //   //   picked2,
-  //   // };
-  // },
+
   data(){
     return{
       data: [],
@@ -248,7 +239,7 @@ export default {
           });
       },
 
-          sortData(column) {
+      sortData(column) {
         if (this.sortColumn === column) {
           // Toggle sorting order jika kolom yang sama diurutkan
           this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc';
