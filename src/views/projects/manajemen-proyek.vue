@@ -37,12 +37,10 @@ export default {
       tenggatWaktu: "",
       query: "", // Kata kunci pencarian
       projects: [], // Hasil pencarian proyek      
-
-      
       showModal: {
-                uploadProyek: false,
-                editProyek: false,
-            },
+          uploadProyek: false,
+          editProyek: false,
+      },
     };
   },
 
