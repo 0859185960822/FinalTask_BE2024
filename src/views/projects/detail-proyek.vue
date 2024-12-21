@@ -158,7 +158,7 @@ searchKolaborator(loading, search) {
 
     storeDataTambahKolaborator() {
       console.log("storeDataTambahKolaborator function is called"); 
-      this.userIds = this.kolaborator_data.map((kolaborator_data) => kolaborator_data.user_id);
+      this.userIds = this.kolaborator_data.map((item) => item.kolaborator_data.user_id);
 
 
   const configStoreData = {
@@ -171,8 +171,7 @@ searchKolaborator(loading, search) {
     },
     data: {
       project_id: this.project_id, 
-      // user_id: JSON.stringify(this.kolaborator_data),
-      user_id: this.userIds, // Hanya kirim user_id
+      user_id: JSON.stringify(this.userIds),
     },
   };
 
@@ -421,7 +420,14 @@ sendmsg() {
     });
 },
 
-editProyek(project_id) {
+showModalEditProyek(id) { 
+    console.log("Tombol SUNTING diklik, ID Proyek:", id);
+    this.editProyek(id);
+    this.showModal.editProyek = true;
+  },
+
+  editProyek(project_id) {
+  
   console.log(`Memuat data proyek dengan ID: ${project_id}`);
 
   // Reset data sebelum memuat yang baru
@@ -429,7 +435,7 @@ editProyek(project_id) {
   this.namaProyek = "";
   this.deskripsiProyek = "";
   this.tenggatWaktu = "";
-  this.kolaborator_data = [];
+  // this.kolaborator_data = [];
 
   // Menampilkan loading
   Swal.fire({
@@ -463,8 +469,7 @@ editProyek(project_id) {
       this.namaProyek = resData.project_name || "";
       this.deskripsiProyek = resData.description || "";
       this.tenggatWaktu = resData.deadline || "";
-      this.kolaborator_data = resData.collaborator || [];
-      this.showModal.editProyek = true; // Tampilkan modal
+      // this.kolaborator_data = resData.collaborator || [];
     } else {
       throw new Error("Data proyek tidak ditemukan.");
     }
@@ -483,13 +488,6 @@ editProyek(project_id) {
       Swal.close(); // Selalu tutup loading
     });
 },
-
-
-showModalEditProyek(id) { 
-    console.log("Tombol SUNTING diklik, ID Proyek:", id);
-    this.editProyek(id);
-    this.showModal.editProyek = true;
-  },
 
 storeDataEditProyek() {
   console.log("storeDataEditProyek function is called"); // Log untuk verifikasi
@@ -637,57 +635,95 @@ storeDataEditProyek() {
               </button>
 
 
-                <BModal 
-  v-model="showModal.editProyek" 
-  id="modal-center"  
-  centered 
-  title="Sunting Proyek" 
-  hide-footer>
-  <div class="p-3">
-    <form @submit.prevent="storeDataEditProyek()">
-      <!-- Input Nama Proyek -->
-      <div class="mb-3">
-        <label for="namaProyek" class="form-label">Nama Proyek</label>
-        <input
-          type="text"
-          class="form-control"
-          v-model="namaProyek"
-          placeholder="Inputkan Nama Proyek"
-        />
-      </div>
+              <BModal v-model="showModal.editProyek" centered title="Sunting Proyek" hide-footer>
+                        <div class="p-3">
+                          <form @submit.prevent="storeDataEditProyek()">
+                              <div class="mb-3">
+                                <label for="namaProyek" class="form-label">Nama Proyek</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  v-model="namaProyek"
+                                  placeholder="Inputkan Nama Proyek"
+                                />
+                              </div>
+                              <div class="mb-3">
+                                <label for="deskripsiProyek" class="form-label">Deskripsi Proyek</label>
+                                <textarea
+                                  class="form-control"
+                                  v-model="deskripsiProyek"
+                                  rows="2"
+                                  placeholder="Tuliskan Deskripsi Proyek"
+                                ></textarea>
+                              </div>
 
-      <!-- Input Deskripsi Proyek -->
-      <div class="mb-3">
-        <label for="deskripsiProyek" class="form-label">Deskripsi Proyek</label>
-        <textarea
-          class="form-control"
-          v-model="deskripsiProyek"
-          rows="2"
-          placeholder="Tuliskan Deskripsi Proyek"
-        ></textarea>
-      </div>
+                              <!-- <div class="mb-3">
+                <label for="judul-task" class="form-label fw-bold">Nama Kolaborator</label>
+                    <div class="row">
+                        <div class="col-12">
+                          <table class="table mb-0 mt-0 table-bordered table-condensed table-hover">
+                            <thead class="bg-dark text-center text-white">
+                              <tr>
+                                <th style="width: 50px">No</th>
+                                <th style="width: auto">Kolaborator</th>
+                                <th style="width: 50px" class="text-center">
+                                  <b-button
+                                    type="button"
+                                    class="btn btn-success btn-sm"
+                                    @click="addRowPeserta"
+                                  >
+                                    <i class="fa fa-plus"></i>
+                                  </b-button>
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr v-for="(row_data, key_data) in kolaborator_data" :key="key_data">
+                                <td class="text-center">{{ key_data + 1 }}.</td>
+                                <td>
+                                  <v-select
+                                    label="name"
+                                    v-model="row_data.kolaborator_data"
+                                    :options="peserta_ref"
+                                    @search="onSearchKolaborator"
+                                    placeholder="Cari dan Pilih Kolaborator..."
+                                  ></v-select>
+                                </td>
+                              
+                                <td class="text-center">
+                                  <button
+                                    type="button"
+                                    class="btn btn-danger btn-sm"
+                                    @click="deleteRow(key_data, row_data)"
+                                  >
+                                    <i class="fa fa-minus"></i>
+                                  </button>
+                                </td>
+                              </tr>
+                            </tbody>
+                        </table>
+                        </div>
+                      </div>
+                    </div> -->
+                           
+                            <div class="mb-3">
+                                <label for="deadline" class="form-label fw-bold">Tenggat Waktu</label>
+                                <flat-pickr
+                                  v-model="tenggatWaktu"
+                                  :first-day-of-week="1"
+                                  lang="en"
+                                  confirm
+                                  class="form-control"
+                                ></flat-pickr>
+                              </div>
+                            <div class="text-end">
+                              <button type="submit" class="btn btn-success">Simpan</button>
 
-      <!-- Input Tenggat Waktu -->
-      <div class="mb-3">
-        <label for="deadline" class="form-label fw-bold">Tenggat Waktu</label>
-        <flat-pickr
-          v-model="tenggatWaktu"
-          :first-day-of-week="1"
-          lang="en"
-          confirm
-          class="form-control"
-        ></flat-pickr>
-      </div>
-
-      <!-- Tombol Simpan -->
-      <div class="text-end">
-        <button type="submit" class="btn btn-success">Simpan</button>
-      </div>
-    </form>
-  </div>
-</BModal>
-
-            </div>
+                            </div>
+                          </form>
+                        </div>
+                      </BModal>
+                    </div>
             <div class="d-flex gap-1">
               <!-- <button type="button" class="btn btn-success h-100 w-100 d-flex d-md-none" alt="Disable" @click="modalTK = true" variant="primary" v-if="menuItems === 1"><i class="fa fa-plus me-1"></i> KOLABORATOR </button> -->
             <!-- <button type="button" class="btn btn-warning h-100 w-100 d-flex d-md-none" alt="Disable" @click="modalSP = true" variant="primary" v-if="menuItems === 1"><i class="fa fa-edit"></i>  PROYEK</button> -->
@@ -980,15 +1016,67 @@ storeDataEditProyek() {
                     <BTd style="border-collapse: collapse; border: 1px solid black; text-align: center;">
                       <span class="badge bg-danger">{{ item.sisa_waktu }}</span>
                     </BTd>
+
+
                     <BTd style="border-collapse: collapse; border: 1px solid black;" v-if="menuItems === 1">
                       <button type="button" class="btn btn-warning btn-sm mb-1 w-100" alt="Disable" @click="modalST = true" variant="primary"><i class="bx bx-edit"></i> SUNTING</button>
                       <BModal v-model="modalST" id="modal-center" size="lg" centered title="Sunting Task" hide-footer>
                         <div class="p-3">
-                          <form>
+                          <form @submit.prevent="storeDataEditTask">
                             <div class="mb-3">
                               <label for="judul-task" class="form-label fw-bold">Judul Task</label>
                               <input type="text" class="form-control" id="autoSizingInput" placeholder="Masukan judul Task" value="Task A">
                             </div>
+
+                            <div class="mb-3">
+                <label for="judul-task" class="form-label fw-bold">Nama Kolaborator</label>
+                    <div class="row">
+                        <div class="col-12">
+                          <table class="table mb-0 mt-0 table-bordered table-condensed table-hover">
+                            <thead class="bg-dark text-center text-white">
+                              <tr>
+                                <th style="width: 50px">No</th>
+                                <th style="width: auto">Kolaborator</th>
+                                <th style="width: 50px" class="text-center">
+                                  <b-button
+                                    type="button"
+                                    class="btn btn-success btn-sm"
+                                    @click="addRowPeserta"
+                                  >
+                                    <i class="fa fa-plus"></i>
+                                  </b-button>
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr v-for="(row_data, key_data) in kolaborator_data" :key="key_data">
+                                <td class="text-center">{{ key_data + 1 }}.</td>
+                                <td>
+                                  <v-select
+                                    label="name"
+                                    v-model="row_data.kolaborator_data"
+                                    :options="peserta_ref"
+                                    @search="onSearchKolaborator"
+                                    placeholder="Cari dan Pilih Kolaborator..."
+                                  ></v-select>
+                                </td>
+                              
+                                <td class="text-center">
+                                  <button
+                                    type="button"
+                                    class="btn btn-danger btn-sm"
+                                    @click="deleteRow(key_data, row_data)"
+                                  >
+                                    <i class="fa fa-minus"></i>
+                                  </button>
+                                </td>
+                              </tr>
+                            </tbody>
+                        </table>
+                        </div>
+                      </div>
+                    </div> 
+
                             <BRow>
                               <BCol md="6">
                                 <BFormGroup class="mb-3" label="Tingkat Urgensi" label-for="tingkat-urgensi-input">
