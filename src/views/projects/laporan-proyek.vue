@@ -87,7 +87,7 @@ export default {
 
       const config = {
         method: 'get',
-        url: process.env.VUE_APP_BACKEND_URL_API + 'admin',
+        url: process.env.VUE_APP_BACKEND_URL_API + 'laporan-project',
         headers: {
           Accept: 'application/json',
           Authorization: 'Bearer ' + token,
@@ -99,7 +99,7 @@ export default {
           this.loadingTable = false;
           if (response.status === 200) {
             this.data = response.data.data.data_project;
-            console.log(this.data.data_project);
+            console.log(this.data);
           } else {
             this.data = [];
           }

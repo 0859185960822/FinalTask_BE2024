@@ -79,7 +79,7 @@ export default {
         }
     });
 },
-getDataProject() {
+getDataProject(per_page = 5) {
       this.loadingTable = true;
 
       const token = localStorage.accessToken;
@@ -95,6 +95,9 @@ getDataProject() {
       const config = {
         method: 'get',
         url: process.env.VUE_APP_BACKEND_URL_API + 'project-management',
+        params: {
+          per_page: per_page
+        },
         headers: {
           Accept: 'application/json',
           Authorization: 'Bearer ' + token,
@@ -428,6 +431,10 @@ cariProyek() {
       }
     });
   },
+  updateEntries() {
+        const perPage = document.getElementById('autoSizingSelect').value; // Ambil nilai dari dropdown
+        this.getDataProject(perPage); // Panggil fungsi getDataProject dengan nilai perPage
+    }
 
   }
 };
@@ -449,10 +456,13 @@ cariProyek() {
               <!-- Dropdown Show Entries -->
               <div class="col-auto d-flex align-items-center pt-lg-4">
                 <label class="me-2">Show</label>
-                <select class="form-select w-auto" id="autoSizingSelect" aria-label="Select number of entries">
-                  <option value="10" selected>10</option>
+                <select class="form-select w-auto" id="autoSizingSelect" aria-label="Select number of entries" v-on:change="updateEntries()">
+                  <option value="5" selected>5</option>
+                  <option value="10">10</option>
+                  <option value="15">15</option>
+                  <option value="20">20</option>
+                  <option value="25">25</option>
                   <option value="50">50</option>
-                  <option value="100">100</option>
                 </select>
                 <label class="ms-2">Entries</label>
               </div>
