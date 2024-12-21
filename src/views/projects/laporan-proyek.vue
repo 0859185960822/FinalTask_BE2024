@@ -1,8 +1,6 @@
 <script>
 import Layout from "../../layouts/main";
 import PageHeader from "@/components/page-header";
-// import { ref } from "vue";
-// import flatPickr from "vue-flatpickr-component";
 import "flatpickr/dist/flatpickr.css";
 import Page from "../../components/common/pagination.vue";
 import Swal from "sweetalert2";
@@ -17,14 +15,7 @@ import 'daterangepicker';
  * Task-list component
  */
 export default {
-  setup() {
-    // const picked = ref(new Date());
-    // const picked2 = ref(new Date());
-    // return {
-    //   picked,
-    //   picked2,
-    // };
-  },
+
   data(){
     return{
       data: [],
@@ -37,7 +28,8 @@ export default {
       dateRange: '', // Untuk menyimpan tanggal yang dipilih
       filterTitle: '',
       filterStatus: '',
-      // projects: [],
+      sortColumn: null, // Nama kolom yang sedang disortir
+      sortOrder: 'asc', // Urutan sorting ('asc' atau 'desc')
       loadingTable: false,
     }
   },
@@ -247,6 +239,35 @@ export default {
           });
       },
 
+      sortData(column) {
+        if (this.sortColumn === column) {
+          // Toggle sorting order jika kolom yang sama diurutkan
+          this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc';
+        } else {
+          // Tetapkan kolom baru dan urutan default (ascending)
+          this.sortColumn = column;
+          this.sortOrder = 'asc';
+        }
+
+        // Lakukan sorting data
+        this.data.sort((a, b) => {
+          let valA = a[column];
+          let valB = b[column];
+
+          // Jika datanya string, lakukan perbandingan case-insensitive
+          if (typeof valA === 'string' && typeof valB === 'string') {
+            valA = valA.toLowerCase();
+            valB = valB.toLowerCase();
+          }
+
+          if (this.sortOrder === 'asc') {
+            return valA > valB ? 1 : valA < valB ? -1 : 0;
+          } else {
+            return valA < valB ? 1 : valA > valB ? -1 : 0;
+          }
+        });
+      },
+
     },
   };
   
@@ -308,11 +329,51 @@ export default {
                 <BThead>
                   <BTr style="border-collapse: collapse; border: 1px solid black">
                     <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; vertical-align: middle;border-collapse: collapse; border: 1px solid black;">No</BTh>
-                    <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; border-collapse: collapse; border: 1px solid black;">Nama Proyek <button class="btn btn-sm btn-link p-0"><i class="fa fa-sort"></i></button></BTh>
-                    <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; border-collapse: collapse; border: 1px solid black;">Progress % <button class="btn btn-sm btn-link p-0"><i class="fa fa-sort"></i></button></BTh>
-                    <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; border-collapse: collapse; border: 1px solid black;">Tanggal Deadline <button class="btn btn-sm btn-link p-0"><i class="fa fa-sort"></i></button></BTh>
-                    <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; border-collapse: collapse; border: 1px solid black;">Sisa Waktu <button class="btn btn-sm btn-link p-0"><i class="fa fa-sort"></i></button></BTh>
-                    <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; border-collapse: collapse; border: 1px solid black;">Status Deadline <button class="btn btn-sm btn-link p-0"><i class="fa fa-sort"></i></button></BTh>
+                    <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; border-collapse: collapse; border: 1px solid black;">Nama Proyek 
+                      <!-- <button class="btn btn-sm btn-link p-0"><i class="fa fa-sort"></i></button> -->
+                      <button class="btn btn-sm btn-link p-0" @click="sortData('project_name')" ><i  
+                        class="fa fa-sort"
+                        :class="{
+                          'fa-sort-asc': sortColumn === 'project_name' && sortOrder === 'asc',
+                          'fa-sort-desc': sortColumn === 'project_name' && sortOrder === 'desc',
+                        }"></i></button>
+                    </BTh>
+                    <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; border-collapse: collapse; border: 1px solid black;">Progress % 
+                      <!-- <button class="btn btn-sm btn-link p-0"><i class="fa fa-sort"></i></button> -->
+                      <button class="btn btn-sm btn-link p-0" @click="sortData('progress_project')" ><i  
+                        class="fa fa-sort"
+                        :class="{
+                          'fa-sort-asc': sortColumn === 'progress_project' && sortOrder === 'asc',
+                          'fa-sort-desc': sortColumn === 'progress_project' && sortOrder === 'desc',
+                        }"></i></button>
+                    </BTh>
+                    <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; border-collapse: collapse; border: 1px solid black;">Tanggal Deadline 
+                      <!-- <button class="btn btn-sm btn-link p-0"><i class="fa fa-sort"></i></button> -->
+                      <button class="btn btn-sm btn-link p-0" @click="sortData('deadline')" ><i  
+                        class="fa fa-sort"
+                        :class="{
+                          'fa-sort-asc': sortColumn === 'deadline' && sortOrder === 'asc',
+                          'fa-sort-desc': sortColumn === 'deadline' && sortOrder === 'desc',
+                        }"></i></button>
+                    </BTh>
+                    <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; border-collapse: collapse; border: 1px solid black;">Sisa Waktu 
+                      <!-- <button class="btn btn-sm btn-link p-0"><i class="fa fa-sort"></i></button> -->
+                      <button class="btn btn-sm btn-link p-0" @click="sortData('sisa_waktu')" ><i  
+                        class="fa fa-sort"
+                        :class="{
+                          'fa-sort-asc': sortColumn === 'sisa_waktu' && sortOrder === 'asc',
+                          'fa-sort-desc': sortColumn === 'sisa_waktu' && sortOrder === 'desc',
+                        }"></i></button>
+                    </BTh>
+                    <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; border-collapse: collapse; border: 1px solid black;">Status Deadline 
+                      <!-- <button class="btn btn-sm btn-link p-0"><i class="fa fa-sort"></i></button> -->
+                      <button class="btn btn-sm btn-link p-0" @click="sortData('status_deadline')" ><i  
+                        class="fa fa-sort"
+                        :class="{
+                          'fa-sort-asc': sortColumn === 'status_deadline' && sortOrder === 'asc',
+                          'fa-sort-desc': sortColumn === 'status_deadline' && sortOrder === 'desc',
+                        }"></i></button>
+                    </BTh>
                   </BTr>
                  
                 </BThead>
