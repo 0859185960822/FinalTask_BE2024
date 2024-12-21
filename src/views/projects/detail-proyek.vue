@@ -44,6 +44,9 @@ export default {
       tipeTask: "",
       tanggalDeadline: "",
       project_id: "",
+      collaborator_id: "",
+      collaborators: [],
+      selectedKolaborator: null,
       userIds: "",
       menuItems: auth.activeRole.role_id,
 
@@ -94,7 +97,8 @@ export default {
     };
   },
   mounted() {
-    this.getDataProject()
+    this.getDataProject();
+    this.getCollaborators();
     setTimeout(() => {
       this.showModal.editProyek = false;
       this.showModal.tambahKolaborator = false;
@@ -294,6 +298,7 @@ searchKolaborator(loading, search) {
 
 
     storeDataTambahTask() {
+      this.getCollaborators();
   console.log("storeDataTambahTask function is called"); // Log untuk memverifikasi apakah fungsi dipanggil
 
   // Validasi jika ada field yang kosong
@@ -316,7 +321,7 @@ searchKolaborator(loading, search) {
       Authorization: `Bearer ${localStorage.accessToken}`,
     },
     data: {
-      id: this.id || null,
+      collaborator_id: this.collaborator_id || null,
       project_id: this.project_id,
       task_name: this.judulTask,
       priority_task: parseInt(this.tingkatUrgensi), // Ubah ke integer jika perlu
@@ -548,6 +553,49 @@ storeDataEditProyek() {
       });
     });
 },
+
+getCollaborators() {
+      this.loadingTable = true;
+      this.errorMessage = '';
+
+      const token = localStorage.accessToken;
+      if (!token) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No access token found!',
+        });
+        this.loadingTable = false;
+        return;
+      }
+
+      const config = {
+        method: 'get',
+        url: `${process.env.VUE_APP_BACKEND_URL_API}tasks/get-collaborators/${this.id}`,
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      axios(config)
+        .then((response) => {
+          this.loadingTable = false;
+          if (response.status === 200) {
+            this.collaborators = response.data.data; // Sesuaikan dengan struktur data yang dikembalikan
+          } else {
+            this.collaborators = [];
+          }
+        })
+        .catch((error) => {
+          Swal.fire({
+            icon: "error",
+            title: "Gagal",
+            text: error.response?.data?.message || "Terjadi kesalahan saat menyimpan data",
+          });
+          console.error('Error:', error.response ? error.response.data : error.message);
+        });
+    },
 
 
   }
@@ -865,16 +913,18 @@ storeDataEditProyek() {
           </BRow>
 
                         <BRow>
-                          <!-- <BCol md="6">
-                            <BFormGroup class="mb-3" label="Kolaborator" label-for="kolabolator-input">
-                              <select id="kolaborator" class="form-select">
+                              <BCol md="6">
+                                <BFormGroup class="mb-3" label="Kolaborator" label-for="kolaborator-input">
+                                  <select id="kolaborator" class="form-select" v-model="collaborator_id">
                                     <option selected>Pilih kolaborator</option>
-                                    <option value="1">Kolaborator 1</option>
-                                    <option value="2">Kolaborator 2</option>
-                                    <option value="3">Kolaborator 3</option>
-                              </select>
-                            </BFormGroup>
-                          </BCol> -->
+                                    <option v-for="user in collaborators" :key="user.user_id" :value="user.user_id">
+                                      {{ user.name }}
+                                    </option>
+                                  </select>
+                                </BFormGroup>
+                              </BCol>
+                              <div v-if="loadingTable">Loading...</div>
+                              <div v-if="errorMessage" class="text-danger">{{ errorMessage }}</div>
                           <BCol md="6">
               <BFormGroup class="mb-3" label="Tanggal Deadline" label-for="tanggal-deadline-input">
                 <flat-pickr
