@@ -220,6 +220,9 @@ successmsg() {
         text: response.data.message || "Data berhasil disimpan",
       });
       this.resetForm();  // Reset form setelah berhasil
+      this.showModal.uploadProyek = false; // Tutup modal setelah berhasil
+        this.resetForm(); // Reset form setelah menyimpan
+        this.getDataProject(); // Refresh data yang ditampilkan di tabel
     })
     .catch((error) => {
       console.error("Error saat mengirim data:", error);
@@ -348,6 +351,7 @@ storeDataEditProyek() {
         this.showModal.editProyek = false; // Tutup modal setelah berhasil
         this.resetForm(); // Reset form setelah menyimpan
         this.getDataUploadProyek(); // Refresh data yang ditampilkan di tabel
+        this.getDataProject(); // Refresh data yang ditampilkan di tabel
       });
     })
     .catch((error) => {
@@ -694,27 +698,27 @@ cariProyek() {
                             </thead>
                             <tbody>
                               <tr v-for="(row_data, key_data) in kolaborator_data" :key="key_data">
-                                <td class="text-center">{{ key_data + 1 }}.</td>
-                                <td>
-                                  <v-select
-                                    label="name"
-                                    v-model="row_data.kolaborator_data"
-                                    :options="peserta_ref"
-                                    @search="onSearchKolaborator"
-                                    placeholder="Cari dan Pilih Kolaborator..."
-                                  ></v-select>
-                                </td>
-                              
-                                <td class="text-center">
-                                  <button
-                                    type="button"
-                                    class="btn btn-danger btn-sm"
-                                    @click="deleteRow(key_data, row_data)"
-                                  >
-                                    <i class="fa fa-minus"></i>
-                                  </button>
-                                </td>
-                              </tr>
+  <td class="text-center">{{ key_data + 1 }}.</td>
+  <td>
+    <v-select
+      label="name"
+      v-model="row_data.kolaborator_data"
+      :options="peserta_ref"
+      @search="onSearchKolaborator"
+      placeholder="Cari dan Pilih Kolaborator..."
+    ></v-select>
+  </td>
+  <td class="text-center">
+    <button
+      type="button"
+      class="btn btn-danger btn-sm"
+      @click="deleteRow(key_data, row_data)"
+    >
+      <i class="fa fa-minus"></i>
+    </button>
+  </td>
+</tr>
+
                             </tbody>
                         </table>
                         </div>

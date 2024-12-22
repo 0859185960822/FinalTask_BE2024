@@ -49,6 +49,9 @@ export default {
       selectedKolaborator: null,
       userIds: "",
       menuItems: auth.activeRole.role_id,
+      namaProyek: "",
+      deskripsiProyek: "",
+      tenggatWaktu: "",
 
   
       no:1,
@@ -189,7 +192,8 @@ searchKolaborator(loading, search) {
         title: "Berhasil",
         text: response.data.message || "Data berhasil disimpan",
       });
-      this.resetForm();  // Reset form setelah berhasil
+      this.showModal.tambahKolaborator = false; // Tutup modal setelah berhasil
+      this.resetForm(); // Reset form setelah menyimpan
     })
     .catch((error) => {
       console.error("Error saat mengirim data:", error);
@@ -586,6 +590,7 @@ getCollaborators() {
           } else {
             this.collaborators = [];
           }
+          
         })
         .catch((error) => {
           Swal.fire({
