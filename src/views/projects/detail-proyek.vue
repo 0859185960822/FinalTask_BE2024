@@ -57,6 +57,9 @@ export default {
       task_id: "",
       sortColumn: null, // Nama kolom yang sedang disortir
       sortOrder: 'asc', // Urutan sorting ('asc' atau 'desc')
+
+      comment: '', // Menyimpan komentar yang akan dikirim
+      comments: [], // Menyimpan daftar komentar
   
       no:1,
 
@@ -549,14 +552,55 @@ successmsg() {
     });
 },
 
-sendmsg() {
-    Swal.fire({
-        title: "Komentar Tersimpan!",
-        text: "Komentar Berhasil Tersimpan!",
-        icon: "success",
-        confirmButtonColor: "#556ee6",
+sendmsg(taskId) {
+  const token = localStorage.accessToken;
+            if (!token) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'No access token found!',
+                });
+                return;
+            }
 
-    });
+            const config = {
+                method: 'post',
+                url: `${process.env.VUE_APP_BACKEND_URL_API}tasks/${taskId}/comment`,
+                headers: {
+                    Accept: 'application/json',
+                    Authorization: 'Bearer ' + token,
+                },
+                data: {
+                    comment: this.comment // Data yang akan dikirim
+                }
+            };
+
+            axios(config)
+                .then((response) => {
+                    if (response.status === 200) {
+                        // Reset textarea setelah berhasil mengirim
+                        this.comment = '';
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Komentar Terkirim',
+                            text: 'Komentar Anda telah berhasil dikirim!',
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Gagal mengirim komentar!',
+                        });
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error:', error.response ? error.response.data : error.message);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Terjadi kesalahan saat mengirim komentar!',
+                    });
+                });
 },
 
 showModalEditProyek(id) { 
@@ -1223,18 +1267,18 @@ getCollaborators() {
                             </div>
                             <!-- Textarea -->
                             <!-- <label for="nama-yang-komen">Komentar</label> -->
-                            <textarea class="form-control" placeholder="Ketikan Komentar" style="flex: 1;"></textarea>
+                            <textarea v-model="comment" class="form-control" placeholder="Ketikan Komentar" style="flex: 1;"></textarea>
                           </div>
                           <div class="text-end mt-2 mb-2">
-                            <button type="button" class="btn btn-secondary btn-info" @click="sendmsg()">Kirim</button>
+                            <button type="button" class="btn btn-secondary btn-info" @click="sendmsg(taskDetail.task_id)">Kirim</button>
                           </div>
-                          <div style="display: flex; gap: 10px;">
+                          <div style="display: flex; gap: 10px;" v-for="item,index in taskDetail.comments" :key="index">
                             <!-- Div dengan border bulat -->
                             <div style="background-color: whitesmoke; border: 1px solid black; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center;">
                               <p style="font-weight: bold; font-size: 2em; margin: 0;">A</p>
                             </div>
                             <!-- Textarea -->
-                            <textarea class="form-control" value="ini adalah komentar" style="flex: 1;" disabled></textarea>
+                            <textarea class="form-control mb-1" :value="item.comment" style="flex: 1;" disabled></textarea>
                           </div>
                         </div>
                       </div>
