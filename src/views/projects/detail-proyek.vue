@@ -360,7 +360,7 @@ searchKolaborator(loading, search) {
 
             if (response_data.meta.code === 200) {
                 // Berhasil mengambil data
-                self.data.task = response_data.data; // Simpan data ke variabel
+                self.dataTask = response_data.data; // Simpan data ke variabel
             } else {
                 // Jika response gagal
                 Swal.fire({
