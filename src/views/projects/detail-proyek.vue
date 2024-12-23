@@ -52,6 +52,8 @@ export default {
       namaProyek: "",
       deskripsiProyek: "",
       tenggatWaktu: "",
+      status_name: "",
+      task_id: "",
 
   
       no:1,
@@ -117,28 +119,37 @@ export default {
   created() {
   // Ambil parameter project_id dari URL
   if (this.$route.params.id) {
-    this.project_id = this.id;
-    console.log("Project ID dari URL:", this.project_id);
+    this.project_id = this.$route.params.id; // Simpan project_id ke properti
+    console.log("Project ID dari URL:", this.project_id); // Debug untuk memastikan project_id berhasil diambil
   } else {
-    console.warn("Project ID tidak ditemukan di URL");
+    console.warn("Project ID tidak ditemukan di URL"); // Peringatan jika project_id tidak ada
+  }
+
+  // Ambil parameter task_id dari URL
+  if (this.$route.params.task_id) {
+    this.task_id = this.$route.params.task_id; // Simpan task_id ke properti
+    console.log("Task ID dari URL:", this.task_id); // Debug untuk memastikan task_id berhasil diambil
+  } else {
+    console.warn("Task ID tidak ditemukan di URL"); // Peringatan jika task_id tidak ada
   }
 },
 
+
   methods: {
 
-    async updateStatus(taskId, event) {
+    async updateStatus(task_id, event) {
       const newStatus = event.target.value;
 
       const configStoreData = {
-        method: "post",
-        url: process.env.VUE_APP_BACKEND_URL_API + "tasks", // Endpoint API
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.accessToken}`,
-        },
+        method: "put", // Menggunakan metode PUT
+      url: `${process.env.VUE_APP_BACKEND_URL_API}tasks/${this.task_id}/status-task`, // URL API
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.accessToken}`,
+      },
         data: {
-          id: taskId,
+          id: task_id,
           status: newStatus,
         },
       };
@@ -1092,29 +1103,19 @@ getCollaborators() {
                         </div>
                       </div>
                     </BModal>
-                    <!-- <BTd style="border-collapse: collapse; border: 1px solid black;"> 
-                      <label class="visually-hidden" for="autoSizingSelect">Preference</label>
-                      <select class="form-select" id="autoSizingSelect">
-                        <option selected>{{ item.status_task }}</option>
-                        <option value="">Pending</option>
-                        <option value="1">Ongoing</option>
-                        <option value="2">Done</option>
-                      </select>
-                    </BTd> -->
-
+                  
                     <BTd style="border-collapse: collapse; border: 1px solid black;">
-                      <label class="visually-hidden" for="autoSizingSelect">Preference</label>
-                      <select class="form-select" id="autoSizingSelect" @change="updateStatus(item.id, $event)">
-                        <option disabled>{{ item.status_task }}</option>
-                        <option value="pending">Pending</option>
-                        <option value="ongoing">Ongoing</option>
-                        <option value="done">Done</option>
-                      </select>
-                    </BTd>
+    <label class="visually-hidden" for="autoSizingSelect">Preference</label>
+    <select class="form-select" id="autoSizingSelect" @change="updateStatus(item.id, $event)">
+      <option disabled>{{ item.status_task }}</option>
+      <option value="PENDING">Pending</option>
+      <option value="ONGOING">Ongoing</option>
+      <option value="DONE">Done</option>
+    </select>
+  </BTd>
                     <BTd style="border-collapse: collapse; border: 1px solid black; text-align: center;">
                       <span class="badge bg-danger">{{ item.sisa_waktu }}</span>
                     </BTd>
-
 
                     <BTd style="border-collapse: collapse; border: 1px solid black;" v-if="menuItems === 1">
                       <button type="button" class="btn btn-warning btn-sm mb-1 w-100" alt="Disable" @click="modalST = true" variant="primary"><i class="bx bx-edit"></i> SUNTING</button>
