@@ -55,7 +55,8 @@ export default {
       tenggatWaktu: "",
       status_name: "",
       task_id: "",
-
+      sortColumn: null, // Nama kolom yang sedang disortir
+      sortOrder: 'asc', // Urutan sorting ('asc' atau 'desc')
   
       no:1,
 
@@ -692,11 +693,33 @@ getCollaborators() {
     updateEntries() {
         const perPage = document.getElementById('autoSizingSelect').value; // Ambil nilai dari dropdown
         this.getDataTask(perPage); // Panggil fungsi getDataProject dengan nilai perPage
+    },
+    sortData(column) {
+    if (this.sortColumn === column) {
+      // Toggle sorting order
+      this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc';
+    } else {
+      // Set new column and default order to ascending
+      this.sortColumn = column;
+      this.sortOrder = 'asc';
     }
 
+    // Lakukan sorting data
+    this.dataTask.sort((a, b) => {
+      let valA = a[column];
+      let valB = b[column];
 
-  }
- 
+      if (typeof valA === 'string') valA = valA.toLowerCase();
+      if (typeof valB === 'string') valB = valB.toLowerCase();
+
+      if (this.sortOrder === 'asc') {
+        return valA > valB ? 1 : -1;
+      } else {
+        return valA < valB ? 1 : -1;
+      }
+    });
+  },
+  },
 };
 </script>
 <template>
@@ -1051,10 +1074,30 @@ getCollaborators() {
                 <BThead>
                   <BTr style="border-collapse: collapse; border: 1px solid black">
                     <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; vertical-align: middle;border-collapse: collapse; border: 1px solid black;">No</BTh>
-                    <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; border-collapse: collapse; border: 1px solid black;">Kolaborator <button class="btn btn-sm btn-link p-0"><i class="fa fa-sort"></i></button></BTh>
-                    <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; border-collapse: collapse; border: 1px solid black;">Task <button class="btn btn-sm btn-link p-0"><i class="fa fa-sort"></i></button></BTh>
-                    <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; border-collapse: collapse; border: 1px solid black;">Status <button class="btn btn-sm btn-link p-0"><i class="fa fa-sort"></i></button></BTh>
-                    <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; border-collapse: collapse; border: 1px solid black;">Sisa Waktu <button class="btn btn-sm btn-link p-0"><i class="fa fa-sort"></i></button></BTh>
+                    <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; border-collapse: collapse; border: 1px solid black;">Kolaborator 
+                      <button class="btn btn-sm btn-link p-0" @click="sortData('collaborator_id')" ><i class="fa fa-sort"
+                        :class="{
+                          'fa-sort-asc': sortColumn === 'collaborator_id' && sortOrder === 'asc',
+                          'fa-sort-desc': sortColumn === 'collaborator_id' && sortOrder === 'desc',
+                        }"></i></button></BTh>
+                    <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; border-collapse: collapse; border: 1px solid black;">Task 
+                      <button class="btn btn-sm btn-link p-0" @click="sortData('task_name')" ><i class="fa fa-sort"
+                        :class="{
+                          'fa-sort-asc': sortColumn === 'task_name' && sortOrder === 'asc',
+                          'fa-sort-desc': sortColumn === 'task_name' && sortOrder === 'desc',
+                        }"></i></button></BTh>
+                    <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; border-collapse: collapse; border: 1px solid black;">Status 
+                      <button class="btn btn-sm btn-link p-0" @click="sortData('status_task')" ><i class="fa fa-sort"
+                        :class="{
+                          'fa-sort-asc': sortColumn === 'status_task' && sortOrder === 'asc',
+                          'fa-sort-desc': sortColumn === 'status_task' && sortOrder === 'desc',
+                        }"></i></button></BTh>
+                    <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; border-collapse: collapse; border: 1px solid black;">Sisa Waktu 
+                      <button class="btn btn-sm btn-link p-0" @click="sortData('sisa_waktu')" ><i class="fa fa-sort"
+                        :class="{
+                          'fa-sort-asc': sortColumn === 'sisa_waktu' && sortOrder === 'asc',
+                          'fa-sort-desc': sortColumn === 'sisa_waktu' && sortOrder === 'desc',
+                        }"></i></button></BTh>
                     <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; border-collapse: collapse; border: 1px solid black;vertical-align: middle;" rowspan="2" v-if="menuItems === 1">Aksi</BTh>
                   </BTr>
                 </BThead>
