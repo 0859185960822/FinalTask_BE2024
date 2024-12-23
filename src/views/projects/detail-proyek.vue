@@ -112,6 +112,10 @@ export default {
     // this.fetchProjectData();
   },
 
+  props: {
+    item: Object,
+  },
+
   created() {
   // Ambil parameter project_id dari URL
   if (this.$route.params.id) {
@@ -123,6 +127,34 @@ export default {
 },
 
   methods: {
+
+    async updateStatus(taskId, event) {
+      const newStatus = event.target.value;
+
+      const configStoreData = {
+        method: "post",
+        url: process.env.VUE_APP_BACKEND_URL_API + "tasks", // Endpoint API
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.accessToken}`,
+        },
+        data: {
+          id: taskId,
+          status: newStatus,
+        },
+      };
+
+      try {
+        const response = await axios(configStoreData);
+        alert('Status berhasil diperbarui!');
+        console.log('Response:', response.data);
+      } catch (error) {
+        console.error('Error updating status:', error);
+        alert('Terjadi kesalahan saat memperbarui status.');
+      }
+    },
+
 
     showModalTambahKolaborator() {
   console.log("Tombol TAMBAH KOLABORATOR diklik");
@@ -1110,13 +1142,23 @@ getCollaborators() {
                         </div>
                       </div>
                     </BModal>
-                    <BTd style="border-collapse: collapse; border: 1px solid black;"> 
+                    <!-- <BTd style="border-collapse: collapse; border: 1px solid black;"> 
                       <label class="visually-hidden" for="autoSizingSelect">Preference</label>
                       <select class="form-select" id="autoSizingSelect">
                         <option selected>{{ item.status_task }}</option>
                         <option value="">Pending</option>
                         <option value="1">Ongoing</option>
                         <option value="2">Done</option>
+                      </select>
+                    </BTd> -->
+
+                    <BTd style="border-collapse: collapse; border: 1px solid black;">
+                      <label class="visually-hidden" for="autoSizingSelect">Preference</label>
+                      <select class="form-select" id="autoSizingSelect" @change="updateStatus(item.id, $event)">
+                        <option disabled>{{ item.status_task }}</option>
+                        <option value="pending">Pending</option>
+                        <option value="ongoing">Ongoing</option>
+                        <option value="done">Done</option>
                       </select>
                     </BTd>
                     <BTd style="border-collapse: collapse; border: 1px solid black; text-align: center;">

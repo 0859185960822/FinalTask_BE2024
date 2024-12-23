@@ -438,7 +438,55 @@ cariProyek() {
   updateEntries() {
         const perPage = document.getElementById('autoSizingSelect').value; // Ambil nilai dari dropdown
         this.getDataProject(perPage); // Panggil fungsi getDataProject dengan nilai perPage
+    },
+
+    deleteProyek(project_id) {
+    if (!project_id) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Project ID tidak valid!',
+        });
+        return;
     }
+
+    const config = {
+        method: 'delete',
+        url: `${ process.env.VUE_APP_BACKEND_URL_API}admin/${project_id}`,
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.accessToken}`,
+        },
+    };
+
+    axios(config)
+        .then((response) => {
+            if (response.status === 200) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Data has been successfully deleted!',
+                    timer: 2000,
+                    timerProgressBar: true,
+                    showCancelButton: false,
+                    showConfirmButton: false,
+                }).then((result) => {
+                    if (result.dismiss === Swal.DismissReason.timer) {
+                        this.getDataProject(); // Refresh data
+                    }
+                });
+            }
+        })
+        .catch((error) => {
+            Swal.fire({
+                title: 'Error',
+                text: error.response?.data?.message || 'Terjadi kesalahan saat menghapus data!',
+                icon: 'error',
+                showConfirmButton: true,
+            });
+        });
+}
 
   }
 };
@@ -698,26 +746,26 @@ cariProyek() {
                             </thead>
                             <tbody>
                               <tr v-for="(row_data, key_data) in kolaborator_data" :key="key_data">
-  <td class="text-center">{{ key_data + 1 }}.</td>
-  <td>
-    <v-select
-      label="name"
-      v-model="row_data.kolaborator_data"
-      :options="peserta_ref"
-      @search="onSearchKolaborator"
-      placeholder="Cari dan Pilih Kolaborator..."
-    ></v-select>
-  </td>
-  <td class="text-center">
-    <button
-      type="button"
-      class="btn btn-danger btn-sm"
-      @click="deleteRow(key_data, row_data)"
-    >
-      <i class="fa fa-minus"></i>
-    </button>
-  </td>
-</tr>
+                                <td class="text-center">{{ key_data + 1 }}.</td>
+                                <td>
+                                  <v-select
+                                    label="name"
+                                    v-model="row_data.kolaborator_data"
+                                    :options="peserta_ref"
+                                    @search="onSearchKolaborator"
+                                    placeholder="Cari dan Pilih Kolaborator..."
+                                  ></v-select>
+                                </td>
+                                <td class="text-center">
+                                  <button
+                                    type="button"
+                                    class="btn btn-danger btn-sm"
+                                    @click="deleteRow(key_data, row_data)"
+                                  >
+                                    <i class="fa fa-minus"></i>
+                                  </button>
+                                </td>
+                              </tr>
 
                             </tbody>
                         </table>
@@ -742,7 +790,15 @@ cariProyek() {
                           </form>
                         </div>
                       </BModal>
-                      <button type="button" class="btn btn-danger btn-sm mb-1 w-100" alt="Disable" @click="confirm()"><i class="bx bxs-trash-alt"></i> HAPUS</button>
+                      <button
+                        type="button"
+                        class="btn btn-danger btn-sm mb-1 w-100"
+                        alt="Disable"
+                        @click="deleteProyek(item.project_id)"
+                      >
+                        <i class="bx bxs-trash-alt"></i> HAPUS
+                      </button>
+
                     </BTd>
                   </BTr>
                 </BTbody>
