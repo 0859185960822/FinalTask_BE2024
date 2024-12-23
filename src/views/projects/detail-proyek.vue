@@ -1087,11 +1087,12 @@ getCollaborators() {
                           'fa-sort-desc': sortColumn === 'task_name' && sortOrder === 'desc',
                         }"></i></button></BTh>
                     <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; border-collapse: collapse; border: 1px solid black;">Status 
-                      <button class="btn btn-sm btn-link p-0" @click="sortData('status_task')" ><i class="fa fa-sort"
+                      <!-- <button class="btn btn-sm btn-link p-0" @click="sortData('status_task')" ><i class="fa fa-sort"
                         :class="{
                           'fa-sort-asc': sortColumn === 'status_task' && sortOrder === 'asc',
                           'fa-sort-desc': sortColumn === 'status_task' && sortOrder === 'desc',
-                        }"></i></button></BTh>
+                        }"></i></button> -->
+                        </BTh>
                     <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; border-collapse: collapse; border: 1px solid black;">Sisa Waktu 
                       <button class="btn btn-sm btn-link p-0" @click="sortData('sisa_waktu')" ><i class="fa fa-sort"
                         :class="{
