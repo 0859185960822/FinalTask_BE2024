@@ -674,14 +674,6 @@ cariProyek() {
                   </BTr>
                 </BThead>
                 <BTbody>
-                  <tr v-if="loadingTable.uploadProyek">
-                                                          <td colspan="4" class="text-center">
-                                                            <i class="fas fa-spin fa-spinner"></i> Loading...
-                                                          </td>
-                                                        </tr>
-                                                        <tr v-else-if="dataTableUploadProyek.length === 0">
-                                                          <td colspan="5" class="text-center">-- Data kosong --</td>
-                                                        </tr>  
                                                         
                   <BTr style="border-collapse: collapse; border: 1px solid black"  v-for="(item, index) in data.data_project" :key="index">
                     <BTh scope="row">{{ index + 1 }}</BTh>
