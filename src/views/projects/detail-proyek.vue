@@ -128,12 +128,12 @@ export default {
   }
 
   // Ambil parameter task_id dari URL
-  if (this.$route.params.task_id) {
-    this.task_id = this.$route.params.task_id; // Simpan task_id ke properti
-    console.log("Task ID dari URL:", this.task_id); // Debug untuk memastikan task_id berhasil diambil
-  } else {
-    console.warn("Task ID tidak ditemukan di URL"); // Peringatan jika task_id tidak ada
-  }
+  // if (this.$route.params.task_id) {
+  //   this.task_id = this.$route.params.task_id; // Simpan task_id ke properti
+  //   console.log("Task ID dari URL:", this.task_id); // Debug untuk memastikan task_id berhasil diambil
+  // } else {
+  //   console.warn("Task ID tidak ditemukan di URL"); // Peringatan jika task_id tidak ada
+  // }
 },
 
 
@@ -143,13 +143,13 @@ export default {
       const newStatus = event.target.value;
 
       const configStoreData = {
-        method: "put", // Menggunakan metode PUT
-      url: `${process.env.VUE_APP_BACKEND_URL_API}tasks/${this.task_id}/status-task`, // URL API
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.accessToken}`,
-      },
+        method: "post", // Menggunakan metode PUT
+        url: `${process.env.VUE_APP_BACKEND_URL_API}tasks/${task_id}/status-task`, // URL API
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.accessToken}`,
+        },
         data: {
           id: task_id,
           status: newStatus,
@@ -1156,7 +1156,7 @@ getCollaborators() {
                   
                     <BTd style="border-collapse: collapse; border: 1px solid black;">
     <label class="visually-hidden" for="autoSizingSelect">Preference</label>
-    <select class="form-select" id="autoSizingSelect" @change="updateStatus(item.id, $event)">
+    <select class="form-select" id="autoSizingSelect" :value="item.status_task" @change="updateStatus(item.task_id, $event)">
       <option disabled>{{ item.status_task }}</option>
       <option value="PENDING">Pending</option>
       <option value="ONGOING">Ongoing</option>

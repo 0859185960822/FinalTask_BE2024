@@ -686,7 +686,7 @@ cariProyek() {
                       <router-link :to="{ name: 'Detail Proyek', params: { id: item.project_id } }" class="btn btn-info btn-sm mb-1 w-100">
                         <i class="bx bx-info-circle"></i> DETAILS
                       </router-link>
-                      <button
+                      <!-- <button
                         type="button"
                         class="btn btn-warning btn-sm mb-1 w-100"
                         alt="Disable"
@@ -694,7 +694,7 @@ cariProyek() {
                         variant="primary"
                       >
                         <i class="bx bx-edit"></i> SUNTING
-                      </button>
+                      </button> -->
 
                       <BModal v-model="showModal.editProyek" centered title="Sunting Proyek" hide-footer>
                         <div class="p-3">
