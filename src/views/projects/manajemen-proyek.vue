@@ -24,6 +24,7 @@ export default {
   },
   data() {
     return {
+      current_page: "",
       data : [],
       project_id: '',
       kolaborator_data: [], // Array untuk data instruktur
@@ -109,7 +110,7 @@ getDataProject(per_page = 5) {
           this.loadingTable = false;
           if (response.status === 200) {
             this.data = response.data.data;
-            console.log(this.data);
+            // console.log(this.data);
           } else {
             this.data = [];
           }
@@ -625,7 +626,8 @@ cariProyek() {
       </form>
  
             <div class="table-responsive">
-              <BTableSimple class="mb-0">
+              <BTableSimple class="mb-0"   
+                id="data-proyek">
                 <BThead>
                   <BTr style="border-collapse: collapse; border: 1px solid black">
                     <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; vertical-align: middle;border-collapse: collapse; border: 1px solid black;">No</BTh>
@@ -808,6 +810,7 @@ cariProyek() {
         </BCard>
       </BCol>
     </BRow>
+    {{ console.log(this.data) }}
   <Page/>
   </Layout>
 </template>

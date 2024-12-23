@@ -7,10 +7,11 @@ export default {
         }
     },
     data() {
-        // return { ex4Rows: 100, }
-        return { 
-            current_page: null,
-         }
+        return { ex4Rows: 100, }
+        // return { 
+        //     current_page: 1,
+
+        //  }
     }
 }
 </script>
@@ -21,6 +22,7 @@ export default {
         <!-- <b-pagination v-model="current_page" :pills="pills" align="end"
         :total_rows="total"
         :per_page="per_page"
-        aria-controls="data-proyek"></b-pagination> -->
+        aria-controls="data-proyek"
+    ></b-pagination> -->
     </div>
 </template>
