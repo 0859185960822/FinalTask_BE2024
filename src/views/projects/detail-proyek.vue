@@ -105,7 +105,6 @@ export default {
   },
   mounted() {
     this.getDataProject();
-    this.getDataTask();
     this.getCollaborators();
     setTimeout(() => {
       this.showModal.editProyek = false;
@@ -254,6 +253,7 @@ searchKolaborator(loading, search) {
 
 
     getDataProject() {
+      this.getDataTask();
       this.loadingTable = true;
 
       const token = localStorage.accessToken;
