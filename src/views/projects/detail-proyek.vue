@@ -37,6 +37,7 @@ export default {
       
       id: this.$route.params.id,
       data: [],
+      dataTask: [],
       kolaborator_data: [], // Array untuk data instruktur
       peserta_ref: [], // Opsi referensi untuk v-select
       judulTask: "",
@@ -101,6 +102,7 @@ export default {
   },
   mounted() {
     this.getDataProject();
+    this.getDataTask();
     this.getCollaborators();
     setTimeout(() => {
       this.showModal.editProyek = false;
@@ -235,6 +237,47 @@ searchKolaborator(loading, search) {
           if (response.status === 200) {
             this.data = response.data.data;
             // console.log(this.data);
+          } else {
+            this.data = [];
+          }
+        })
+        .catch((error) => {
+          this.loadingTable = false;
+          this.data = [];
+          console.error('Error:', error.response ? error.response.data : error.message);
+        });
+    },
+    getDataTask(per_page) {
+      this.loadingTable = true;
+
+      const token = localStorage.accessToken;
+      if (!token) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No access token found!',
+        });
+        return;
+      }
+
+      const config = {
+        method: 'get',
+        url: process.env.VUE_APP_BACKEND_URL_API + 'task-management/' + this.id,
+        params: {
+          per_page: per_page,
+        },
+        headers: {
+          Accept: 'application/json',
+          Authorization: 'Bearer ' + token,
+        },
+      };
+      // console.log(item.deadline);
+      axios(config)
+        .then((response) => {
+          this.loadingTable = false;
+          if (response.status === 200) {
+            this.dataTask = response.data.data.data_task;
+            console.log(this.dataTask);
           } else {
             this.data = [];
           }
@@ -603,6 +646,11 @@ getCollaborators() {
         });
     },
 
+    updateEntries() {
+        const perPage = document.getElementById('autoSizingSelect').value; // Ambil nilai dari dropdown
+        this.getDataTask(perPage); // Panggil fungsi getDataProject dengan nilai perPage
+    }
+
 
   }
  
@@ -847,14 +895,16 @@ getCollaborators() {
           <form class="row align-items-center" style="margin-bottom: 2%;">
             <!-- Dropdown Show Entries -->
             <div class="col-auto d-flex align-items-center pt-lg-4">
-              <label class="me-2">Show</label>
-              <select class="form-select w-auto" id="autoSizingSelect" aria-label="Select number of entries">
-                <option value="10" selected>10</option>
-                <option value="50">50</option>
-                <option value="100">100</option>
-              </select>
-              <label class="ms-2">Entries</label>
-            </div>
+                <label class="me-2">Show</label>
+                <select class="form-select w-auto" id="autoSizingSelect" aria-label="Select number of entries" v-on:change="updateEntries()">
+                  <option value="5" selected>5</option>
+                  <option value="10">10</option>
+                  <option value="15">15</option>
+                  <option value="20">20</option>
+                  <option value="50">50</option>
+                </select>
+                <label class="ms-2">Entries</label>
+              </div>
 
             <!-- Input Pencarian -->
             <div class="col-md-auto col-7">
@@ -966,7 +1016,7 @@ getCollaborators() {
                   </BTr>
                 </BThead>
                 <BTbody>
-                  <BTr style="border-collapse: collapse; border: 1px solid black" v-for="(item,index) in data.task" :key="index">
+                  <BTr style="border-collapse: collapse; border: 1px solid black" v-for="(item,index) in dataTask" :key="index">
                     <BTh scope="row">{{ index + 1 }}</BTh>
                     <BTd style="border-collapse: collapse; border: 1px solid black;">
                       {{ item.collaborator_id.name }}
