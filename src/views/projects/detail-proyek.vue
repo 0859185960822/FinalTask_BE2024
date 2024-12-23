@@ -256,6 +256,7 @@ searchKolaborator(loading, search) {
         url: process.env.VUE_APP_BACKEND_URL_API + "task-management/search",
         params: {
             search: self.query, // Query pencarian
+            project_id: self.project_id, // Query pencarian
         },
         headers: {
             Accept: "application/json",
