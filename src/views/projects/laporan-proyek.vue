@@ -386,7 +386,7 @@ export default {
                         <div class="progress-wrapper w-100">
                           <div class="d-flex justify-content-between">
                             <span>Presentase</span>
-                            <span class="fw-bold">{{ item.progress_project }}</span>
+                            <span class="fw-bold">{{ item.progress_project }}%</span>
                           </div>
                           <div class="progress mt-2">
                             <div class="progress-bar bg-success" :style="{ width: item.progress_project + '%' }"></div>

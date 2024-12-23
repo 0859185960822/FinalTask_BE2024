@@ -441,7 +441,55 @@ cariProyek() {
         this.getDataProject(perPage); // Panggil fungsi getDataProject dengan nilai perPage
     },
 
-    deleteProyek(project_id) {
+//     deleteProyek(project_id) {
+//     if (!project_id) {
+//         Swal.fire({
+//             icon: 'error',
+//             title: 'Error',
+//             text: 'Project ID tidak valid!',
+//         });
+//         return;
+//     }
+
+//     const config = {
+//         method: 'delete',
+//         url: `${ process.env.VUE_APP_BACKEND_URL_API}admin/${project_id}`,
+//         headers: {
+//             Accept: "application/json",
+//             "Content-Type": "application/json",
+//             Authorization: `Bearer ${localStorage.accessToken}`,
+//         },
+//     };
+
+//     axios(config)
+//         .then((response) => {
+//             if (response.status === 200) {
+//                 Swal.fire({
+//                     icon: 'success',
+//                     title: 'Success',
+//                     text: 'Data has been successfully deleted!',
+//                     timer: 2000,
+//                     timerProgressBar: true,
+//                     showCancelButton: false,
+//                     showConfirmButton: false,
+//                 }).then((result) => {
+//                     if (result.dismiss === Swal.DismissReason.timer) {
+//                         this.getDataProject(); // Refresh data
+//                     }
+//                 });
+//             }
+//         })
+//         .catch((error) => {
+//             Swal.fire({
+//                 title: 'Error',
+//                 text: error.response?.data?.message || 'Terjadi kesalahan saat menghapus data!',
+//                 icon: 'error',
+//                 showConfirmButton: true,
+//             });
+//         });
+// }
+
+deleteProyek(project_id) {
     if (!project_id) {
         Swal.fire({
             icon: 'error',
@@ -451,7 +499,29 @@ cariProyek() {
         return;
     }
 
-    const config = {
+    // Konfirmasi penghapusan
+    Swal.fire({
+        icon: 'warning',
+        title: 'Delete this data!',
+        text: 'Are you sure you want to remove this data?',
+        showConfirmButton: true,
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'Cancel',
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Menampilkan spinner loading
+            Swal.fire({
+                title: 'Loading...',
+                html: '<i class="fas fa-spinner fa-spin"></i>',
+                showConfirmButton: false,
+                allowOutsideClick: false,
+                willOpen: () => {
+                    Swal.showLoading();
+                },
+            });
+
+            const config = {
         method: 'delete',
         url: `${ process.env.VUE_APP_BACKEND_URL_API}admin/${project_id}`,
         headers: {
@@ -459,35 +529,38 @@ cariProyek() {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.accessToken}`,
         },
-    };
+            };
 
-    axios(config)
-        .then((response) => {
-            if (response.status === 200) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Success',
-                    text: 'Data has been successfully deleted!',
-                    timer: 2000,
-                    timerProgressBar: true,
-                    showCancelButton: false,
-                    showConfirmButton: false,
-                }).then((result) => {
-                    if (result.dismiss === Swal.DismissReason.timer) {
-                        this.getDataProject(); // Refresh data
+            axios(config)
+                .then((response) => {
+                    if (response.status === 200) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: 'Data has been successfully deleted!',
+                            timer: 2000,
+                            timerProgressBar: true,
+                            showCancelButton: false,
+                            showConfirmButton: false,
+                        }).then((result) => {
+                            if (result.dismiss === Swal.DismissReason.timer) {
+                                this.getDataProject(); // Refresh data
+                            }
+                        });
                     }
+                })
+                .catch((error) => {
+                    Swal.fire({
+                        title: 'Error',
+                        text: error.response?.data?.message || 'Terjadi kesalahan saat menghapus data!',
+                        icon: 'error',
+                        showConfirmButton: true,
+                    });
                 });
-            }
-        })
-        .catch((error) => {
-            Swal.fire({
-                title: 'Error',
-                text: error.response?.data?.message || 'Terjadi kesalahan saat menghapus data!',
-                icon: 'error',
-                showConfirmButton: true,
-            });
-        });
+        }
+    });
 }
+
 
   }
 };
@@ -676,7 +749,7 @@ cariProyek() {
                   </BTr>
                 </BThead>
                 <BTbody>
-                  
+                                                        
                   <BTr style="border-collapse: collapse; border: 1px solid black"  v-for="(item, index) in data.data_project" :key="index">
                     <BTh scope="row">{{ index + 1 }}</BTh>
                     <BTd style="border-collapse: collapse; border: 1px solid black;">{{ item.project_name }}</BTd>
@@ -688,7 +761,7 @@ cariProyek() {
                       <router-link :to="{ name: 'Detail Proyek', params: { id: item.project_id } }" class="btn btn-info btn-sm mb-1 w-100">
                         <i class="bx bx-info-circle"></i> DETAILS
                       </router-link>
-                      <button
+                      <!-- <button
                         type="button"
                         class="btn btn-warning btn-sm mb-1 w-100"
                         alt="Disable"
@@ -696,7 +769,7 @@ cariProyek() {
                         variant="primary"
                       >
                         <i class="bx bx-edit"></i> SUNTING
-                      </button>
+                      </button> -->
 
                       <BModal v-model="showModal.editProyek" centered title="Sunting Proyek" hide-footer>
                         <div class="p-3">
@@ -793,6 +866,7 @@ cariProyek() {
                         </div>
                       </BModal>
                       <button
+                      variant="warning"
                         type="button"
                         class="btn btn-danger btn-sm mb-1 w-100"
                         alt="Disable"

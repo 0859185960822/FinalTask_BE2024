@@ -105,7 +105,6 @@ export default {
   },
   mounted() {
     this.getDataProject();
-    this.getDataTask();
     this.getCollaborators();
     setTimeout(() => {
       this.showModal.editProyek = false;
@@ -129,12 +128,12 @@ export default {
   }
 
   // Ambil parameter task_id dari URL
-  if (this.$route.params.task_id) {
-    this.task_id = this.$route.params.task_id; // Simpan task_id ke properti
-    console.log("Task ID dari URL:", this.task_id); // Debug untuk memastikan task_id berhasil diambil
-  } else {
-    console.warn("Task ID tidak ditemukan di URL"); // Peringatan jika task_id tidak ada
-  }
+  // if (this.$route.params.task_id) {
+  //   this.task_id = this.$route.params.task_id; // Simpan task_id ke properti
+  //   console.log("Task ID dari URL:", this.task_id); // Debug untuk memastikan task_id berhasil diambil
+  // } else {
+  //   console.warn("Task ID tidak ditemukan di URL"); // Peringatan jika task_id tidak ada
+  // }
 },
 
 
@@ -144,13 +143,13 @@ export default {
       const newStatus = event.target.value;
 
       const configStoreData = {
-        method: "put", // Menggunakan metode PUT
-      url: `${process.env.VUE_APP_BACKEND_URL_API}tasks/${this.task_id}/status-task`, // URL API
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.accessToken}`,
-      },
+        method: "post", // Menggunakan metode PUT
+        url: `${process.env.VUE_APP_BACKEND_URL_API}tasks/${task_id}/status-task`, // URL API
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.accessToken}`,
+        },
         data: {
           id: task_id,
           status: newStatus,
@@ -254,6 +253,7 @@ searchKolaborator(loading, search) {
 
 
     getDataProject() {
+      this.getDataTask();
       this.loadingTable = true;
 
       const token = localStorage.accessToken;
@@ -360,7 +360,7 @@ searchKolaborator(loading, search) {
 
             if (response_data.meta.code === 200) {
                 // Berhasil mengambil data
-                self.data.task = response_data.data; // Simpan data ke variabel
+                self.dataTask = response_data.data; // Simpan data ke variabel
             } else {
                 // Jika response gagal
                 Swal.fire({
@@ -434,6 +434,7 @@ searchKolaborator(loading, search) {
         text: response.data.message || "Data berhasil disimpan",
       });
       this.resetForm(); // Reset form setelah berhasil
+      this.modalTT = false; // Tutup modal setelah berhasil
     })
     .catch((error) => {
       console.error("Error saat mengirim data:", error);
@@ -927,7 +928,7 @@ getCollaborators() {
       <div class="progress-wrapper w-100">
         <div class="d-flex justify-content-between">
           <span>Presentase</span>
-          <span class="fw-bold">{{ data.progress_project }}</span>
+          <span class="fw-bold">{{ data.progress_project }}%</span>
         </div>
         <div class="progress mt-2">
           <div class="progress-bar bg-success" :style="{ width: data.progress_project + '%' }"></div>
@@ -1087,13 +1088,14 @@ getCollaborators() {
                           'fa-sort-desc': sortColumn === 'task_name' && sortOrder === 'desc',
                         }"></i></button></BTh>
                     <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; border-collapse: collapse; border: 1px solid black;">Status 
-                      <button class="btn btn-sm btn-link p-0" @click="sortData('status_task')" ><i class="fa fa-sort"
+                      <!-- <button class="btn btn-sm btn-link p-0" @click="sortData('status_task')" ><i class="fa fa-sort"
                         :class="{
                           'fa-sort-asc': sortColumn === 'status_task' && sortOrder === 'asc',
                           'fa-sort-desc': sortColumn === 'status_task' && sortOrder === 'desc',
-                        }"></i></button></BTh>
+                        }"></i></button> -->
+                        </BTh>
                     <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; border-collapse: collapse; border: 1px solid black;">Sisa Waktu 
-                      <button class="btn btn-sm btn-link p-0" @click="sortData('sisa_waktu')" ><i class="fa fa-sort"
+                      <button class="btn btn-sm btn-link p-0" @click="sortData('sisa_waktu')"><i class="fa fa-sort"
                         :class="{
                           'fa-sort-asc': sortColumn === 'sisa_waktu' && sortOrder === 'asc',
                           'fa-sort-desc': sortColumn === 'sisa_waktu' && sortOrder === 'desc',
@@ -1118,7 +1120,7 @@ getCollaborators() {
                             <div class="text-center me-4">
                               <p class="text-muted mb-1">Sisa Waktu</p>
                               <!-- <p class="fw-bold mb-0">{{item.sisa_waktu}}</p> -->
-                              <h5><span class="badge bg-danger">{{item.sisa_waktu}}</span></h5>
+                              <h5><span class="badge bg-danger">{{item.sisa_waktu}} hari</span></h5> 
                             </div>
                             <!-- Status Deadline -->
                             <!-- <div class="text-center">
@@ -1199,7 +1201,7 @@ getCollaborators() {
                   
                     <BTd style="border-collapse: collapse; border: 1px solid black;">
     <label class="visually-hidden" for="autoSizingSelect">Preference</label>
-    <select class="form-select" id="autoSizingSelect" @change="updateStatus(item.id, $event)">
+    <select class="form-select" id="autoSizingSelect" :value="item.status_task" @change="updateStatus(item.task_id, $event)">
       <option disabled>{{ item.status_task }}</option>
       <option value="PENDING">Pending</option>
       <option value="ONGOING">Ongoing</option>
@@ -1207,7 +1209,7 @@ getCollaborators() {
     </select>
   </BTd>
                     <BTd style="border-collapse: collapse; border: 1px solid black; text-align: center;">
-                      <span class="badge bg-danger">{{ item.sisa_waktu }}</span>
+                      <span class="badge bg-danger">{{ item.sisa_waktu }} hari</span>
                     </BTd>
 
                     <BTd style="border-collapse: collapse; border: 1px solid black;" v-if="menuItems === 1">
