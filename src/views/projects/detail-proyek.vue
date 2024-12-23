@@ -434,6 +434,7 @@ searchKolaborator(loading, search) {
         text: response.data.message || "Data berhasil disimpan",
       });
       this.resetForm(); // Reset form setelah berhasil
+      this.modalTT = false; // Tutup modal setelah berhasil
     })
     .catch((error) => {
       console.error("Error saat mengirim data:", error);
@@ -927,7 +928,7 @@ getCollaborators() {
       <div class="progress-wrapper w-100">
         <div class="d-flex justify-content-between">
           <span>Presentase</span>
-          <span class="fw-bold">{{ data.progress_project }}</span>
+          <span class="fw-bold">{{ data.progress_project }}%</span>
         </div>
         <div class="progress mt-2">
           <div class="progress-bar bg-success" :style="{ width: data.progress_project + '%' }"></div>
@@ -1093,7 +1094,7 @@ getCollaborators() {
                           'fa-sort-desc': sortColumn === 'status_task' && sortOrder === 'desc',
                         }"></i></button></BTh>
                     <BTh style="background-color: #272b4e; color: whitesmoke;text-align: center; border-collapse: collapse; border: 1px solid black;">Sisa Waktu 
-                      <button class="btn btn-sm btn-link p-0" @click="sortData('sisa_waktu')" ><i class="fa fa-sort"
+                      <button class="btn btn-sm btn-link p-0" @click="sortData('sisa_waktu')"><i class="fa fa-sort"
                         :class="{
                           'fa-sort-asc': sortColumn === 'sisa_waktu' && sortOrder === 'asc',
                           'fa-sort-desc': sortColumn === 'sisa_waktu' && sortOrder === 'desc',
@@ -1118,7 +1119,7 @@ getCollaborators() {
                             <div class="text-center me-4">
                               <p class="text-muted mb-1">Sisa Waktu</p>
                               <!-- <p class="fw-bold mb-0">{{item.sisa_waktu}}</p> -->
-                              <h5><span class="badge bg-danger">{{item.sisa_waktu}}</span></h5>
+                              <h5><span class="badge bg-danger">{{item.sisa_waktu}} hari</span></h5> 
                             </div>
                             <!-- Status Deadline -->
                             <!-- <div class="text-center">
@@ -1207,7 +1208,7 @@ getCollaborators() {
     </select>
   </BTd>
                     <BTd style="border-collapse: collapse; border: 1px solid black; text-align: center;">
-                      <span class="badge bg-danger">{{ item.sisa_waktu }}</span>
+                      <span class="badge bg-danger">{{ item.sisa_waktu }} hari</span>
                     </BTd>
 
                     <BTd style="border-collapse: collapse; border: 1px solid black;" v-if="menuItems === 1">
