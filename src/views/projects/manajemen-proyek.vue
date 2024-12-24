@@ -95,7 +95,7 @@ export default {
         }
     });
 },
-getDataProject(url = process.env.VUE_APP_BACKEND_URL_API + 'project-management') {
+getDataProject( per_page=5 ,url = process.env.VUE_APP_BACKEND_URL_API + 'project-management') {
       this.loadingTable = true;
       // console.log(per_page);
       const token = localStorage.accessToken;
@@ -112,6 +112,9 @@ getDataProject(url = process.env.VUE_APP_BACKEND_URL_API + 'project-management')
       const config = {
         method: 'get',
         url: url,
+        params: {
+          per_page: per_page,
+        },
         headers: {
           Accept: 'application/json',
           Authorization: 'Bearer ' + token,
@@ -181,7 +184,7 @@ successmsg() {
     toPage: function(str){
       console.clear();
       console.log(str);
-      this.getDataProject(str);
+      this.getDataProject(5, str);
     },
 
     // Metode untuk memanggil API pencarian instruktur

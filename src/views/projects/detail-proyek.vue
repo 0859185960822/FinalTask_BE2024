@@ -217,7 +217,7 @@ export default {
     }
 
     // Jalankan fungsi getDataProject dengan parameter str
-    this.getDataTask(str);
+    this.getDataTask(5, str);
 },
 
 
@@ -373,7 +373,7 @@ searchKolaborator(loading, search) {
           console.error('Error:', error.response ? error.response.data : error.message);
         });
     },
-    getDataTask(per_page) {
+    getDataTask(per_page=5, url = process.env.VUE_APP_BACKEND_URL_API + 'task-management/' + this.id) {
       this.loadingTable = true;
 
       const token = localStorage.accessToken;
@@ -388,7 +388,7 @@ searchKolaborator(loading, search) {
 
       const config = {
         method: 'get',
-        url: process.env.VUE_APP_BACKEND_URL_API + 'task-management/' + this.id,
+        url: url,
         params: {
           per_page: per_page,
         },
