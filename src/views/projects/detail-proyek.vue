@@ -479,6 +479,9 @@ searchKolaborator(loading, search) {
       });
       this.resetForm(); // Reset form setelah berhasil
       this.modalTT = false; // Tutup modal setelah berhasil
+      setTimeout(() => {
+        window.location.reload();
+      }, 1500); // Menunggu 1,5 detik sebelum reload
     })
     .catch((error) => {
       console.error("Error saat mengirim data:", error);
@@ -487,6 +490,81 @@ searchKolaborator(loading, search) {
         title: "Gagal",
         text: error.response?.data?.message || "Terjadi kesalahan saat menyimpan data",
       });
+    });
+},
+
+deleteProyek(task_id) {
+    if (!task_id) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Task ID tidak valid!',
+        });
+        return;
+    }
+
+    // Konfirmasi penghapusan
+    Swal.fire({
+        icon: 'warning',
+        title: 'Delete this data!',
+        text: 'Are you sure you want to remove this data?',
+        showConfirmButton: true,
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'Cancel',
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Menampilkan spinner loading
+            Swal.fire({
+                title: 'Loading...',
+                html: '<i class="fas fa-spinner fa-spin"></i>',
+                showConfirmButton: false,
+                allowOutsideClick: false,
+                willOpen: () => {
+                    Swal.showLoading();
+                },
+            });
+
+            const config = {
+        method: 'delete',
+        url: `${ process.env.VUE_APP_BACKEND_URL_API}tasks/${task_id}`,
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.accessToken}`,
+        },
+            };
+
+            axios(config)
+                .then((response) => {
+                    if (response.status === 200) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: 'Data has been successfully deleted!',
+                            timer: 2000,
+                            timerProgressBar: true,
+                            showCancelButton: false,
+                            showConfirmButton: false,
+                        }).then((result) => {
+                            if (result.dismiss === Swal.DismissReason.timer) {
+                                this.getDataProject(); // Refresh data
+                            }
+                        });
+                        setTimeout(() => {
+                          window.location.reload();
+                        }, 2000); // Menunggu 1,5 detik sebelum reload
+                    }
+                })
+                .catch((error) => {
+                    Swal.fire({
+                        title: 'Error',
+                        text: error.response?.data?.message || 'Terjadi kesalahan saat menghapus data!',
+                        icon: 'error',
+                        showConfirmButton: true,
+                    });
+                });
+        }
     });
 },
 
@@ -721,6 +799,10 @@ storeDataEditProyek() {
         this.resetForm(); // Reset form setelah menyimpan
         this.getDataUploadProyek(); // Refresh data yang ditampilkan di tabel
       });
+      setTimeout(() => {
+        window.location.reload();
+      }, 750); // Menunggu 1,5 detik sebelum reload
+
     })
     .catch((error) => {
       console.error("Error saat memperbarui data proyek:", error);
@@ -1406,7 +1488,7 @@ getCollaborators() {
                           </form>
                         </div>
                       </BModal>
-                      <button type="button" class="btn btn-danger btn-sm mb-1 w-100" alt="Disable" @click="confirm()"><i class="bx bxs-trash-alt"></i> HAPUS</button>
+                      <button type="button" class="btn btn-danger btn-sm mb-1 w-100" alt="Disable" @click="deleteProyek(item.task_id)"><i class="bx bxs-trash-alt"></i> HAPUS</button>
                     </BTd>
                   </BTr>
                 </BTbody>
