@@ -57,6 +57,9 @@ export default {
       task_id: "",
       sortColumn: null, // Nama kolom yang sedang disortir
       sortOrder: 'asc', // Urutan sorting ('asc' atau 'desc')
+
+      comment: '', // Menyimpan komentar yang akan dikirim
+      comments: [], // Menyimpan daftar komentar
   
       no:1,
 
@@ -95,7 +98,8 @@ export default {
       },
 
       query: "", // Kata kunci pencarian
-      task: [], // Hasil pencarian proyek    
+      task: [], // Hasil pencarian proyek\
+      taskDetail: [],     
       showModal: {
                 editProyek: false,
                 tambahKolaborator: false,
@@ -138,6 +142,46 @@ export default {
 
 
   methods: {
+
+    getDetailTask(taskId) {
+            this.loading = true;
+            this.modalDT = true;
+
+            const token = localStorage.accessToken;
+            if (!token) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'No access token found!',
+                });
+                this.loading = false;
+                return;
+            }
+
+            const config = {
+                method: 'get',
+                url: `${process.env.VUE_APP_BACKEND_URL_API}tasks/${taskId}`,
+                headers: {
+                    Accept: 'application/json',
+                    Authorization: 'Bearer ' + token,
+                },
+            };
+
+            axios(config)
+                .then((response) => {
+                    this.loading = false;
+                    if (response.status === 200) {
+                        this.taskDetail = response.data.data; // Sesuaikan dengan struktur respons API Anda
+                    } else {
+                        this.taskDetail = {};
+                    }
+                })
+                .catch((error) => {
+                    this.loading = false;
+                    this.taskDetail = {};
+                    console.error('Error:', error.response ? error.response.data : error.message);
+                });
+        },
 
     async updateStatus(task_id, event) {
       const newStatus = event.target.value;
@@ -508,14 +552,55 @@ successmsg() {
     });
 },
 
-sendmsg() {
-    Swal.fire({
-        title: "Komentar Tersimpan!",
-        text: "Komentar Berhasil Tersimpan!",
-        icon: "success",
-        confirmButtonColor: "#556ee6",
+sendmsg(taskId) {
+  const token = localStorage.accessToken;
+            if (!token) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'No access token found!',
+                });
+                return;
+            }
 
-    });
+            const config = {
+                method: 'post',
+                url: `${process.env.VUE_APP_BACKEND_URL_API}tasks/${taskId}/comment`,
+                headers: {
+                    Accept: 'application/json',
+                    Authorization: 'Bearer ' + token,
+                },
+                data: {
+                    comment: this.comment // Data yang akan dikirim
+                }
+            };
+
+            axios(config)
+                .then((response) => {
+                    if (response.status === 200) {
+                        // Reset textarea setelah berhasil mengirim
+                        this.comment = '';
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Komentar Terkirim',
+                            text: 'Komentar Anda telah berhasil dikirim!',
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Gagal mengirim komentar!',
+                        });
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error:', error.response ? error.response.data : error.message);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Terjadi kesalahan saat mengirim komentar!',
+                    });
+                });
 },
 
 showModalEditProyek(id) { 
@@ -1109,7 +1194,7 @@ getCollaborators() {
                     <BTd style="border-collapse: collapse; border: 1px solid black;">
                       {{ item.collaborator_id.name }}
                     </BTd>
-                    <BTd style="border-collapse: collapse; border: 1px solid black;"><a @click="modalDT = true" variant="primary" style="cursor: pointer;">{{ item.task_name }}</a> <br><span class="badge bg-info">{{ item.type_task }}</span> <span class="badge bg-warning">{{ item.priority_task }}</span> </BTd>
+                    <BTd style="border-collapse: collapse; border: 1px solid black;"><a @click="getDetailTask(item.task_id)" variant="primary" style="cursor: pointer;">{{ item.task_name }}</a> <br><span class="badge bg-info">{{ item.type_task }}</span> <span class="badge bg-warning">{{ item.priority_task }}</span> </BTd>
                     <BModal v-model="modalDT" id="modal-task-detail" hide-footer>
                       <div class="space-y-4">
                         <!-- Header -->
@@ -1120,7 +1205,7 @@ getCollaborators() {
                             <div class="text-center me-4">
                               <p class="text-muted mb-1">Sisa Waktu</p>
                               <!-- <p class="fw-bold mb-0">{{item.sisa_waktu}}</p> -->
-                              <h5><span class="badge bg-danger">{{item.sisa_waktu}} hari</span></h5> 
+                              <h5><span class="badge bg-danger">{{taskDetail.sisa_waktu}} hari</span></h5> 
                             </div>
                             <!-- Status Deadline -->
                             <!-- <div class="text-center">
@@ -1133,13 +1218,13 @@ getCollaborators() {
                         <BRow>
                           <BCol md="6">
                             <BFormGroup class="mb-3 fw-bold" label="Judul Task" label-for="tingkat-urgensi-input">
-                              <p>{{item.task_name}}</p>
+                              <p>{{taskDetail.task_name}}</p>
                             </BFormGroup>
                           </BCol>
                           <BCol md="6">
                             <div class="form-group">
                               <BFormGroup class="mb-3 fw-bold" label="Tipe-Task" label-for="tipe-task-input">
-                                <h5><span class="badge bg-primary">{{item.type_task}}</span></h5>
+                                <h5><span class="badge bg-primary">{{taskDetail.type_task}}</span></h5>
                               </BFormGroup>
                             </div>
                           </BCol>
@@ -1147,13 +1232,13 @@ getCollaborators() {
                         <BRow>
                           <BCol md="6">
                             <BFormGroup class="mb-3 fw-bold" label="Tingkat Urgensi" label-for="tingkat-urgensi-input">
-                              <p>{{item.priority_task}}</p>
+                              <p>{{taskDetail.priority_task}}</p>
                             </BFormGroup>
                           </BCol>
                           <BCol md="6">
                             <div class="form-group">
                               <BFormGroup class="mb-3 fw-bold" label="Nama Kolaborator" label-for="tipe-task-input">
-                               <p>{{item.collaborator_id.name}}</p>
+                               <p>{{taskDetail.collaborator_id}}</p>
                               </BFormGroup>
                             </div>
                           </BCol>
@@ -1161,13 +1246,13 @@ getCollaborators() {
                         <BRow>
                           <BCol md="6">
                             <BFormGroup class="mb-3 fw-bold" label="Status Task" label-for="tingkat-urgensi-input">
-                              <h5><span class="badge bg-danger">{{item.status_task}}</span></h5>
+                              <h5><span class="badge bg-danger">{{taskDetail.status_task}}</span></h5>
                             </BFormGroup>
                           </BCol>
                           <BCol md="6">
                             <div class="form-group">
                               <BFormGroup class="mb-3 fw-bold" label="Tanggal Deadline" label-for="tipe-task-input">
-                                 <p>{{item.deadline}}</p>
+                                 <p>{{taskDetail.deadline}}</p>
                               </BFormGroup>
                             </div>
                           </BCol>
@@ -1182,18 +1267,18 @@ getCollaborators() {
                             </div>
                             <!-- Textarea -->
                             <!-- <label for="nama-yang-komen">Komentar</label> -->
-                            <textarea class="form-control" placeholder="Ketikan Komentar" style="flex: 1;"></textarea>
+                            <textarea v-model="comment" class="form-control" placeholder="Ketikan Komentar" style="flex: 1;"></textarea>
                           </div>
                           <div class="text-end mt-2 mb-2">
-                            <button type="button" class="btn btn-secondary btn-info" @click="sendmsg()">Kirim</button>
+                            <button type="button" class="btn btn-secondary btn-info" @click="sendmsg(taskDetail.task_id)">Kirim</button>
                           </div>
-                          <div style="display: flex; gap: 10px;">
+                          <div style="display: flex; gap: 10px;" v-for="item,index in taskDetail.comments" :key="index">
                             <!-- Div dengan border bulat -->
                             <div style="background-color: whitesmoke; border: 1px solid black; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center;">
                               <p style="font-weight: bold; font-size: 2em; margin: 0;">A</p>
                             </div>
                             <!-- Textarea -->
-                            <textarea class="form-control" value="ini adalah komentar" style="flex: 1;" disabled></textarea>
+                            <textarea class="form-control mb-1" :value="item.comment" style="flex: 1;" disabled></textarea>
                           </div>
                         </div>
                       </div>
