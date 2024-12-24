@@ -206,6 +206,7 @@ export default {
         const response = await axios(configStoreData);
         alert('Status berhasil diperbarui!');
         console.log('Response:', response.data);
+        window.location.reload();
       } catch (error) {
         console.error('Error updating status:', error);
         alert('Terjadi kesalahan saat memperbarui status.');
