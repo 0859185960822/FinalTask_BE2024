@@ -1001,6 +1001,9 @@ storeDataEditTask() {
         this.resetForm(); // Reset form
         this.getDataTasks(); // Refresh data tasks di tabel
       });
+      setTimeout(() => {
+        window.location.reload();
+      }, 750); 
     })
     .catch((error) => {
       console.error("Error saat memperbarui task:", error);
@@ -1572,7 +1575,7 @@ storeDataEditTask() {
 
                               <!-- Tombol Submit -->
                               <div class="text-end">
-                                <button type="submit" class="btn btn-success">Tambah</button>
+                                <button type="submit" class="btn btn-success">Sunting</button>
                               </div>
                             </form>
                           </div>
