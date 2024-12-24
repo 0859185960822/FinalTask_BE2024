@@ -193,17 +193,17 @@ export default {
                         this.taskDetail = response.data.data; // Sesuaikan dengan struktur respons API Anda
                         this.nameCollaborator = this.taskDetail.collaborator.name;
                         this.nameCollaborator = this.nameCollaborator.charAt(0);
-                        this.pagination.total = response.data.data.pagination.total;
+                        // this.pagination.total = response.data.data.pagination.total;
                         // paginasi
-                        this.pagination.from = response.data.data.pagination.from;
-                        this.pagination.to = response.data.data.pagination.to;
-                        this.pagination.links = response.data.data.pagination.links;
-                        this.pagination.lastPageUrl = response.data.data.pagination.last_page_url;
-                        this.pagination.nextPageUrl = response.data.data.pagination.next_page_url;
-                        this.pagination.prevPageUrl = response.data.data.pagination.prev_page_url;
-                        this.pagination.per_page = this.per_page;
-                        this.pagination.page = this.page;
-                        console.log(response.data.data.pagination.links);
+                        // this.pagination.from = response.data.data.pagination.from;
+                        // this.pagination.to = response.data.data.pagination.to;
+                        // this.pagination.links = response.data.data.pagination.links;
+                        // this.pagination.lastPageUrl = response.data.data.pagination.last_page_url;
+                        // this.pagination.nextPageUrl = response.data.data.pagination.next_page_url;
+                        // this.pagination.prevPageUrl = response.data.data.pagination.prev_page_url;
+                        // this.pagination.per_page = this.per_page;
+                        // this.pagination.page = this.page;
+                        // console.log(response.data.data.pagination.links);
                     } else {
                         this.taskDetail = {};
                     }
@@ -819,7 +819,7 @@ storeDataEditProyek() {
       project_name: this.namaProyek,  // Nama proyek
       description: this.deskripsiProyek,  // Deskripsi proyek
       deadline: this.tenggatWaktu,  // Tenggat waktu proyek
-      collaborator: this.kolaborator_data,  // Data kolaborator
+      collaborator: JSON.stringify(this.kolaborator_data),
     },
   };
 
