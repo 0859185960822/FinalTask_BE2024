@@ -2,7 +2,8 @@
 import Layout from "../../layouts/main";
 import PageHeader from "@/components/page-header";
 import Stat from "../../components/widgets/stat.vue";
-import Page from "../../components/common/pagination.vue";
+// import Page from "../../components/common/pagination.vue";
+import Pagination from "../../components/common/table-pagination.vue";
 import { ref } from "vue";
 import flatPickr from "vue-flatpickr-component";
 import "flatpickr/dist/flatpickr.css";
@@ -31,7 +32,7 @@ export default {
     };
   },
 
-  components: { Layout, PageHeader,Page,flatPickr,Stat, },
+  components: { Layout, PageHeader,Pagination,flatPickr,Stat, },
   data() {
     return {
       
@@ -63,6 +64,21 @@ export default {
   
       nameCollaborator: '',
       no:1,
+      per_page: 5,
+      page: 1,
+
+      // paginasi
+      pagination: {
+        total: "",
+        from: "",
+        to: "",
+        page: "",
+        per_page: "",
+        links: '',
+        lastPageUrl: "",
+        nextPageUrl: "",
+        prevPageUrl: "",
+      },
 
       statData: [
         {
@@ -176,7 +192,18 @@ export default {
                     if (response.status === 200) {
                         this.taskDetail = response.data.data; // Sesuaikan dengan struktur respons API Anda
                         this.nameCollaborator = this.taskDetail.collaborator.name;
-                        this.nameKollaborator = this.nameCollaborator.charAt(0);
+                        this.nameCollaborator = this.nameCollaborator.charAt(0);
+                        this.pagination.total = response.data.data.pagination.total;
+                        // paginasi
+                        this.pagination.from = response.data.data.pagination.from;
+                        this.pagination.to = response.data.data.pagination.to;
+                        this.pagination.links = response.data.data.pagination.links;
+                        this.pagination.lastPageUrl = response.data.data.pagination.last_page_url;
+                        this.pagination.nextPageUrl = response.data.data.pagination.next_page_url;
+                        this.pagination.prevPageUrl = response.data.data.pagination.prev_page_url;
+                        this.pagination.per_page = this.per_page;
+                        this.pagination.page = this.page;
+                        console.log(response.data.data.pagination.links);
                     } else {
                         this.taskDetail = {};
                     }
@@ -187,6 +214,12 @@ export default {
                     console.error('Error:', error.response ? error.response.data : error.message);
                 });
         },
+
+    toPage: function(str){
+      console.clear();
+      console.log(str);
+      this.getDataProject(str);
+    },
 
     async updateStatus(task_id, event) {
       const newStatus = event.target.value;
@@ -1455,10 +1488,7 @@ storeDataEditTask() {
                           <BCol md="6">
                             <div class="form-group">
                               <BFormGroup class="mb-3 fw-bold" label="Nama Kolaborator" label-for="tipe-task-input">
-                               <p>{{nameCollaborator}}</p>
-                               <!-- <p v-for="kolaborator in taskDetail.collaborator_id" :key="kolaborator.id">
-                                   {{ item.collaborator_id.name }} 
-                               </p> -->
+                               <p>{{taskDetail.collaborator_id}}</p>
                               </BFormGroup>
                             </div>
                           </BCol>
@@ -1483,7 +1513,7 @@ storeDataEditTask() {
                           <div style="display: flex; gap: 10px;">
                             <!-- Div dengan border bulat -->
                             <div style="background-color: whitesmoke; border: 1px solid black; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center;">
-                              <p style="font-weight: bold; font-size: 2em; margin: 0;">{{nameKollaborator}}</p>
+                              <p style="font-weight: bold; font-size: 2em; margin: 0;">{{nameCollaborator}}</p>
                             </div>
                             <!-- Textarea -->
                             <!-- <label for="nama-yang-komen">Komentar</label> -->
@@ -1595,7 +1625,7 @@ storeDataEditTask() {
                 </BTbody>
               </BTableSimple>
             </div>
-            <Page/>
+            <Pagination :pagination="pagination" @to-page="toPage"></Pagination>
           </b-card>
           </BCardBody>
         </BCard>

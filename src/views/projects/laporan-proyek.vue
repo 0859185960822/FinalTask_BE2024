@@ -31,6 +31,7 @@ export default {
       sortColumn: null, // Nama kolom yang sedang disortir
       sortOrder: 'asc', // Urutan sorting ('asc' atau 'desc')
       loadingTable: false,
+      isFilterApplied: false, // Properti untuk melacak apakah filter diterapkan
     }
   },
   mounted() {
@@ -123,6 +124,25 @@ export default {
         return;
       }
 
+      let filterParams = {}; // Default tanpa filter
+
+      if (this.isFilterApplied) {
+        let startDate = '';
+        let endDate = '';
+        if (Array.isArray(this.dateRange) && this.dateRange.length === 2) {
+          startDate = this.dateRange[0];
+          endDate = this.dateRange[1];
+        }
+
+        // Atur parameter filter jika filter diterapkan
+        filterParams = {
+          title: this.filterTitle || '',
+          status_deadline: this.filterStatus || '',
+          deadline_from: startDate,
+          deadline_to: endDate,
+        };
+      }
+
       const config = {
         method: 'get',
         url: process.env.VUE_APP_BACKEND_URL_API + 'admin/projects/export',
@@ -130,6 +150,7 @@ export default {
           Accept: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
           Authorization: 'Bearer ' + token,
         },
+        params: filterParams, // Gunakan filterParams hanya jika filter diterapkan
         responseType: 'blob', // Tambahkan ini untuk menangani respon binary
       };
 
@@ -180,64 +201,65 @@ export default {
       },
 
       filterLaporanProyek() {
-        this.loadingTable = true;
+      this.loadingTable = true;
 
-        const token = localStorage.accessToken;
-        if (!token) {
+      const token = localStorage.accessToken;
+      if (!token) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No access token found!',
+        });
+        return;
+      }
+
+      let startDate = '';
+      let endDate = '';
+      if (Array.isArray(this.dateRange) && this.dateRange.length === 2) {
+        startDate = this.dateRange[0];
+        endDate = this.dateRange[1];
+      }
+
+      const filterParams = {
+        title: this.filterTitle || '',
+        status_deadline: this.filterStatus || '',
+        deadline_from: startDate,
+        deadline_to: endDate,
+      };
+
+      const config = {
+        method: 'get',
+        url: process.env.VUE_APP_BACKEND_URL_API + 'admin/projects/filter',
+        headers: {
+          Accept: 'application/json',
+          Authorization: 'Bearer ' + token,
+        },
+        params: filterParams,
+      };
+
+      axios(config)
+        .then((response) => {
+          this.loadingTable = false;
+          this.data = response.data.data.data_projects;
+          this.isFilterApplied = true; // Atur filter sebagai diterapkan
+          Swal.fire({
+            icon: 'success',
+            title: 'Berhasil',
+            text: 'Data berhasil difilter!',
+          });
+        })
+        .catch((error) => {
+          this.loadingTable = false;
+
           Swal.fire({
             icon: 'error',
             title: 'Error',
-            text: 'No access token found!',
+            text: error.response ? error.response.data.message : 'Terjadi kesalahan!',
           });
-          return;
-        }
+          console.error('Error:', error.response ? error.response.data : error.message);
+        });
+    },
 
-        let startDate = '';
-        let endDate = '';
-        if (Array.isArray(this.dateRange) && this.dateRange.length === 2) {
-          startDate = this.dateRange[0];
-          endDate = this.dateRange[1];
-        }
-
-        const filterParams = {
-          title: this.filterTitle || '',
-          status_deadline: this.filterStatus || '',
-          deadline_from: startDate,
-          deadline_to: endDate,
-        };
-
-
-        const config = {
-          method: 'get',
-          url: process.env.VUE_APP_BACKEND_URL_API + 'admin/projects/filter',
-          headers: {
-            Accept: 'application/json',
-            Authorization: 'Bearer ' + token,
-          },
-          params: filterParams,
-        };
-
-        axios(config)
-          .then((response) => {
-            this.loadingTable = false;
-            this.data = response.data.data.data_projects;
-            Swal.fire({
-              icon: 'success',
-              title: 'Berhasil',
-              text: 'Data berhasil difilter!',
-            });
-          })
-          .catch((error) => {
-            this.loadingTable = false;
-
-            Swal.fire({
-              icon: 'error',
-              title: 'Error',
-              text: error.response ? error.response.data.message : 'Terjadi kesalahan!',
-            });
-            console.error('Error:', error.response ? error.response.data : error.message);
-          });
-      },
 
       sortData(column) {
         if (this.sortColumn === column) {

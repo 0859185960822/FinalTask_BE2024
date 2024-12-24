@@ -112,10 +112,6 @@ getDataProject(url = process.env.VUE_APP_BACKEND_URL_API + 'project-management')
       const config = {
         method: 'get',
         url: url,
-        // params: {
-        //   per_page: per_page,
-        //   // links
-        // },
         headers: {
           Accept: 'application/json',
           Authorization: 'Bearer ' + token,
