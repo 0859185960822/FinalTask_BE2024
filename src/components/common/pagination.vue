@@ -17,10 +17,10 @@ export default {
 
 <template>
     <div class="mt-3">
-        <BPagination v-model="ex4CurrentPage" :pills="pills" :total-rows="ex4Rows" align="end" />
-        <!-- <b-pagination v-model="current_page" :pills="pills" align="end"
+        <!-- <BPagination v-model="ex4CurrentPage" :pills="pills" :total-rows="ex4Rows" align="end" /> -->
+        <b-pagination v-model="current_page" :pills="pills" align="end"
         :total_rows="total"
         :per_page="per_page"
-        aria-controls="data-proyek"></b-pagination> -->
+        aria-controls="data-proyek"></b-pagination>
     </div>
 </template>

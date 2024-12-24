@@ -1,7 +1,7 @@
 <script>
 import Layout from "../../layouts/main";
 import PageHeader from "@/components/page-header";
-import Page from "../../components/common/pagination.vue";
+import Pagination from "../../components/common/table-pagination.vue";
 import { ref } from "vue";
 import flatPickr from "vue-flatpickr-component";
 import "flatpickr/dist/flatpickr.css";
@@ -19,7 +19,7 @@ export default {
   components: {
     Layout,
     PageHeader,
-    Page,
+    Pagination,
     flatPickr,
   },
   data() {
@@ -39,6 +39,21 @@ export default {
       showModal: {
           uploadProyek: false,
           editProyek: false,
+      },
+      per_page: 5,
+      page: 1,
+
+      // paginasi
+      pagination: {
+        total: "",
+        from: "",
+        to: "",
+        page: "",
+        per_page: "",
+        links: '',
+        lastPageUrl: "",
+        nextPageUrl: "",
+        prevPageUrl: "",
       },
     };
   },
@@ -80,9 +95,9 @@ export default {
         }
     });
 },
-getDataProject(per_page = 5) {
+getDataProject(url = process.env.VUE_APP_BACKEND_URL_API + 'project-management') {
       this.loadingTable = true;
-
+      // console.log(per_page);
       const token = localStorage.accessToken;
       if (!token) {
         Swal.fire({
@@ -93,12 +108,14 @@ getDataProject(per_page = 5) {
         return;
       }
 
+
       const config = {
         method: 'get',
-        url: process.env.VUE_APP_BACKEND_URL_API + 'project-management',
-        params: {
-          per_page: per_page
-        },
+        url: url,
+        // params: {
+        //   per_page: per_page,
+        //   // links
+        // },
         headers: {
           Accept: 'application/json',
           Authorization: 'Bearer ' + token,
@@ -108,9 +125,19 @@ getDataProject(per_page = 5) {
       axios(config)
         .then((response) => {
           this.loadingTable = false;
+
           if (response.status === 200) {
             this.data = response.data.data;
-            // console.log(this.data);
+              this.pagination.total = response.data.data.pagination.total;
+              this.pagination.from = response.data.data.pagination.from;
+              this.pagination.to = response.data.data.pagination.to;
+              this.pagination.links = response.data.data.pagination.links;
+              this.pagination.lastPageUrl = response.data.data.pagination.last_page_url;
+              this.pagination.nextPageUrl = response.data.data.pagination.next_page_url;
+              this.pagination.prevPageUrl = response.data.data.pagination.prev_page_url;
+              this.pagination.per_page = this.per_page;
+              this.pagination.page = this.page;
+              console.log(response.data.data.pagination.links);
           } else {
             this.data = [];
           }
@@ -152,6 +179,12 @@ successmsg() {
         loading(true);
         this.searchKolaborator(loading, search);
       }
+    },
+    
+    toPage: function(str){
+      console.clear();
+      console.log(str);
+      this.getDataProject(str);
     },
 
     // Metode untuk memanggil API pencarian instruktur
@@ -880,11 +913,13 @@ deleteProyek(project_id) {
                 </BTbody>
               </BTableSimple>
             </div>
+
+            <Pagination :pagination="pagination" @to-page="toPage"></Pagination>
           </BCardBody>
         </BCard>
       </BCol>
     </BRow>
     {{ console.log(this.data) }}
-  <Page/>
+  <!-- <Pagination :pagination="pagination" @to-page="toPage"/> -->
   </Layout>
 </template>
