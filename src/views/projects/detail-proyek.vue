@@ -671,8 +671,11 @@ sendmsg(taskId) {
                             icon: 'error',
                             title: 'Error',
                             text: 'Gagal mengirim komentar!',
-                        });
+                        }); 
                     }
+                      setTimeout(() => {
+                        window.location.reload();
+                      }, 750);
                 })
                 .catch((error) => {
                     console.error('Error:', error.response ? error.response.data : error.message);
@@ -1416,7 +1419,7 @@ storeDataEditTask() {
                             <div class="text-center me-4">
                               <p class="text-muted mb-1">Sisa Waktu</p>
                               <!-- <p class="fw-bold mb-0">{{item.sisa_waktu}}</p> -->
-                              <h5><span class="badge bg-danger">{{taskDetail.sisa_waktu}} hari</span></h5> 
+                              <h5><span class="badge bg-danger">{{taskDetail.sisa_waktu}}</span></h5> 
                             </div>
                             <!-- Status Deadline -->
                             <!-- <div class="text-center">
