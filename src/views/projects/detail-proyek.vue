@@ -466,7 +466,7 @@ searchKolaborator(loading, search) {
       collaborator_id: this.collaborator_id || null,
       project_id: this.project_id,
       task_name: this.judulTask,
-      priority_task: parseInt(this.tingkatUrgensi), // Ubah ke integer jika perlu
+      priority_task: this.tingkatUrgensi, // Ubah ke integer jika perlu
       type_task: this.tipeTask.toUpperCase(),  // Ubah ke integer jika perlu
       deadline: this.tanggalDeadline,
     },
@@ -987,7 +987,7 @@ storeDataEditTask() {
       collaborator_id: this.collaborator_id || null,
       project_id: this.project_id,
       task_name: this.judulTask,
-      priority_task: parseInt(this.tingkatUrgensi),
+      priority_task: this.tingkatUrgensi,
       type_task: this.tipeTask.toUpperCase(),
       deadline: this.tanggalDeadline,
     },
@@ -1319,10 +1319,10 @@ storeDataEditTask() {
               <BFormGroup class="mb-3" label="Tingkat Urgensi" label-for="tingkat-urgensi-input">
                 <select v-model="tingkatUrgensi" id="tingkat-urgensi-input" class="form-select">
                   <option disabled value="">Pilih Tingkat Urgensi</option>
-                  <option value="1">Urgent</option>
-                  <option value="2">Tinggi</option>
-                  <option value="3">Sedang</option>
-                  <option value="4">Rendah</option>
+                  <option value="URGENT">Urgent</option>
+                  <option value="TINGGI">Tinggi</option>
+                  <option value="SEDANG">Sedang</option>
+                  <option value="RENDAH">Rendah</option>
                 </select>
               </BFormGroup>
             </BCol>
@@ -1539,10 +1539,10 @@ storeDataEditTask() {
                                   <BFormGroup class="mb-3" label="Tingkat Urgensi" label-for="tingkat-urgensi-input">
                                     <select v-model="tingkatUrgensi" id="tingkat-urgensi-input" class="form-select">
                                       <option disabled value="">Pilih Tingkat Urgensi</option>
-                                      <option value="1">Urgent</option>
-                                      <option value="2">Tinggi</option>
-                                      <option value="3">Sedang</option>
-                                      <option value="4">Rendah</option>
+                                      <option value="URGENT">Urgent</option>
+                                      <option value="TINGGI">Tinggi</option>
+                                      <option value="SEDANG">Sedang</option>
+                                      <option value="RENDAH">Rendah</option>
                                     </select>
                                   </BFormGroup>
                                 </BCol>
