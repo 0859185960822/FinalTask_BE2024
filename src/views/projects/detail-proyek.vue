@@ -18,13 +18,13 @@ export default {
   setup() {
     // const modalTK = ref(false);
     const modalTT = ref(false);
-    const modalST = ref(false);
+    // const modalST = ref(false);
     // const modalSP = ref(false);
     const modalDT = ref(false);
     return {
       // modalTK,
       modalTT,
-      modalST,
+      // modalST,
       // modalSP,
       modalDT,
       picked: ref(new Date()),
@@ -104,6 +104,7 @@ export default {
       showModal: {
                 editProyek: false,
                 tambahKolaborator: false,
+                editTask: false,
             },
         
     };
@@ -113,6 +114,7 @@ export default {
     this.getCollaborators();
     setTimeout(() => {
       this.showModal.editProyek = false;
+      this.showModal.editTask = false;
       this.showModal.tambahKolaborator = false;
     }, 1500);
 
@@ -207,6 +209,7 @@ export default {
         const response = await axios(configStoreData);
         alert('Status berhasil diperbarui!');
         console.log('Response:', response.data);
+        window.location.reload();
       } catch (error) {
         console.error('Error updating status:', error);
         alert('Terjadi kesalahan saat memperbarui status.');
@@ -482,6 +485,9 @@ searchKolaborator(loading, search) {
       });
       this.resetForm(); // Reset form setelah berhasil
       this.modalTT = false; // Tutup modal setelah berhasil
+      setTimeout(() => {
+        window.location.reload();
+      }, 1500); // Menunggu 1,5 detik sebelum reload
     })
     .catch((error) => {
       console.error("Error saat mengirim data:", error);
@@ -490,6 +496,81 @@ searchKolaborator(loading, search) {
         title: "Gagal",
         text: error.response?.data?.message || "Terjadi kesalahan saat menyimpan data",
       });
+    });
+},
+
+deleteProyek(task_id) {
+    if (!task_id) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Task ID tidak valid!',
+        });
+        return;
+    }
+
+    // Konfirmasi penghapusan
+    Swal.fire({
+        icon: 'warning',
+        title: 'Delete this data!',
+        text: 'Are you sure you want to remove this data?',
+        showConfirmButton: true,
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'Cancel',
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Menampilkan spinner loading
+            Swal.fire({
+                title: 'Loading...',
+                html: '<i class="fas fa-spinner fa-spin"></i>',
+                showConfirmButton: false,
+                allowOutsideClick: false,
+                willOpen: () => {
+                    Swal.showLoading();
+                },
+            });
+
+            const config = {
+        method: 'delete',
+        url: `${ process.env.VUE_APP_BACKEND_URL_API}tasks/${task_id}`,
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.accessToken}`,
+        },
+            };
+
+            axios(config)
+                .then((response) => {
+                    if (response.status === 200) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: 'Data has been successfully deleted!',
+                            timer: 2000,
+                            timerProgressBar: true,
+                            showCancelButton: false,
+                            showConfirmButton: false,
+                        }).then((result) => {
+                            if (result.dismiss === Swal.DismissReason.timer) {
+                                this.getDataProject(); // Refresh data
+                            }
+                        });
+                        setTimeout(() => {
+                          window.location.reload();
+                        }, 2000); // Menunggu 1,5 detik sebelum reload
+                    }
+                })
+                .catch((error) => {
+                    Swal.fire({
+                        title: 'Error',
+                        text: error.response?.data?.message || 'Terjadi kesalahan saat menghapus data!',
+                        icon: 'error',
+                        showConfirmButton: true,
+                    });
+                });
+        }
     });
 },
 
@@ -724,6 +805,10 @@ storeDataEditProyek() {
         this.resetForm(); // Reset form setelah menyimpan
         this.getDataUploadProyek(); // Refresh data yang ditampilkan di tabel
       });
+      setTimeout(() => {
+        window.location.reload();
+      }, 750); // Menunggu 1,5 detik sebelum reload
+
     })
     .catch((error) => {
       console.error("Error saat memperbarui data proyek:", error);
@@ -808,6 +893,132 @@ getCollaborators() {
       }
     });
   },
+
+  showModalEditTask(id) { 
+    console.log("Tombol SUNTING diklik, ID Proyek:", id);
+    this.editTask(id);
+    this.showModal.editTask = true;
+  },
+
+  editTask(taskId) {
+  console.log(`Memuat data task dengan ID: ${taskId}`);
+
+  // Reset data sebelum memuat yang baru
+  this.resetForm();
+
+  // Menampilkan loading
+  Swal.fire({
+    title: '<i class="fas fa-spinner fa-spin"></i>',
+    text: "Loading...",
+    showConfirmButton: false,
+    allowOutsideClick: false,
+    allowEscapeKey: false,
+  });
+
+  // Konfigurasi untuk mengambil data task
+  const configGetData = {
+    method: "get",
+    url: `${process.env.VUE_APP_BACKEND_URL_API}tasks/${taskId}`,
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.accessToken}`,
+    },
+  };
+
+  axios(configGetData)
+    .then((response) => {
+      console.log("Respon server:", response.data);
+      const resData = response.data.data;
+
+      if (resData) {
+        this.task_id = resData.task_id;
+        this.project_id = resData.project_id || null;
+        this.judulTask = resData.task_name || "";
+        this.tingkatUrgensi = resData.priority_task || "";
+        this.tipeTask = resData.type_task || "";
+        this.tanggalDeadline = resData.deadline || "";
+        this.collaborator_id = resData.collaborator_id || null;
+        this.showModal.editTask = true; // Tampilkan modal edit
+      } else {
+        throw new Error("Data task tidak ditemukan.");
+      }
+    })
+    .catch((error) => {
+      console.error("Error mengambil data task:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Gagal",
+        text: error.response?.data?.message || "Terjadi kesalahan saat memuat data task.",
+      });
+    })
+    .finally(() => {
+      Swal.close(); // Tutup loading
+    });
+},
+
+
+storeDataEditTask() {
+  console.log("storeDataEditTask function is called");
+
+  // Validasi input
+  if (!this.judulTask || !this.tingkatUrgensi || !this.tipeTask || !this.tanggalDeadline) {
+    Swal.fire({
+      icon: "warning",
+      title: "Data tidak lengkap",
+      text: "Harap lengkapi semua field sebelum menyimpan",
+    });
+    return;
+  }
+
+  // Konfigurasi untuk update data task
+  const configEditData = {
+    method: "put",
+    url: `${process.env.VUE_APP_BACKEND_URL_API}tasks/${this.task_id}`,
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.accessToken}`,
+    },
+    data: {
+      collaborator_id: this.collaborator_id || null,
+      project_id: this.project_id,
+      task_name: this.judulTask,
+      priority_task: parseInt(this.tingkatUrgensi),
+      type_task: this.tipeTask.toUpperCase(),
+      deadline: this.tanggalDeadline,
+    },
+  };
+
+  console.log("Data yang dikirim untuk update:", configEditData.data);
+
+  axios(configEditData)
+    .then((response) => {
+      console.log("Respon server:", response.data);
+      Swal.fire({
+        icon: "success",
+        title: "Berhasil",
+        text: response.data.message || "Task berhasil diperbarui",
+      }).then(() => {
+        this.showModal.editTask = false; // Tutup modal edit
+        this.resetForm(); // Reset form
+        this.getDataTasks(); // Refresh data tasks di tabel
+      });
+      setTimeout(() => {
+        window.location.reload();
+      }, 750); 
+    })
+    .catch((error) => {
+      console.error("Error saat memperbarui task:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Gagal",
+        text: error.response?.data?.message || "Terjadi kesalahan saat memperbarui task.",
+      });
+    });
+},
+
+
   },
 };
 </script>
@@ -1301,115 +1512,78 @@ getCollaborators() {
                     </BTd>
 
                     <BTd style="border-collapse: collapse; border: 1px solid black;" v-if="menuItems === 1">
-                      <button type="button" class="btn btn-warning btn-sm mb-1 w-100" alt="Disable" @click="modalST = true" variant="primary"><i class="bx bx-edit"></i> SUNTING</button>
-                      <BModal v-model="modalST" id="modal-center" size="lg" centered title="Sunting Task" hide-footer>
+                      <button type="button" class="btn btn-warning btn-sm mb-1 w-100" alt="Disable" @click="showModalEditTask(item.task_id)" variant="primary"><i class="bx bx-edit"></i> SUNTING</button>
+                      <BModal v-model="showModal.editTask" id="modal-center" size="lg" centered title="Sunting Task" hide-footer>
                         <div class="p-3">
-                          <form @submit.prevent="storeDataEditTask">
-                            <div class="mb-3">
-                              <label for="judul-task" class="form-label fw-bold">Judul Task</label>
-                              <input type="text" class="form-control" id="autoSizingInput" placeholder="Masukan judul Task" value="Task A">
-                            </div>
+                          <form @submit.prevent="storeDataEditTask()">
+                           <!-- Input Judul Task -->
+                              <div class="mb-3">
+                                <label for="judul-task" class="form-label fw-bold">Judul Task</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  v-model="judulTask"
+                                  placeholder="Masukkan judul Task"
+                                  required
+                                />
+                              </div>
 
-                            <div class="mb-3">
-                <label for="judul-task" class="form-label fw-bold">Nama Kolaborator</label>
-                    <div class="row">
-                        <div class="col-12">
-                          <table class="table mb-0 mt-0 table-bordered table-condensed table-hover">
-                            <thead class="bg-dark text-center text-white">
-                              <tr>
-                                <th style="width: 50px">No</th>
-                                <th style="width: auto">Kolaborator</th>
-                                <th style="width: 50px" class="text-center">
-                                  <b-button
-                                    type="button"
-                                    class="btn btn-success btn-sm"
-                                    @click="addRowPeserta"
-                                  >
-                                    <i class="fa fa-plus"></i>
-                                  </b-button>
-                                </th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr v-for="(row_data, key_data) in kolaborator_data" :key="key_data">
-                                <td class="text-center">{{ key_data + 1 }}.</td>
-                                <td>
-                                  <v-select
-                                    label="name"
-                                    v-model="row_data.kolaborator_data"
-                                    :options="peserta_ref"
-                                    @search="onSearchKolaborator"
-                                    placeholder="Cari dan Pilih Kolaborator..."
-                                  ></v-select>
-                                </td>
-                              
-                                <td class="text-center">
-                                  <button
-                                    type="button"
-                                    class="btn btn-danger btn-sm"
-                                    @click="deleteRow(key_data, row_data)"
-                                  >
-                                    <i class="fa fa-minus"></i>
-                                  </button>
-                                </td>
-                              </tr>
-                            </tbody>
-                        </table>
-                        </div>
-                      </div>
-                    </div> 
-
-                            <BRow>
-                              <BCol md="6">
-                                <BFormGroup class="mb-3" label="Tingkat Urgensi" label-for="tingkat-urgensi-input">
-                                    <select id="urgensi" class="form-select">
-                                      <option selected>Pilih Tingkat Urgensi</option>
+                              <BRow>
+                                <BCol md="6">
+                                  <BFormGroup class="mb-3" label="Tingkat Urgensi" label-for="tingkat-urgensi-input">
+                                    <select v-model="tingkatUrgensi" id="tingkat-urgensi-input" class="form-select">
+                                      <option disabled value="">Pilih Tingkat Urgensi</option>
                                       <option value="1">Urgent</option>
                                       <option value="2">Tinggi</option>
                                       <option value="3">Sedang</option>
-                                      <option value="3">Rendah</option>
-                                    </select>
-                                </BFormGroup>
-                              </BCol>
-                              <BCol md="6">
-                                <div class="form-group">
-                                  <BFormGroup class="mb-3 fw-bold" label="Tipe Task" label-for="tipe-task-input">
-                                    <select id="kolaborator" class="form-select">
-                                      <option selected>Pilih Tipe Task</option>
-                                      <option value="major">Major</option>
-                                      <option value="minor">Minor</option>
+                                      <option value="4">Rendah</option>
                                     </select>
                                   </BFormGroup>
-                                </div>
-                              </BCol>
-                            </BRow>
+                                </BCol>
+                                              <BCol md="6">
+                                  <BFormGroup class="mb-3" label="Tipe Task" label-for="tipe-task-input">
+                                    <select v-model="tipeTask" id="tipe-task-input" class="form-select">
+                                      <option disabled value="">Pilih Tipe Task</option>
+                                      <option value="MAJOR">Major</option>
+                                      <option value="MINOR">Minor</option>
+                                    </select>
+                                  </BFormGroup>
+                                </BCol>
+                              </BRow>
 
-                            <BRow>
-                              <BCol md="6">
-                                <BFormGroup class="mb-3" label="Kolaborator" label-for="kolabolator-input">
-                                  <select id="kolaborator" class="form-select">
-                                        <option selected>Pilih kolaborator</option>
-                                        <option value="1">Kolaborator 1</option>
-                                        <option value="2">Kolaborator 2</option>
-                                        <option value="3">Kolaborator 3</option>
-                                  </select>
-                                </BFormGroup>
-                              </BCol>
-                              <BCol md="6">
-                                <div class="form-group">
-                                  <BFormGroup class="mb-3 fw-bold" label="Tangal Deadline" label-for="tipe-task-input">
-                                    <flat-pickr v-model="picked" :first-day-of-week="1" lang="en" confirm class="form-control"></flat-pickr>
+                                            <BRow>
+                                                  <BCol md="6">
+                                                    <BFormGroup class="mb-3" label="Kolaborator" label-for="kolaborator-input">
+                                                      <select id="kolaborator" class="form-select" v-model="collaborator_id">
+                                                        <option selected>Pilih kolaborator</option>
+                                                        <option v-for="user in collaborators" :key="user.user_id" :value="user.user_id">
+                                                          {{ user.name }}
+                                                        </option>
+                                                      </select>
+                                                    </BFormGroup>
+                                                  </BCol>
+                                                  <div v-if="loadingTable">Loading...</div>
+                                                  <div v-if="errorMessage" class="text-danger">{{ errorMessage }}</div>
+                                              <BCol md="6">
+                                  <BFormGroup class="mb-3" label="Tanggal Deadline" label-for="tanggal-deadline-input">
+                                    <flat-pickr
+                                      v-model="tanggalDeadline"
+                                      :first-day-of-week="1"
+                                      lang="en"
+                                      class="form-control"
+                                    ></flat-pickr>
                                   </BFormGroup>
-                                </div>
-                              </BCol>
-                            </BRow>
-                            <div class="text-end">
-                              <button type="button" class="btn btn-secondary btn-success" @click="successmsg()">Simpan</button>
-                            </div>
-                          </form>
-                        </div>
-                      </BModal>
-                      <button type="button" class="btn btn-danger btn-sm mb-1 w-100" alt="Disable" @click="confirm()"><i class="bx bxs-trash-alt"></i> HAPUS</button>
+                                </BCol>
+                              </BRow>
+
+                              <!-- Tombol Submit -->
+                              <div class="text-end">
+                                <button type="submit" class="btn btn-success">Sunting</button>
+                              </div>
+                            </form>
+                          </div>
+                        </BModal>
+                      <button type="button" class="btn btn-danger btn-sm mb-1 w-100" alt="Disable" @click="deleteProyek(item.task_id)"><i class="bx bxs-trash-alt"></i> HAPUS</button>
                     </BTd>
                   </BTr>
                 </BTbody>
