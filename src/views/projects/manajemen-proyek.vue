@@ -177,6 +177,7 @@ successmsg() {
       }
     },
     
+    //paginasi
     toPage: function(str){
       console.clear();
       console.log(str);

@@ -150,13 +150,6 @@ export default {
     console.warn("Project ID tidak ditemukan di URL"); // Peringatan jika project_id tidak ada
   }
 
-  // Ambil parameter task_id dari URL
-  // if (this.$route.params.task_id) {
-  //   this.task_id = this.$route.params.task_id; // Simpan task_id ke properti
-  //   console.log("Task ID dari URL:", this.task_id); // Debug untuk memastikan task_id berhasil diambil
-  // } else {
-  //   console.warn("Task ID tidak ditemukan di URL"); // Peringatan jika task_id tidak ada
-  // }
 },
 
 
@@ -193,17 +186,6 @@ export default {
                         this.taskDetail = response.data.data; // Sesuaikan dengan struktur respons API Anda
                         this.nameCollaborator = this.taskDetail.collaborator.name;
                         this.nameCollaborator = this.nameCollaborator.charAt(0);
-                        // this.pagination.total = response.data.data.pagination.total;
-                        // paginasi
-                        // this.pagination.from = response.data.data.pagination.from;
-                        // this.pagination.to = response.data.data.pagination.to;
-                        // this.pagination.links = response.data.data.pagination.links;
-                        // this.pagination.lastPageUrl = response.data.data.pagination.last_page_url;
-                        // this.pagination.nextPageUrl = response.data.data.pagination.next_page_url;
-                        // this.pagination.prevPageUrl = response.data.data.pagination.prev_page_url;
-                        // this.pagination.per_page = this.per_page;
-                        // this.pagination.page = this.page;
-                        // console.log(response.data.data.pagination.links);
                     } else {
                         this.taskDetail = {};
                     }
@@ -215,11 +197,29 @@ export default {
                 });
         },
 
-    toPage: function(str){
-      console.clear();
-      console.log(str);
-      this.getDataProject(str);
-    },
+    // toPage: function(str){
+    //   console.clear();
+    //   console.log(str);
+    //   this.getDataTask(str);
+    // },
+
+    toPage: function(str) {
+    // Bersihkan konsol untuk debugging yang lebih jelas
+    console.clear();
+
+    // Log link (URL) yang diterima
+    console.log('Navigating to:', str);
+
+    // Validasi apakah str berbentuk string yang valid
+    if (!str || typeof str !== 'string') {
+        console.error('Invalid URL: str harus berupa string yang valid.');
+        return;
+    }
+
+    // Jalankan fungsi getDataProject dengan parameter str
+    this.getDataTask(str);
+},
+
 
     async updateStatus(task_id, event) {
       const newStatus = event.target.value;
@@ -363,7 +363,6 @@ searchKolaborator(loading, search) {
           this.loadingTable = false;
           if (response.status === 200) {
             this.data = response.data.data;
-            // console.log(this.data);
           } else {
             this.data = [];
           }
@@ -398,13 +397,23 @@ searchKolaborator(loading, search) {
           Authorization: 'Bearer ' + token,
         },
       };
-      // console.log(item.deadline);
       axios(config)
         .then((response) => {
           this.loadingTable = false;
           if (response.status === 200) {
             this.dataTask = response.data.data.data_task;
-            console.log(this.dataTask);
+            // paginasi
+            this.pagination.total = response.data.data.pagination.total;
+            this.pagination.from = response.data.data.pagination.from;
+            this.pagination.to = response.data.data.pagination.to;
+            this.pagination.links = response.data.data.pagination.links;
+            this.pagination.lastPageUrl = response.data.data.pagination.last_page_url;
+            this.pagination.nextPageUrl = response.data.data.pagination.next_page_url;
+            this.pagination.prevPageUrl = response.data.data.pagination.prev_page_url;
+            this.pagination.per_page = this.per_page;
+            this.pagination.page = this.page;
+            console.log(response.data.data.pagination.links);
+            // console.log(this.dataTask);
           } else {
             this.data = [];
           }
@@ -1625,8 +1634,8 @@ storeDataEditTask() {
                 </BTbody>
               </BTableSimple>
             </div>
-            <Pagination :pagination="pagination" @to-page="toPage"></Pagination>
           </b-card>
+          <Pagination :pagination="pagination" @to-page="toPage"></Pagination>
           </BCardBody>
         </BCard>
       </BCol>
