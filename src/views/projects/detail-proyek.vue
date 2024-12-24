@@ -61,6 +61,7 @@ export default {
       comment: '', // Menyimpan komentar yang akan dikirim
       comments: [], // Menyimpan daftar komentar
   
+      nameCollaborator: '',
       no:1,
 
       statData: [
@@ -174,6 +175,8 @@ export default {
                     this.loading = false;
                     if (response.status === 200) {
                         this.taskDetail = response.data.data; // Sesuaikan dengan struktur respons API Anda
+                        this.nameCollaborator = this.taskDetail.collaborator.name;
+                        this.nameCollaborator = this.nameCollaborator.charAt(0);
                     } else {
                         this.taskDetail = {};
                     }
@@ -1477,7 +1480,7 @@ storeDataEditTask() {
                           <div style="display: flex; gap: 10px;">
                             <!-- Div dengan border bulat -->
                             <div style="background-color: whitesmoke; border: 1px solid black; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center;">
-                              <p style="font-weight: bold; font-size: 2em; margin: 0;">A</p>
+                              <p style="font-weight: bold; font-size: 2em; margin: 0;">{{nameCollaborator}}</p>
                             </div>
                             <!-- Textarea -->
                             <!-- <label for="nama-yang-komen">Komentar</label> -->
@@ -1499,14 +1502,14 @@ storeDataEditTask() {
                     </BModal>
                   
                     <BTd style="border-collapse: collapse; border: 1px solid black;">
-                        <label class="visually-hidden" for="autoSizingSelect">Preference</label>
-                        <select class="form-select" id="autoSizingSelect" :value="item.status_task" @change="updateStatus(item.task_id, $event)">
-                          <option disabled>{{ item.status_task }}</option>
-                          <option value="PENDING">Pending</option>
-                          <option value="ONGOING">Ongoing</option>
-                          <option value="DONE">Done</option>
-                        </select>
-                      </BTd>
+                      <label class="visually-hidden" for="autoSizingSelect">Preference</label>
+                      <select class="form-select" id="autoSizingSelect" :value="item.status_task" @change="updateStatus(item.task_id, $event)">
+                        <option disabled>{{ item.status_task }}</option>
+                        <option value="PENDING">Pending</option>
+                        <option value="ONGOING">Ongoing</option>
+                        <option value="DONE">Done</option>
+                      </select>
+                    </BTd>
                     <BTd style="border-collapse: collapse; border: 1px solid black; text-align: center;">
                       <span class="badge bg-danger">{{ item.sisa_waktu }} hari</span>
                     </BTd>
