@@ -176,7 +176,7 @@ export default {
                     if (response.status === 200) {
                         this.taskDetail = response.data.data; // Sesuaikan dengan struktur respons API Anda
                         this.nameCollaborator = this.taskDetail.collaborator.name;
-                        this.nameCollaborator = this.nameCollaborator.charAt(0);
+                        this.nameKollaborator = this.nameCollaborator.charAt(0);
                     } else {
                         this.taskDetail = {};
                     }
@@ -1455,7 +1455,10 @@ storeDataEditTask() {
                           <BCol md="6">
                             <div class="form-group">
                               <BFormGroup class="mb-3 fw-bold" label="Nama Kolaborator" label-for="tipe-task-input">
-                               <p>{{taskDetail.collaborator_id}}</p>
+                               <p>{{nameCollaborator}}</p>
+                               <!-- <p v-for="kolaborator in taskDetail.collaborator_id" :key="kolaborator.id">
+                                   {{ item.collaborator_id.name }} 
+                               </p> -->
                               </BFormGroup>
                             </div>
                           </BCol>
@@ -1480,7 +1483,7 @@ storeDataEditTask() {
                           <div style="display: flex; gap: 10px;">
                             <!-- Div dengan border bulat -->
                             <div style="background-color: whitesmoke; border: 1px solid black; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center;">
-                              <p style="font-weight: bold; font-size: 2em; margin: 0;">{{nameCollaborator}}</p>
+                              <p style="font-weight: bold; font-size: 2em; margin: 0;">{{nameKollaborator}}</p>
                             </div>
                             <!-- Textarea -->
                             <!-- <label for="nama-yang-komen">Komentar</label> -->
