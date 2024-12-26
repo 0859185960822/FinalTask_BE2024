@@ -238,15 +238,26 @@ export default {
         },
       };
 
-      try {
-        const response = await axios(configStoreData);
-        alert('Status berhasil diperbarui!');
-        console.log('Response:', response.data);
-        window.location.reload();
-      } catch (error) {
-        console.error('Error updating status:', error);
-        alert('Terjadi kesalahan saat memperbarui status.');
-      }
+      axios(configStoreData)
+    .then((response) => {
+      console.log("Respon server:", response.data);  // Log response dari server
+      Swal.fire({
+        icon: "success",
+        title: "Berhasil",
+        text: response.data.message || "Status berhasil diubah",
+      }).then(() => {
+        window.location.reload(); // Reload setelah user menekan OK
+      });
+        this.resetForm(); // Reset form setelah menyimpan
+    })
+    .catch((error) => {
+      console.error("Error saat mengirim data:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Gagal",
+        text: error.response?.data?.message || "Terjadi kesalahan saat mengubah status",
+      });
+    });
     },
 
 
