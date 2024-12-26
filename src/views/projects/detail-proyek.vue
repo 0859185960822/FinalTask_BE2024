@@ -63,6 +63,7 @@ export default {
       comments: [], // Menyimpan daftar komentar
   
       nameCollaborator: '',
+      namaKolaborator: '',
       no:1,
       per_page: 5,
       page: 1,
@@ -337,11 +338,11 @@ searchKolaborator(loading, search) {
       this.resetForm(); // Reset form setelah menyimpan
     })
     .catch((error) => {
-      console.error("Error saat mengirim data:", error);
+      console.error("Error saat mengirim data:", error.response.data.data.error);
       Swal.fire({
         icon: "error",
-        title: "Gagal",
-        text: error.response?.data?.message || "Terjadi kesalahan saat menyimpan data",
+        title: "Gagal Tambah Kolaborator",
+        text: error.response.data.data.error || "Terjadi kesalahan saat menyimpan data",
       });
     });
 },
