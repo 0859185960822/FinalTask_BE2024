@@ -185,7 +185,7 @@ export default {
                     if (response.status === 200) {
                         this.taskDetail = response.data.data; // Sesuaikan dengan struktur respons API Anda
                         this.nameCollaborator = this.taskDetail.collaborator.name;
-                        this.nameCollaborator = this.nameCollaborator.charAt(0);
+                        this.nameKollaborator = this.nameCollaborator.charAt(0);
                     } else {
                         this.taskDetail = {};
                     }
