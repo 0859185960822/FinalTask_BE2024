@@ -319,6 +319,8 @@ searchKolaborator(loading, search) {
         icon: "success",
         title: "Berhasil",
         text: response.data.message || "Data berhasil disimpan",
+      }).then(() => {
+        window.location.reload(); // Reload setelah user menekan OK
       });
       this.showModal.tambahKolaborator = false; // Tutup modal setelah berhasil
       this.resetForm(); // Reset form setelah menyimpan
@@ -843,7 +845,7 @@ storeDataEditProyek() {
       });
       setTimeout(() => {
         window.location.reload();
-      }, 750); // Menunggu 1,5 detik sebelum reload
+      }, 2000); // Menunggu 1,5 detik sebelum reload
 
     })
     .catch((error) => {
