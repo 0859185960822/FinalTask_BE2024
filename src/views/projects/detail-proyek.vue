@@ -150,13 +150,6 @@ export default {
     console.warn("Project ID tidak ditemukan di URL"); // Peringatan jika project_id tidak ada
   }
 
-  // Ambil parameter task_id dari URL
-  // if (this.$route.params.task_id) {
-  //   this.task_id = this.$route.params.task_id; // Simpan task_id ke properti
-  //   console.log("Task ID dari URL:", this.task_id); // Debug untuk memastikan task_id berhasil diambil
-  // } else {
-  //   console.warn("Task ID tidak ditemukan di URL"); // Peringatan jika task_id tidak ada
-  // }
 },
 
 
@@ -192,18 +185,7 @@ export default {
                     if (response.status === 200) {
                         this.taskDetail = response.data.data; // Sesuaikan dengan struktur respons API Anda
                         this.nameCollaborator = this.taskDetail.collaborator.name;
-                        this.nameCollaborator = this.nameCollaborator.charAt(0);
-                        this.pagination.total = response.data.data.pagination.total;
-                        // paginasi
-                        this.pagination.from = response.data.data.pagination.from;
-                        this.pagination.to = response.data.data.pagination.to;
-                        this.pagination.links = response.data.data.pagination.links;
-                        this.pagination.lastPageUrl = response.data.data.pagination.last_page_url;
-                        this.pagination.nextPageUrl = response.data.data.pagination.next_page_url;
-                        this.pagination.prevPageUrl = response.data.data.pagination.prev_page_url;
-                        this.pagination.per_page = this.per_page;
-                        this.pagination.page = this.page;
-                        console.log(response.data.data.pagination.links);
+                        this.nameKollaborator = this.nameCollaborator.charAt(0);
                     } else {
                         this.taskDetail = {};
                     }
@@ -215,11 +197,29 @@ export default {
                 });
         },
 
-    toPage: function(str){
-      console.clear();
-      console.log(str);
-      this.getDataProject(str);
-    },
+    // toPage: function(str){
+    //   console.clear();
+    //   console.log(str);
+    //   this.getDataTask(str);
+    // },
+
+    toPage: function(str) {
+    // Bersihkan konsol untuk debugging yang lebih jelas
+    console.clear();
+
+    // Log link (URL) yang diterima
+    console.log('Navigating to:', str);
+
+    // Validasi apakah str berbentuk string yang valid
+    if (!str || typeof str !== 'string') {
+        console.error('Invalid URL: str harus berupa string yang valid.');
+        return;
+    }
+
+    // Jalankan fungsi getDataProject dengan parameter str
+    this.getDataTask(5, str);
+},
+
 
     async updateStatus(task_id, event) {
       const newStatus = event.target.value;
@@ -365,7 +365,6 @@ searchKolaborator(loading, search) {
           this.loadingTable = false;
           if (response.status === 200) {
             this.data = response.data.data;
-            // console.log(this.data);
           } else {
             this.data = [];
           }
@@ -376,7 +375,7 @@ searchKolaborator(loading, search) {
           console.error('Error:', error.response ? error.response.data : error.message);
         });
     },
-    getDataTask(per_page) {
+    getDataTask(per_page=5, url = process.env.VUE_APP_BACKEND_URL_API + 'task-management/' + this.id) {
       this.loadingTable = true;
 
       const token = localStorage.accessToken;
@@ -391,7 +390,7 @@ searchKolaborator(loading, search) {
 
       const config = {
         method: 'get',
-        url: process.env.VUE_APP_BACKEND_URL_API + 'task-management/' + this.id,
+        url: url,
         params: {
           per_page: per_page,
         },
@@ -400,13 +399,23 @@ searchKolaborator(loading, search) {
           Authorization: 'Bearer ' + token,
         },
       };
-      // console.log(item.deadline);
       axios(config)
         .then((response) => {
           this.loadingTable = false;
           if (response.status === 200) {
             this.dataTask = response.data.data.data_task;
-            console.log(this.dataTask);
+            // paginasi
+            this.pagination.total = response.data.data.pagination.total;
+            this.pagination.from = response.data.data.pagination.from;
+            this.pagination.to = response.data.data.pagination.to;
+            this.pagination.links = response.data.data.pagination.links;
+            this.pagination.lastPageUrl = response.data.data.pagination.last_page_url;
+            this.pagination.nextPageUrl = response.data.data.pagination.next_page_url;
+            this.pagination.prevPageUrl = response.data.data.pagination.prev_page_url;
+            this.pagination.per_page = this.per_page;
+            this.pagination.page = this.page;
+            console.log(response.data.data.pagination.links);
+            // console.log(this.dataTask);
           } else {
             this.data = [];
           }
@@ -796,6 +805,7 @@ showModalEditProyek(id) {
 
 storeDataEditProyek() {
   console.log("storeDataEditProyek function is called"); // Log untuk verifikasi
+  this.userIds = this.kolaborator_data.map((item) => item.kolaborator_data.user_id);
 
   // Validasi input
   if (!this.namaProyek || !this.deskripsiProyek || !this.tenggatWaktu) {
@@ -821,7 +831,8 @@ storeDataEditProyek() {
       project_name: this.namaProyek,  // Nama proyek
       description: this.deskripsiProyek,  // Deskripsi proyek
       deadline: this.tenggatWaktu,  // Tenggat waktu proyek
-      collaborator: this.kolaborator_data,  // Data kolaborator
+      // collaborator: JSON.stringify(this.kolaborator_data),
+      collaborator: JSON.stringify(this.userIds),
     },
   };
 
@@ -1163,7 +1174,14 @@ storeDataEditTask() {
                                 ></textarea>
                               </div>
 
-                              <!-- <div class="mb-3">
+                              <!-- <div class="font-xs">
+                                  <p>Kolaborator sebelumnya:</p>
+                                <li v-for="kolaborator in kolaborator_data" :key="kolaborator.user_id">
+                                  {{ kolaborator.name }}
+                                </li>
+                              </div> -->
+
+                              <div class="mb-3">
                 <label for="judul-task" class="form-label fw-bold">Nama Kolaborator</label>
                     <div class="row">
                         <div class="col-12">
@@ -1210,7 +1228,7 @@ storeDataEditTask() {
                         </table>
                         </div>
                       </div>
-                    </div> -->
+                    </div>
                            
                             <div class="mb-3">
                                 <label for="deadline" class="form-label fw-bold">Tenggat Waktu</label>
@@ -1322,14 +1340,14 @@ storeDataEditTask() {
     <button
       type="button"
       class="btn btn-success d-flex align-items-center d-none d-md-flex"
-      @click="modalTT = true"
+      @click="modalTT = true" v-if="menuItems === 1"
     >
       <i class="fa fa-plus me-2"></i>TAMBAH TASK
     </button>
     <button
       type="button"
       class="btn btn-success d-flex align-items-center d-flex d-md-none"
-      @click="modalTT = true"
+      @click="modalTT = true" v-if="menuItems === 1"
     >
       <i class="fa fa-plus me-2"></i>TASK
     </button>
@@ -1343,7 +1361,7 @@ storeDataEditTask() {
             <input
               type="text"
               class="form-control"
-              v-model="judulTask"
+              v-model="judulTask" v-if="menuItems === 1"
               placeholder="Masukkan judul Task"
               required
             />
@@ -1490,7 +1508,7 @@ storeDataEditTask() {
                           <BCol md="6">
                             <div class="form-group">
                               <BFormGroup class="mb-3 fw-bold" label="Nama Kolaborator" label-for="tipe-task-input">
-                               <p>{{taskDetail.collaborator_id}}</p>
+                               <p>{{nameCollaborator}}</p>
                               </BFormGroup>
                             </div>
                           </BCol>
@@ -1515,7 +1533,7 @@ storeDataEditTask() {
                           <div style="display: flex; gap: 10px;">
                             <!-- Div dengan border bulat -->
                             <div style="background-color: whitesmoke; border: 1px solid black; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center;">
-                              <p style="font-weight: bold; font-size: 2em; margin: 0;">{{nameCollaborator}}</p>
+                              <p style="font-weight: bold; font-size: 2em; margin: 0;">{{nameKollaborator}}</p>
                             </div>
                             <!-- Textarea -->
                             <!-- <label for="nama-yang-komen">Komentar</label> -->
@@ -1627,8 +1645,8 @@ storeDataEditTask() {
                 </BTbody>
               </BTableSimple>
             </div>
-            <Pagination :pagination="pagination" @to-page="toPage"></Pagination>
           </b-card>
+          <Pagination :pagination="pagination" @to-page="toPage"></Pagination>
           </BCardBody>
         </BCard>
       </BCol>

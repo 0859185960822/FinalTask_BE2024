@@ -2,7 +2,8 @@
 import Layout from "../../layouts/main";
 import PageHeader from "@/components/page-header";
 import "flatpickr/dist/flatpickr.css";
-import Page from "../../components/common/pagination.vue";
+// import Page from "../../components/common/pagination.vue";
+import Pagination from "../../components/common/table-pagination.vue";
 import Swal from "sweetalert2";
 import axios from "axios";
 import $ from 'jquery';
@@ -32,6 +33,21 @@ export default {
       sortOrder: 'asc', // Urutan sorting ('asc' atau 'desc')
       loadingTable: false,
       isFilterApplied: false, // Properti untuk melacak apakah filter diterapkan
+      per_page: 5,
+      page: 1,
+
+      // paginasi
+      pagination: {
+        total: "",
+        from: "",
+        to: "",
+        page: "",
+        per_page: "",
+        links: '',
+        lastPageUrl: "",
+        nextPageUrl: "",
+        prevPageUrl: "",
+      },
     }
   },
   mounted() {
@@ -68,12 +84,13 @@ export default {
   components: { 
     Layout,
     PageHeader,
-    Page,
+    Pagination,
+    // Page,
     // flatPickr, 
   },
   
   methods: {
-    getDataProject() {
+    getDataProject(url = process.env.VUE_APP_BACKEND_URL_API + 'laporan-project') {
       this.loadingTable = true;
 
       const token = localStorage.accessToken;
@@ -88,7 +105,7 @@ export default {
 
       const config = {
         method: 'get',
-        url: process.env.VUE_APP_BACKEND_URL_API + 'laporan-project',
+        url: url,
         headers: {
           Accept: 'application/json',
           Authorization: 'Bearer ' + token,
@@ -100,7 +117,18 @@ export default {
           this.loadingTable = false;
           if (response.status === 200) {
             this.data = response.data.data.data_project;
-            console.log(this.data);
+            // console.log(this.data);
+
+            this.pagination.total = response.data.data.pagination.total;
+              this.pagination.from = response.data.data.pagination.from;
+              this.pagination.to = response.data.data.pagination.to;
+              this.pagination.links = response.data.data.pagination.links;
+              this.pagination.lastPageUrl = response.data.data.pagination.last_page_url;
+              this.pagination.nextPageUrl = response.data.data.pagination.next_page_url;
+              this.pagination.prevPageUrl = response.data.data.pagination.prev_page_url;
+              this.pagination.per_page = this.per_page;
+              this.pagination.page = this.page;
+              console.log(response.data.data.pagination.links);
           } else {
             this.data = [];
           }
@@ -110,6 +138,11 @@ export default {
           this.data = [];
           console.error('Error:', error.response ? error.response.data : error.message);
         });
+    },
+    toPage: function(str){
+      console.clear();
+      console.log(str);
+      this.getDataProject(str);
     },
     exportLaporanProyek() {
       this.loadingTable = true;
@@ -423,10 +456,11 @@ export default {
                 </BTbody>
               </BTableSimple>
             </div>
+            <Pagination :pagination="pagination" @to-page="toPage"></Pagination>
           </BCardBody>
         </BCard>
       </BCol>
     </BRow>
-  <Page/>
+  <!-- <Page/> -->
   </Layout>
 </template>
