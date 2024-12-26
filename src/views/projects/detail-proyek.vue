@@ -37,6 +37,7 @@ export default {
     return {
       
       id: this.$route.params.id,
+      nameUserComment: auth.userData.username.charAt(0),
       data: [],
       dataTask: [],
       kolaborator_data: [], // Array untuk data instruktur
@@ -185,8 +186,8 @@ export default {
                     this.loading = false;
                     if (response.status === 200) {
                         this.taskDetail = response.data.data; // Sesuaikan dengan struktur respons API Anda
-                        this.nameCollaborator = this.taskDetail.collaborator.name;
-                        this.nameKollaborator = this.nameCollaborator.charAt(0);
+                        this.nameCollaborator = this.taskDetail.collaborator.username;
+                        this.nameKollaborator = this.taskDetail.comments;
                     } else {
                         this.taskDetail = {};
                     }
@@ -1545,7 +1546,7 @@ storeDataEditTask() {
                           <div style="display: flex; gap: 10px;">
                             <!-- Div dengan border bulat -->
                             <div style="background-color: whitesmoke; border: 1px solid black; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center;">
-                              <p style="font-weight: bold; font-size: 2em; margin: 0;">{{nameKollaborator}}</p>
+                              <p style="font-weight: bold; font-size: 2em; margin: 0;">{{nameUserComment}}</p>
                             </div>
                             <!-- Textarea -->
                             <!-- <label for="nama-yang-komen">Komentar</label> -->
@@ -1557,7 +1558,7 @@ storeDataEditTask() {
                           <div style="display: flex; gap: 10px;" v-for="item,index in taskDetail.comments" :key="index">
                             <!-- Div dengan border bulat -->
                             <div style="background-color: whitesmoke; border: 1px solid black; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center;">
-                              <p style="font-weight: bold; font-size: 2em; margin: 0;">A</p>
+                              <p style="font-weight: bold; font-size: 2em; margin: 0;">{{ item.user.username.charAt(0) }}</p>
                             </div>
                             <!-- Textarea -->
                             <textarea class="form-control mb-1" :value="item.comment" style="flex: 1;" disabled></textarea>
