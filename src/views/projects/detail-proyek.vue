@@ -1338,14 +1338,14 @@ storeDataEditTask() {
     <button
       type="button"
       class="btn btn-success d-flex align-items-center d-none d-md-flex"
-      @click="modalTT = true"
+      @click="modalTT = true" v-if="menuItems === 1"
     >
       <i class="fa fa-plus me-2"></i>TAMBAH TASK
     </button>
     <button
       type="button"
       class="btn btn-success d-flex align-items-center d-flex d-md-none"
-      @click="modalTT = true"
+      @click="modalTT = true" v-if="menuItems === 1"
     >
       <i class="fa fa-plus me-2"></i>TASK
     </button>
@@ -1359,7 +1359,7 @@ storeDataEditTask() {
             <input
               type="text"
               class="form-control"
-              v-model="judulTask"
+              v-model="judulTask" v-if="menuItems === 1"
               placeholder="Masukkan judul Task"
               required
             />
