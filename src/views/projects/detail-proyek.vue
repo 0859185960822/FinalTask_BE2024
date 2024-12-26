@@ -192,7 +192,7 @@ export default {
                     if (response.status === 200) {
                         this.taskDetail = response.data.data; // Sesuaikan dengan struktur respons API Anda
                         this.nameCollaborator = this.taskDetail.collaborator.name;
-                        this.nameCollaborator = this.nameCollaborator.charAt(0);
+                        this.nameKollaborator = this.nameCollaborator.charAt(0);
                         // this.pagination.total = response.data.data.pagination.total;
                         // paginasi
                         // this.pagination.from = response.data.data.pagination.from;
@@ -794,6 +794,7 @@ showModalEditProyek(id) {
 
 storeDataEditProyek() {
   console.log("storeDataEditProyek function is called"); // Log untuk verifikasi
+  this.userIds = this.kolaborator_data.map((item) => item.kolaborator_data.user_id);
 
   // Validasi input
   if (!this.namaProyek || !this.deskripsiProyek || !this.tenggatWaktu) {
@@ -819,7 +820,8 @@ storeDataEditProyek() {
       project_name: this.namaProyek,  // Nama proyek
       description: this.deskripsiProyek,  // Deskripsi proyek
       deadline: this.tenggatWaktu,  // Tenggat waktu proyek
-      collaborator: JSON.stringify(this.kolaborator_data),
+      // collaborator: JSON.stringify(this.kolaborator_data),
+      collaborator: JSON.stringify(this.userIds),
     },
   };
 
@@ -1161,7 +1163,14 @@ storeDataEditTask() {
                                 ></textarea>
                               </div>
 
-                              <!-- <div class="mb-3">
+                              <!-- <div class="font-xs">
+                                  <p>Kolaborator sebelumnya:</p>
+                                <li v-for="kolaborator in kolaborator_data" :key="kolaborator.user_id">
+                                  {{ kolaborator.name }}
+                                </li>
+                              </div> -->
+
+                              <div class="mb-3">
                 <label for="judul-task" class="form-label fw-bold">Nama Kolaborator</label>
                     <div class="row">
                         <div class="col-12">
@@ -1208,7 +1217,7 @@ storeDataEditTask() {
                         </table>
                         </div>
                       </div>
-                    </div> -->
+                    </div>
                            
                             <div class="mb-3">
                                 <label for="deadline" class="form-label fw-bold">Tenggat Waktu</label>
@@ -1488,7 +1497,7 @@ storeDataEditTask() {
                           <BCol md="6">
                             <div class="form-group">
                               <BFormGroup class="mb-3 fw-bold" label="Nama Kolaborator" label-for="tipe-task-input">
-                               <p>{{taskDetail.collaborator_id}}</p>
+                               <p>{{nameCollaborator}}</p>
                               </BFormGroup>
                             </div>
                           </BCol>
@@ -1513,7 +1522,7 @@ storeDataEditTask() {
                           <div style="display: flex; gap: 10px;">
                             <!-- Div dengan border bulat -->
                             <div style="background-color: whitesmoke; border: 1px solid black; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center;">
-                              <p style="font-weight: bold; font-size: 2em; margin: 0;">{{nameCollaborator}}</p>
+                              <p style="font-weight: bold; font-size: 2em; margin: 0;">{{nameKollaborator}}</p>
                             </div>
                             <!-- Textarea -->
                             <!-- <label for="nama-yang-komen">Komentar</label> -->
