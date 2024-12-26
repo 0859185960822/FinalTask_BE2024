@@ -186,8 +186,7 @@ export default {
                     if (response.status === 200) {
                         this.taskDetail = response.data.data; // Sesuaikan dengan struktur respons API Anda
                         this.nameCollaborator = this.taskDetail.collaborator.name;
-                        this.namaKolaborator = this.nameCollaborator;
-                        this.nameCollaborator = this.nameCollaborator.charAt(0);
+                        this.nameKollaborator = this.nameCollaborator.charAt(0);
                     } else {
                         this.taskDetail = {};
                     }
@@ -326,11 +325,11 @@ searchKolaborator(loading, search) {
       this.resetForm(); // Reset form setelah menyimpan
     })
     .catch((error) => {
-      console.error("Error saat mengirim data:", error);
+      console.error("Error saat mengirim data:", error.response.data.data.error);
       Swal.fire({
         icon: "error",
-        title: "Gagal",
-        text: error.response?.data?.message || "Terjadi kesalahan saat menyimpan data",
+        title: "Gagal Tambah Kolaborator",
+        text: error.response.data.data.error || "Terjadi kesalahan saat menyimpan data",
       });
     });
 },
@@ -1340,14 +1339,14 @@ storeDataEditTask() {
     <button
       type="button"
       class="btn btn-success d-flex align-items-center d-none d-md-flex"
-      @click="modalTT = true"
+      @click="modalTT = true" v-if="menuItems === 1"
     >
       <i class="fa fa-plus me-2"></i>TAMBAH TASK
     </button>
     <button
       type="button"
       class="btn btn-success d-flex align-items-center d-flex d-md-none"
-      @click="modalTT = true"
+      @click="modalTT = true" v-if="menuItems === 1"
     >
       <i class="fa fa-plus me-2"></i>TASK
     </button>
@@ -1361,7 +1360,7 @@ storeDataEditTask() {
             <input
               type="text"
               class="form-control"
-              v-model="judulTask"
+              v-model="judulTask" v-if="menuItems === 1"
               placeholder="Masukkan judul Task"
               required
             />
@@ -1508,7 +1507,7 @@ storeDataEditTask() {
                           <BCol md="6">
                             <div class="form-group">
                               <BFormGroup class="mb-3 fw-bold" label="Nama Kolaborator" label-for="tipe-task-input">
-                               <p>{{namaKolaborator}}</p>
+                               <p>{{nameCollaborator}}</p>
                               </BFormGroup>
                             </div>
                           </BCol>
