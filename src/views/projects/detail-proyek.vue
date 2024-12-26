@@ -63,6 +63,7 @@ export default {
       comments: [], // Menyimpan daftar komentar
   
       nameCollaborator: '',
+      namaKolaborator: '',
       no:1,
       per_page: 5,
       page: 1,
@@ -185,6 +186,7 @@ export default {
                     if (response.status === 200) {
                         this.taskDetail = response.data.data; // Sesuaikan dengan struktur respons API Anda
                         this.nameCollaborator = this.taskDetail.collaborator.name;
+                        this.namaKolaborator = this.nameCollaborator;
                         this.nameCollaborator = this.nameCollaborator.charAt(0);
                     } else {
                         this.taskDetail = {};
@@ -1506,7 +1508,7 @@ storeDataEditTask() {
                           <BCol md="6">
                             <div class="form-group">
                               <BFormGroup class="mb-3 fw-bold" label="Nama Kolaborator" label-for="tipe-task-input">
-                               <p>{{nameCollaborator}}</p>
+                               <p>{{namaKolaborator}}</p>
                               </BFormGroup>
                             </div>
                           </BCol>
